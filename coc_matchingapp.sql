@@ -1,3 +1,13 @@
+-- College of Computing Student/Alumni Project Matching App
+-- Database Initilization
+-- Junior Design Team 356
+-- Author(s): Aditya Sudarshan, Saket Shirsath
+
+
+-- README: THIS IS A DB INITIALIZATION SCRIPT
+-- ALL DATA WILL BE LOST IF THIS IS RUN AGAIN
+
+DROP DATABASE IF EXISTS matchingapp;
 CREATE DATABASE matchingapp;
 USE matchingapp;
 
@@ -29,7 +39,6 @@ CREATE table StudentSkills(
     PRIMARY KEY (gtUsername, skillId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
 CREATE table Interests(
     id INT unsigned auto_increment,
     interest VARCHAR(150),
@@ -45,6 +54,18 @@ CREATE table StudentInterests(
     FOREIGN KEY (interestId)
         REFERENCES Interests(id),
     PRIMARY KEY (gtUsername, interestId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE table Experience(
+	id INT unsigned auto_increment,
+    gtUsername varchar(50),
+    expereinceDescription text,
+    start_date DATE,
+    end_date DATE,
+    PRIMARY KEY (id),
+    FOREIGN KEY (gtUsername)
+		REFERENCES Students(gtUsername)
+        ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE table Majors(
@@ -167,12 +188,3 @@ CREATE table ProjectLinks(
         ON DELETE CASCADE,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT into Students values('asudarshan30','password','asudarshan30@gatech.edu','Aditya','Sudarshan','','');
-SELECT * from Students;
-
-INSERT INTO Skills VALUES(0,"test");
-select * from Skills;
-select * from StudentSkills;
-INSERT INTO StudentSkills(gtUsername, skillId) VALUES("asudarshan30", 1);
-SELECT skillText FROM Skills WHERE skillID = (SELECT skillId FROM StudentSkills WHERE gtUsername = "asudarshan30");
