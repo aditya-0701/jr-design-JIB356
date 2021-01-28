@@ -1,0 +1,15 @@
+{
+  "name": "mysql",
+  "version": "1.0.0",
+  "description": "This is a test readme for the API being built to communicate with our RDS DB for the app. This will be updated shortly.",
+  "main": "index.js",
+  "dependencies": {
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
