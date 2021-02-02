@@ -17,12 +17,15 @@
 var stud = require('./src/models/studentModels');
 
 var stu = new stud.Student({
-    gtUsername: 'randomUser',
-    firstName: 'random',
-    lastName: 'user',
-    pwd: 'password'
+    'gtUsername': 'randomUser',
+    'firstName': 'random',
+    'lastName': 'user',
+    'pwd': 'password',
+    'email': 'random.user@gatech.edu'
 });
 
-stud.Student.getAll();
+//return stud.Student.getAll({filter: `WHERE gtUsername = "asudarshan30" `});
+//stud.Student.addStudent(stu);
+stud.Student.getAll({filter: null});
 
 //stud.getAll();

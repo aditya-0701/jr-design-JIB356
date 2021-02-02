@@ -9,7 +9,7 @@ npm-debug.*
 *.orig.*
 web-build/
 yarn.lock
-matchingapp-api/config.js
+matchingapp-api/src/config.js
 matchingapp-api/node_modules/
 
 

@@ -1,4 +1,5 @@
 var db = require('../dbInit');
+var connection = db.dbConn;
 
 const Student = function(student) {
     this.gtUsername = student.gtUsername;
@@ -40,7 +41,7 @@ Student.getAll = ( params ) => {
     var { filter } = params;
     var query = `SELECT * FROM Students`;
     if (filter != null) {
-        query += filter;
+        query += " " +  filter;
     }
     connection.query(query, (error, result, fields) => {
         if (error) {
@@ -52,9 +53,9 @@ Student.getAll = ( params ) => {
     });
 };
 
-Student.addStudent = ( ) => {
-    if (this.gtUsername && this.pwd && this.firstName && this.lastName) {
-        var query = "INSERT INTO Students ?";
+Student.addStudent = ( params ) => {
+    if (params.gtUsername && params.pwd && params.firstName && params.lastName) {
+        var query = "INSERT INTO Students SET ?";
         connection.query(query, params, (error, result, fields) => {
             if (error) {
                 console.error(error);
@@ -65,7 +66,5 @@ Student.addStudent = ( ) => {
         });
     }
 }
-
-console.log(Student);
 
 exports.Student = Student;
