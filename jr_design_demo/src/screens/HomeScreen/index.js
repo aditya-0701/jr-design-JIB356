@@ -10,9 +10,17 @@ import { getUser } from '../../store.js'
 const Tab = new createBottomTabNavigator();
 
 const Home = ( props ) => {
+  const { navigation } = props;
+  const createNewProject = () => {
+    navigation.navigate("NewProject");
+  }
+
     return (
-        <View style = { [styles.container, {alignItems: 'center'}] }> 
+        <View style = { [styles.container, {alignItems: 'center'}] }>
             <Text style = {styles.title} >Welcome!</Text>
+            <TouchableOpacity style={styles.button} onPress={ createNewProject }>
+              <Text style={styles.buttonText}>Create Project</Text>
+            </TouchableOpacity>
         </View>
     )
 };
@@ -20,19 +28,19 @@ const Home = ( props ) => {
 const Profile = ( props ) => {
     //alert(JSON.stringify(props));
     const { navigation } = props;
-    const userDetails  = getUser(props.route.params); 
+    const userDetails  = getUser(props.route.params);
     const logout = () => {
         navigation.reset({
             index: 0,
             routes: [
-                { 
+                {
                     name: 'Login'
                 }
             ],
         });
     }
     return (
-        <View style = { styles.container }> 
+        <View style = { styles.container }>
             <Text style = {styles.title}>Profile Details</Text>
             <View style = { styles.info }>
                 <Text style = {styles.label}>Name</Text>
