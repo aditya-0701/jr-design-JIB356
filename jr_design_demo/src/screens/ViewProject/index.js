@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         backgroundColor: '#B3A369',
         height: 40,
-        width: '45%',
+        width: '25%',
         justifyContent: "center",
         margin: 20,
         marginVertical: 10,
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     buttonText: {
-        fontSize: 15,
+        fontSize: 12,
         fontWeight: 'bold',
         color: '#FFFFFF'
     },

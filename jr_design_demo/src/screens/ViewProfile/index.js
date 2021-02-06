@@ -24,8 +24,8 @@ const userDetails = {
     interests: 'Sports, Gaming, Programming'
 };
 
-export const ProjectSelector = ({ navigation }) => {
-  const title = React.useState("Project Selector");
+export const ProfileSelector = ({ navigation }) => {
+  const title = React.useState("Profile Selector");
 
   return (
     <View id="page1" style={[style.container, {flex: 1}]}>
@@ -47,8 +47,8 @@ export const ProjectSelector = ({ navigation }) => {
   );
 };
 
-export const ProjectExtended = ({ navigation }) => {
-  const title = React.useState("Project Selector");
+export const ProfileExtended = ({ navigation }) => {
+  const title = React.useState("Profile Extended");
 
   return (
     <View id="page2" style={[style.container, {flex: 1}]}>
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         backgroundColor: '#B3A369',
         height: 40,
-        width: '45%',
+        width: '25%',
         justifyContent: "center",
         margin: 20,
         marginVertical: 10,
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     buttonText: {
-        fontSize: 15,
+        fontSize: 12,
         fontWeight: 'bold',
         color: '#FFFFFF'
     },
