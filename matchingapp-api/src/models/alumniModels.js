@@ -74,4 +74,4 @@ Alumni.deleteAlumniAccount = (alumni) => {
     });
 };
 
-exports.Alumni = Alumni
+module.exports = Alumni

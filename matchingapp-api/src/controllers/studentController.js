@@ -1,66 +1,79 @@
 const Student = require('../models/studentModels');
 
 // Create and Save a new Student
-exports.create = (req) => {
+exports.create = async ( req ) => {
     try {
-        var result = Student.addStudent( req );
+        var result = await Student.addStudent( req );
         if (result === null) {
             return {
                 'statusCode': 404
             }
         }
-    
-        return result;
       } catch (e) {
           return {
-              'statusCode': 400
+              'statusCode': 400,
+              'body': JSON.stringify({
+                  'message': 
+                  'Invalid request. You cannot add two users with same gtUsername',
+                  'status': 400
+              })
           } 
       }
-        
+    return result;
 };
 
 // Retrieve all Students from the database.
-exports.getAll = (req) => {
+exports.getAll = async ( req = null ) => {
     try {
-        var result = Student.getAll( req );
+        var result = await Student.getAll( req );
         if (result === null) {
             return {
                 'statusCode': 404
             }
         }
-    
-        return result;
       } catch (e) {
           return {
-              'statusCode': 400
-          } 
+              'statusCode': 400,
+              'body': JSON.stringify({
+                  'message': 
+                  'Invalid request. Please check your input parameters and retry.',
+                  'status': 400
+              })
+          }
       }
-        
+      
+    return result;
 };
 
 // Find a single Student with a StudentId
-exports.findOne = (req) => {
+exports.findOne = async ( req ) => {
   try {
-    var result = Student.findStudent( req );
+    var result = await Student.findStudent( req );
     if (result === null) {
         return {
-            'statusCode': 404
+            'statusCode': 400,
+            'body': JSON.stringify({
+                'message': 
+                'Record not found with the given input parameters.',
+                'status': 404
+            })
         }
     }
 
-    return result;
   } catch (e) {
       return {
           'statusCode': 400
       } 
   }
+  
+  return result;
     
 };
 
 // Update a Student identified by the StudentId in the request
-exports.update = (req) => {
+exports.update = async ( req ) => {
     try {
-        var result = Student.updateStudent( req );
+        var result = await Student.updateStudent( req );
         if (result === null) {
             return {
                 'statusCode': 404
@@ -77,9 +90,9 @@ exports.update = (req) => {
 };
 
 // Delete a Student with the specified StudentId in the request
-exports.delete = (req) => {
+exports.delete = async ( req ) => {
     try {
-        var result = Student.deleteStudent( req );
+        var result = await Student.deleteStudent( req );
         if (result === null) {
             return {
                 'statusCode': 404

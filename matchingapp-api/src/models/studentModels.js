@@ -42,69 +42,54 @@ Student.findStudent = async ( params ) => {
     
 }
 
-Student.queryStudent = ( params ) => {
+Student.queryStudent = async ( params ) => {
     const {  query } = params; 
-    connection.query(query, (error, result, fields) => {
-        if (error) {
-            console.error(error);
-        }
-        console.log(result);
-        return result;
-    });
+    var students = await connection.query(query);
+    return students;
 };
 
 
-Student.getAll = ( params ) => {
+Student.getAll = async ( params ) => {
     params = params || {filter: null};
     const {  filter } = params;
     let query = `SELECT gtUsername, firstName, lastName FROM Students`;
     if (filter != null) {
         query += " " +  filter;
     }
-    connection.query(query, (error, result, fields) => {
-        if (error) {
-            console.error(error);
-        }
-        console.log(result);
-        console.log(`Fields: ${fields}`);
-        return result;
-    });
+    var students = await connection.query(query);
+    return students;
+    
 };
 
-Student.addStudent = ( params ) => {
+Student.addStudent = async ( params ) => {
     if (params.gtUsername && params.pwd && params.firstName && params.lastName && params.email) {
         let query = "INSERT INTO Students SET ?";
-        connection.query(query, params, (error, result, fields) => {
-            if (error) {
-                console.error(error);
-            }
-            console.log(result);
-            return result;
-        });
+        try {
+            var students = connection.query(query, params);
+        } catch (e) {
+            throw e;
+        }
+        return students;
+    } else {
+        throw 'ERROR OCCURRED';
     }
 }
 
-Student.deleteStudent = ( params ) => {
+Student.deleteStudent = async ( params ) => {
     const { gtUsername } = params;
     let query = `DELETE FROM Students WHERE gtUsername = "${gtUsername}"`;
-    connection.query(query, (error, results, fields) => {
-        if (error) console.error(error);
-        return result;
-    });
+    let student = await connection.query(query);
+    return student;
 }
 
-Student.updateStudent = ( params ) => {
+Student.updateStudent = async ( params ) => {
     const { gtUsername } = params;
     const inputs = Object.assign({}, params);
     delete inputs.gtUsername;
 
     let query = `UPDATE Students SET ? WHERE gtUsername = "${gtUsername}"`;
-    connection.query(query, inputs, (error, results, fields) => {
-        if (error) console.error(error);
-        console.log(JSON.stringify(results));
-        console.log(JSON.stringify(fields));
-        return results;
-    });
+    let student = await connection.query(query, inputs);
+    return student;
 }
 
 module.exports = Student;

@@ -1,4 +1,4 @@
-const Alumni = require('../models/studentModels');
+const Alumni = require('../models/alumniModels');
 
 exports.create = (req) => {
     try {
@@ -16,7 +16,7 @@ exports.create = (req) => {
     }
 };
 
-exports.updateAlumni = (req) => {
+exports.update = (req) => {
     try {
         var result = Alumni.updateAlumni(req);
         if (result === null) {
@@ -34,7 +34,7 @@ exports.updateAlumni = (req) => {
 
 
 
-exports.findAlumniByName = (req) => {
+exports.findByName = (req) => {
     try {
         var result = Alumni.findAlumniByName(req);
         if (result === null) {
@@ -66,7 +66,7 @@ exports.getAll = (req) => {
     }
 };
 
-exports.deleteAlumniAccount = (req) => {
+exports.delete = (req) => {
     try {
         var result = Alumni.deleteAlumniAccount(req);
         if (result === null) {
