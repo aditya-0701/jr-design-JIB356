@@ -1,5 +1,4 @@
-var db = require('../dbInit');
-var connection = db.dbConn;
+const connection = require('../dbInit');
 
 const Student = function(student) {
     this.gtUsername = student.gtUsername;
@@ -11,22 +10,40 @@ const Student = function(student) {
     this.bio = student.bio;
 }
 
-Student.findStudent = ( params ) => {
-    var { gtUsername } = params;
+Student.findStudent = async ( params ) => {
+    try {
+        const {  gtUsername } = params;
     //We can use knex to remove the need to do string interpolation to perform our DB transactions.
-    var query = `SELECT * FROM Students WHERE gtUsername = ${gtUsername}`;
-    connection.query(query, (error, result, fields) => {
-        if (error) {
-            console.error(error);
+        let query = `SELECT gtUsername, 
+                     firstName,
+                     lastName,
+                     middleName,
+                     email,
+                     bio 
+                     FROM Students 
+                     WHERE gtUsername = "${gtUsername}"`;
+
+        let student = (await connection.query(query))[0];
+        student = student || null;
+        if (student) {
+            console.log("Student exists");
+            let skillQuery = `SELECT skill FROM Skills 
+                WHERE id IN ( SELECT skillId FROM StudentSkills WHERE gtUsername = "${gtUsername}")`
+            student['skills'] = await connection.query(skillQuery); 
+
+            let interestQuery = `SELECT interest FROM Interests 
+                WHERE id IN ( SELECT interestId FROM StudentInterests WHERE gtUsername = "${gtUsername}")`
+            student['interests'] = await connection.query(interestQuery);
         }
-        console.log(result);
-        console.log(`Fields: ${fields}`);
-        return result;
-    });
+        return student;
+    } catch (e) {
+        console.error(e);
+    }
+    
 }
 
 Student.queryStudent = ( params ) => {
-    var { query } = params; 
+    const {  query } = params; 
     connection.query(query, (error, result, fields) => {
         if (error) {
             console.error(error);
@@ -38,8 +55,9 @@ Student.queryStudent = ( params ) => {
 
 
 Student.getAll = ( params ) => {
-    var { filter } = params;
-    var query = `SELECT * FROM Students`;
+    params = params || {filter: null};
+    const {  filter } = params;
+    let query = `SELECT gtUsername, firstName, lastName FROM Students`;
     if (filter != null) {
         query += " " +  filter;
     }
@@ -54,17 +72,39 @@ Student.getAll = ( params ) => {
 };
 
 Student.addStudent = ( params ) => {
-    if (params.gtUsername && params.pwd && params.firstName && params.lastName) {
-        var query = "INSERT INTO Students SET ?";
+    if (params.gtUsername && params.pwd && params.firstName && params.lastName && params.email) {
+        let query = "INSERT INTO Students SET ?";
         connection.query(query, params, (error, result, fields) => {
             if (error) {
                 console.error(error);
             }
             console.log(result);
-            console.log(`Fields: ${fields}`);
             return result;
         });
     }
 }
 
-exports.Student = Student;
+Student.deleteStudent = ( params ) => {
+    const { gtUsername } = params;
+    let query = `DELETE FROM Students WHERE gtUsername = "${gtUsername}"`;
+    connection.query(query, (error, results, fields) => {
+        if (error) console.error(error);
+        return result;
+    });
+}
+
+Student.updateStudent = ( params ) => {
+    const { gtUsername } = params;
+    const inputs = Object.assign({}, params);
+    delete inputs.gtUsername;
+
+    let query = `UPDATE Students SET ? WHERE gtUsername = "${gtUsername}"`;
+    connection.query(query, inputs, (error, results, fields) => {
+        if (error) console.error(error);
+        console.log(JSON.stringify(results));
+        console.log(JSON.stringify(fields));
+        return results;
+    });
+}
+
+module.exports = Student;
