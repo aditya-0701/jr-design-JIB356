@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { render } from 'react-dom';
 
 class NiceButton extends React.Component {
   constructor(props) { super(props); }
@@ -34,61 +35,98 @@ const projectDetails = [
   }
 ]
 
+var i = 0;
 
-export const ProjectSelector = ({ navigation }) => {
-  const title = React.useState("Project Selector");
-
-  for (var i = 0; i < projectDetails.length; i++) {
-    return (
-      <View id="page1" style={[style.container, { flex: 1 }]}>
-
-        <Image source={require("../../../assets/defaultskin.png")} style={{
-          width: "100%",
-          alignSelf: "center",
-          resizeMode: "center",
-          flex: 0.75
-        }} />
-        <Text style={styles.title}>{projectDetails[i].name}</Text>
-        <Text style={styles.label}>{projectDetails[i].description}</Text>
-        <View style={[style.navButtonContainer, { flex: 1 }]}>
-          <NiceButton title="Previous" onPress={() => 0} />
-          <NiceButton title="See Project" onPress={() => navigation.navigate("Page2")} />
-          <NiceButton title="Next" onPress={() => navigation.navigate("Page1")} />
-        </View>
-      </View>
-    );
+function increaseI() {
+  if (i > projectDetails.length - 2) {
+    i = 0;
+  } else {
+    i++;
   }
+}
+
+function decreaseI() {
+  if (i < 1) {
+    i = projectDetails.length - 1;
+  } else {
+    i--;
+  }
+}
+
+function projectView() {
+  return (
+    <View id="page1" style={[style.container, { flex: 1 }]}>
+
+      <Image source={require("../../../assets/defaultskin.png")} style={{
+        width: "100%",
+        alignSelf: "center",
+        resizeMode: "center",
+        flex: 0.75
+      }} />
+      <Text style={styles.title}>{projectDetails[i].name}</Text>
+      <Text style={styles.label}>{projectDetails[i].description}</Text>
+      <View style={[style.navButtonContainer, { flex: 1 }]}>
+        <NiceButton title="Previous" onPress={() => { decreaseI(); navigation.navigate("Page1") }} />
+        <NiceButton title="See Project" onPress={() => navigation.navigate("Page2")} />
+        <NiceButton title="Next" onPress={() => { increaseI(); projectView() }} />
+      </View>
+    </View>
+  );
+}
+
+export var ProjectSelector = ({ navigation }) => {
+  const title = React.useState("Project Selector");
+  return (
+    <View id="page1" style={[style.container, { flex: 1 }]}>
+
+      <Image source={require("../../../assets/defaultskin.png")} style={{
+        width: "100%",
+        alignSelf: "center",
+        resizeMode: "center",
+        flex: 0.75
+      }} />
+      <Text style={styles.title}>{projectDetails[i].name}</Text>
+      <Text style={styles.label}>{projectDetails[i].description}</Text>
+      <View style={[style.navButtonContainer, { flex: 1 }]}>
+        <NiceButton title="Previous" onPress={() => { decreaseI(); navigation.push("Page1") }} />
+        <NiceButton title="See Project" onPress={() => navigation.push("Page2")} />
+        <NiceButton title="Next" onPress={() => { increaseI(); navigation.push("Page1") }} />
+      </View>
+    </View>
+  );
 };
+
+
 
 export const ProjectExtended = ({ navigation }) => {
   const title = React.useState("Project Selector");
-  for (var i = 0; i < projectDetails.length; i++) {
-    return (
-      <View id="page2" style={[style.container, { flex: 1 }]}>
+  return (
+    <View id="page2" style={[style.container, { flex: 1 }]}>
 
-        <Image source={require("../../../assets/defaultskin.png")} style={{
-          width: "100%",
-          alignSelf: "center",
-          resizeMode: "center",
-          flex: 0.75
-        }} />
-        <Text style={styles.title}>{projectDetails[i].name}</Text>
-        <Text style={styles.label}>{projectDetails[i].description}</Text>
-        <Text style={styles.label}>Skills: {projectDetails[i].skills}</Text>
-        <Text style={styles.label}>Hours Per Week: {projectDetails[i].hoursPerWeek}</Text>
-        <Text style={styles.label}>Link: {projectDetails[i].externalLink}</Text>
-      </View>
-    );
-  }
+      <Image source={require("../../../assets/defaultskin.png")} style={{
+        width: "100%",
+        alignSelf: "center",
+        resizeMode: "center",
+        flex: 0.75
+      }} />
+      <Text style={styles.title}>{projectDetails[i].name}</Text>
+      <Text style={styles.label}>{projectDetails[i].description}</Text>
+      <Text style={styles.label}>Skills: {projectDetails[i].skills}</Text>
+      <Text style={styles.label}>Hours Per Week: {projectDetails[i].hoursPerWeek}</Text>
+      <Text style={styles.label}>Link: {projectDetails[i].externalLink}</Text>
+    </View>
+  );
 };
 
 const Stack = createStackNavigator();
+
 
 export default function ViewProject(props) {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Page1">
       <Stack.Screen name="Page1" component={ProjectSelector} />
       <Stack.Screen name="Page2" component={ProjectExtended} />
+      {/* <Stack.Screen name="Page3" component={PageFix} /> */}
     </Stack.Navigator>
   );
 };
