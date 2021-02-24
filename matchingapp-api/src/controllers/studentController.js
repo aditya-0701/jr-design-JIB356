@@ -26,6 +26,7 @@ exports.create = async ( req ) => {
 exports.getAll = async ( req = null ) => {
     try {
         var result = await Student.getAll( req );
+        console.log(result);
         if (result === null) {
             return {
                 'statusCode': 404
@@ -37,7 +38,8 @@ exports.getAll = async ( req = null ) => {
               'body': JSON.stringify({
                   'message': 
                   'Invalid request. Please check your input parameters and retry.',
-                  'status': 400
+                  'status': 400,
+                  'body': e
               })
           }
       }
