@@ -1,23 +1,40 @@
 const Student = require('../models/studentModels');
 
+const four04 = {
+    'body': JSON.stringify({
+        message: 'Record not found with the given input parameters.',
+        status: 404
+    }),
+    'statusCode': 404,
+    'contentType': 'appliction/json'
+};
+
+const four00 = (err) => {
+    return {
+        'body': JSON.stringify({
+            'message': 'Invalid request. Please check your input parameters and retry.',
+            'status': 400,
+            'body': err
+        }),
+        'statusCode': 400,
+        'contentType': 'appliction/json'
+    }
+}
+
 // Create and Save a new Student
 exports.create = async ( req ) => {
     try {
         var result = await Student.addStudent( req );
         if (result === null) {
-            return {
-                'statusCode': 404
-            }
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
         }
       } catch (e) {
-          return {
-              'statusCode': 400,
-              'body': JSON.stringify({
-                  'message': 
-                  'Invalid request. You cannot add two users with same gtUsername',
-                  'status': 400
-              })
-          } 
+        return four00(e);
       }
     return result;
 };
@@ -28,21 +45,16 @@ exports.getAll = async ( req = null ) => {
         var result = await Student.getAll( req );
         console.log(result);
         if (result === null) {
-            return {
-                'statusCode': 404
-            }
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
         }
-      } catch (e) {
-          return {
-              'statusCode': 400,
-              'body': JSON.stringify({
-                  'message': 
-                  'Invalid request. Please check your input parameters and retry.',
-                  'status': 400,
-                  'body': e
-              })
-          }
-      }
+    } catch (e) {
+    return four00(e);
+    }
       
     return result;
 };
@@ -52,20 +64,17 @@ exports.findOne = async ( req ) => {
   try {
     var result = await Student.findStudent( req );
     if (result === null) {
-        return {
-            'statusCode': 400,
-            'body': JSON.stringify({
-                'message': 
-                'Record not found with the given input parameters.',
-                'status': 404
-            })
-        }
+        rtr.body = JSON.stringify({
+            'message': 
+            'Record not found with the given input parameters.',
+            'status': 404
+        });
+        rtr.statusCode = 404;
+        return rtr;
     }
 
   } catch (e) {
-      return {
-          'statusCode': 400
-      } 
+    return four00(e);
   }
   
   return result;
@@ -77,16 +86,17 @@ exports.update = async ( req ) => {
     try {
         var result = await Student.updateStudent( req );
         if (result === null) {
-            return {
-                'statusCode': 404
-            }
+            rtr.body = JSON.stringify({
+                message: 'Record not found with input ',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
         }
     
         return result;
       } catch (e) {
-          return {
-              'statusCode': 400
-          } 
+        return four00(e);
       }
         
 };
@@ -96,16 +106,17 @@ exports.delete = async ( req ) => {
     try {
         var result = await Student.deleteStudent( req );
         if (result === null) {
-            return {
-                'statusCode': 404
-            }
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
         }
     
         return result;
       } catch (e) {
-          return {
-              'statusCode': 400
-          } 
+        return four00(e);
       }
         
 };

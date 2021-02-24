@@ -1,5 +1,5 @@
-var db = require('../dbInit');
-var connection = db.dbConn;
+var connection = require('../dbInit');
+//var connection = db.dbConn;
 
 const Alumni = function(alumni) {
     this.alumniID = alumni.alumniID;

@@ -1,4 +1,5 @@
-const connection = require('../dbInit');
+const connection = require('../dbInit.js');
+const bcrypt = require('bcrypt');
 
 const Student = function(student) {
     this.gtUsername = student.gtUsername;
@@ -63,9 +64,16 @@ Student.getAll = async ( params ) => {
 
 Student.addStudent = async ( params ) => {
     if (params.gtUsername && params.pwd && params.firstName && params.lastName && params.email) {
+        let hash = '';
+        try {
+            let hash = await bcrypt.hash(params.pwd, 10);
+        } catch (e) {
+            throw 'ERROR OCCURRED'
+        }
+        params.pwd = hash;
         let query = "INSERT INTO Students SET ?";
         try {
-            var students = connection.query(query, params);
+            var students = await connection.query(query, params);
         } catch (e) {
             throw e;
         }
@@ -86,10 +94,25 @@ Student.updateStudent = async ( params ) => {
     const { gtUsername } = params;
     const inputs = Object.assign({}, params);
     delete inputs.gtUsername;
-
     let query = `UPDATE Students SET ? WHERE gtUsername = "${gtUsername}"`;
-    let student = await connection.query(query, inputs);
-    return student;
+
+    if (inputs.hasOwnProperty('pwd')) {
+        if (inputs.pwd != null && inputs.pwd != '') {
+            return bcrypt.hash(inputs.pwd, 10, (err, hash) => {
+                if (err) throw 'ERROR OCCURRED WHILE ADDING USER';
+                inputs.pwd = hash;
+                try {
+                    //let students = await connection.query(query, inputs);
+                } catch (e) {
+                    throw e;
+                }
+                return students;
+            });
+        }
+    } else {
+        let student = await connection.query(query, inputs);
+        return student;
+    }
 }
 
 module.exports = Student;
