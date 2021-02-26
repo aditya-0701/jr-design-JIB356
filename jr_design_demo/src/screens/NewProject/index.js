@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import styles from '../../globalStyles';
 
 class NiceButton extends React.Component {
   constructor(props) {super(props);}
@@ -78,7 +79,7 @@ export const BasicDetails = ({ navigation }) => {
         />
       </KeyboardAvoidingView>
     </ScrollView>
-      <View style={ style.navButtonContainer }>
+      <View style={ localStyle.navButtonContainer }>
         <NiceButton title="Exit" onPress={() => navigation.goBack()}/>
         <NiceButton title="Picture and External Link" onPress={ saveVals }/>
       </View>
@@ -91,7 +92,7 @@ export const PictureLink = ({ navigation }) => {
   const title = React.useState("Project Picture and External Link");
 
   return (
-    <View id="page2" style={[style.container, {flex: 1}]}>
+    <View id="page2" style={[localStyle.container, {flex: 1}]}>
 
       <Text style={styles.title}>Project Picture and External Link</Text>
       <Text style={styles.label}>Project Picture</Text>
@@ -105,7 +106,7 @@ export const PictureLink = ({ navigation }) => {
       <Text style={styles.label}>External Link</Text>
       <TextInput placeholder="Link to external site (Optional)" style={styles.inputs}/>
 
-      <View style={[style.navButtonContainer, {flex: 1}]}>
+      <View style={[localStyle.navButtonContainer, {flex: 1}]}>
         <NiceButton title="Basic Info" onPress={() => navigation.navigate("Page1")}/>
         <NiceButton title="Finish" onPress={() => 0}/>
       </View>
@@ -124,85 +125,7 @@ export default function NewProject( props ) {
   );
 };
 
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#F5F5F5',
-        color: '#F5F5F5',
-        opacity: 100,
-        alignItems: 'stretch',
-        padding: 15,
-        marginTop: 30,
-        justifyContent: 'center',
-        flex: 1
-    },
-    login: {
-        backgroundColor: '#F5F5F5',
-        opacity: 100,
-        alignItems: 'stretch',
-        padding: 15,
-        justifyContent: 'center',
-        alignContent: 'center'
-    },
-    name: {
-        fontFamily: 'serif',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        fontSize: 25,
-        color: '#B3A369',
-        fontWeight: '700'
-    },
-    title: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'left',
-        fontSize: 25,
-        marginVertical: 15,
-        color: '#B3A369',
-        fontWeight: 'bold',
-    },
-    button: {
-        alignItems: 'center',
-        borderRadius: 15,
-        backgroundColor: '#B3A369',
-        height: 40,
-        width: '45%',
-        justifyContent: "center",
-        margin: 20,
-        marginVertical: 10,
-        //paddingHorizontal: 10,
-        textAlign: 'center'
-    },
-    buttonText: {
-        fontSize: 15,
-        fontWeight: 'bold',
-        color: '#FFFFFF'
-    },
-    label: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#B3A369',
-        paddingVertical: 10
-    },
-    inputs: {
-        marginBottom: 15,
-        borderRadius: 15,
-        backgroundColor: '#B3A36975',
-        padding: 10,
-        paddingLeft: 20,
-        height: 40
-    },
-    selector: {
-        margin: 10,
-        flexDirection: 'column',
-        position: 'relative',
-        bottom: -250,
-        alignItems: 'stretch',
-    },
-});
-
-const style = StyleSheet.create({//File-specific
+const localStyle = StyleSheet.create({//File-specific
   navButtonContainer: {
     position: "absolute",
     bottom: 0,
