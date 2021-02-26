@@ -3,10 +3,11 @@ import { View, StyleSheet, Text, ScrollView, TextInput, TouchableOpacity, Keyboa
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { userExists, addUser, getUser } from '../../store.js'
+import styles from '../../globalStyles';
 //import MainLogin from './mainLogin.js';
 // import AlumniLogin from './alumniLogin.js';
 // import StudentLogin from './studentLogin.js';
- 
+
 const Stack = createStackNavigator();
 
 export const MainLogin = ( props ) => {
@@ -45,13 +46,13 @@ const LoginPage = ( props ) => {
     const [emailValue, onChangeEmail] = React.useState('');
     const [passwordValue, onChangePassword] = React.useState('');
     const [errorValue, onChangeError] = React.useState('');
-    
+
     const login = () => {
         if (userExists( { email: emailValue, pass: passwordValue } )) {
             navigation.reset({
                 index: 0,
                 routes: [
-                    { 
+                    {
                         name: 'HomeScreen',
                         params: { email: emailValue },
                     }
@@ -63,28 +64,28 @@ const LoginPage = ( props ) => {
             onChangeError('Incorrect email or password');
         }
     }
-    
+
     const setupProfile = () => {
         navigation.navigate('NewProfile');
     }
     return (
         <View>
             <KeyboardAvoidingView style = {styles.login} >
-                <TextInput 
+                <TextInput
                     autoCapitalize = "none"
                     autoCompleteType = 'email'
                     keyboardType = 'email-address'
                     onChangeText = { (text) => onChangeEmail(text)}
-                    value = { emailValue } 
+                    value = { emailValue }
                     placeholder = 'EMAIL'
                     style = {styles.inputs}
                 />
-                <TextInput 
+                <TextInput
                     autoCapitalize = "none"
                     autoCompleteType = 'password'
                     secureTextEntry = { true }
                     onChangeText = { (text) => onChangePassword(text)}
-                    value = { passwordValue } 
+                    value = { passwordValue }
                     placeholder = 'PASSWORD'
                     style = {styles.inputs}
                 />
@@ -126,7 +127,7 @@ export const AlumniLogin = ( props ) => {
 };
 
 export default function Login( props ) {
-    return (        
+    return (
         <Stack.Navigator screenOptions = {{headerShown: false}} >
             <Stack.Screen name = "MainLogin" component = { MainLogin } />
             <Stack.Screen name = "AlumniLogin" component = { AlumniLogin } />
@@ -134,83 +135,3 @@ export default function Login( props ) {
         </Stack.Navigator>
     )
 }
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F5F5F5',
-        opacity: 100,
-        alignItems: 'stretch',
-        padding: 15,
-        marginTop: 30,
-        justifyContent: 'center',
-    },
-    login: {
-        backgroundColor: '#F5F5F5',
-        opacity: 100,
-        alignItems: 'stretch',
-        padding: 15,
-        justifyContent: 'center',
-        alignContent: 'center'
-    },
-    name: {
-        fontFamily: Platform.OS === 'ios' ? 'Palatino-Bold' : 'serif',
-        justifyContent: 'center' ,
-        alignItems: 'center',
-        textAlign: 'center',
-        fontSize: 25,
-        color: '#B3A369',
-        fontWeight: '700'
-    },
-    title: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'left',
-        fontSize: 25,
-        margin: 15,
-        color: '#B3A369',
-        fontWeight: 'bold',
-    },
-    button: {
-        alignItems: 'center',
-        borderRadius: 15,
-        backgroundColor: '#B3A369',
-        height: 40,
-        justifyContent: "center",
-        margin: 20,
-        marginVertical: 10
-    },
-    buttonText: {
-        fontSize: 15,
-        fontWeight: 'bold',
-        color: '#FFFFFF'
-    },
-    label: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#B3A369',
-        paddingVertical: 10
-    },
-    inputs: {
-        marginBottom: 15,
-        borderRadius: 15,
-        backgroundColor: '#B3A36975',
-        padding: 10,
-        paddingLeft: 20,
-        height: 40
-    },
-    selector: {
-        margin: 10,
-        flexDirection: 'column',
-        position: 'relative',
-        bottom: -250,
-        alignItems: 'stretch',
-    },
-    error: {
-        textAlign: 'center',
-        color: 'maroon',
-        fontWeight: '600',
-        marginHorizontal: 20
-    }
-});

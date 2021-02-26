@@ -1,5 +1,6 @@
 import  React, { useState } from 'react';
 import { View, StyleSheet, Text, Button, TextInput, TouchableOpacity, Alert } from 'react-native';
+import styles from '../../globalStyles';
 
 export default function StudentLogin( props ) {
     const [emailValue, onChangeEmail] = React.useState('')
@@ -13,21 +14,21 @@ export default function StudentLogin( props ) {
                 Student Login
             </Text>
             <View style = {styles.login} >
-                <TextInput 
+                <TextInput
                     autoCapitalize = "none"
                     autoCompleteType = 'email'
                     keyboardType = 'email-address'
                     onChangeText = { (text) => onChangeEmail(text)}
-                    value = { emailValue } 
+                    value = { emailValue }
                     placeholder = 'EMAIL'
                     style = {styles.inputs}
                 />
-                <TextInput 
+                <TextInput
                     autoCapitalize = "none"
                     autoCompleteType = 'password'
                     secureTextEntry = { true }
                     onChangeText = { (text) => onChangePassword(text)}
-                    value = { passwordValue } 
+                    value = { passwordValue }
                     placeholder = 'PASSWORD'
                     style = {styles.inputs}
                 />
@@ -44,58 +45,3 @@ export default function StudentLogin( props ) {
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F5F5F5',
-        opacity: 100,
-        alignItems: 'stretch',
-        padding: 15,
-        marginTop: 30,
-        justifyContent: 'center',
-    },
-    login: {
-        backgroundColor: '#F5F5F5',
-        opacity: 100,
-        alignItems: 'stretch',
-        padding: 15,
-        justifyContent: 'center',
-        alignContent: 'center'
-    },
-    title: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'left',
-        fontSize: 25,
-        margin: 15,
-        color: '#B3A369',
-        fontWeight: 'bold',
-    },
-    button: {
-        alignItems: 'center',
-        borderRadius: 15,
-        backgroundColor: '#B3A369',
-        height: 40,
-        justifyContent: "center",
-    },
-    buttonText: {
-        fontSize: 15,
-        fontWeight: 'bold',
-        color: '#FFFFFF'
-    },
-    label: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#B3A369',
-        paddingVertical: 10
-    },
-    inputs: {
-        marginBottom: 15,
-        borderRadius: 15,
-        backgroundColor: '#B3A36975',
-        padding: 10,
-        paddingLeft: 20,
-        height: 40
-    }
-})
