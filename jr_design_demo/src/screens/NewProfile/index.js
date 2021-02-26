@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import {Picker} from '@react-native-picker/picker';
 import { addUser } from '../../store'
 import styles from '../../globalStyles';
 
@@ -84,37 +85,45 @@ export const BasicDetails = ({ navigation }) => {
                       style = {styles.inputs}
                   />
 
-          <Text style={styles.label}>Degree</Text>
-          <TextInput
-            placeholder="Dropdown placeholder"
+                <Text style={styles.label}>Degree</Text>
+          <Picker
             style={styles.inputs}
-            value = { degree }
-            onChangeText = { (text) => onChangeDegree(text)}
-          />
+            selectedValue = {degree}
+            onValueChange = { (value, index) => onChangeDegree(value)}>
+            <Picker.Item label="--Select Your Degree--" value="unselected"/>
+            <Picker.Item label="Undergraduate" value="Undergraduate"/>
+            <Picker.Item label="Graduate" value="Graduate"/>
+          </Picker>
 
           <Text style={styles.label}>Major</Text>
-          <TextInput
-            placeholder="Dropdown placeholder"
+          <Picker
             style={styles.inputs}
-            value = { major }
-            onChangeText = { (text) => onChangeMajor(text)}
-          />
+            selectedValue = {major}
+            onValueChange = { (value, index) => onChangeMajor(value)}>
+            <Picker.Item label="--Select Your Major--" value="unselected"/>
+            <Picker.Item label="Computer Science" value="Computer Science"/>
+            <Picker.Item label="Computational Media" value="Computational Media"/>
+          </Picker>
 
-          <Text style={styles.label}>Areas of Interest</Text>
-          <TextInput
-            placeholder="Dropdown placeholder"
+          <Text style={styles.label}>Interests</Text>
+          <Picker
             style={styles.inputs}
-            value = { interests }
-            onChangeText = { (text) => onChangeInterests(text)}
-          />
+            selectedValue = {interests}
+            onValueChange = { (value, index) => onChangeInterests(value)}>
+            <Picker.Item label="no multiselect yet..." value="unselected"/>
+            <Picker.Item label="opt1" value="opt2"/>
+            <Picker.Item label="opt2" value="opt2"/>
+          </Picker>
 
           <Text style={styles.label}>Skills</Text>
-          <TextInput
-            placeholder="Dropdown placeholder"
+          <Picker
             style={styles.inputs}
-            value = { skills }
-            onChangeText = { (text) => onChangeSkills(text)}
-          />
+            selectedValue = {skills}
+            onValueChange = { (value, index) => onChangeSkills(value)}>
+            <Picker.Item label="no multiselect yet..." value="unselected"/>
+            <Picker.Item label="opt1" value="opt2"/>
+            <Picker.Item label="opt2" value="opt2"/>
+          </Picker>
         </KeyboardAvoidingView>
       </ScrollView>
       <View style={ localStyle.navButtonContainer }>
