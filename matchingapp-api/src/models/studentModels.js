@@ -66,7 +66,7 @@ Student.addStudent = async ( params ) => {
     if (params.gtUsername && params.pwd && params.firstName && params.lastName && params.email) {
         let hash = '';
         try {
-            let hash = await bcrypt.hash(params.pwd, 10);
+            hash = await bcrypt.hash(params.pwd, 10);
         } catch (e) {
             throw 'ERROR OCCURRED'
         }
@@ -94,15 +94,16 @@ Student.updateStudent = async ( params ) => {
     const { gtUsername } = params;
     const inputs = Object.assign({}, params);
     delete inputs.gtUsername;
-    let query = `UPDATE Students SET ? WHERE gtUsername = "${gtUsername}"`;
+    var query = `UPDATE Students SET ? WHERE gtUsername = "${gtUsername}"`;
 
     if (inputs.hasOwnProperty('pwd')) {
         if (inputs.pwd != null && inputs.pwd != '') {
             return bcrypt.hash(inputs.pwd, 10, (err, hash) => {
                 if (err) throw 'ERROR OCCURRED WHILE ADDING USER';
                 inputs.pwd = hash;
+                let students = {};
                 try {
-                    //let students = await connection.query(query, inputs);
+                    //students = await connection.query(query, inputs);
                 } catch (e) {
                     throw e;
                 }

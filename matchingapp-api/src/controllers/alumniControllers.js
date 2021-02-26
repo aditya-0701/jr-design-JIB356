@@ -3,7 +3,9 @@ const Alumni = require('../models/alumniModels');
 var rtr = {
     'body': '',
     'statusCode': 0,
-    'contentType': 'appliction/json'
+    'headers': {
+                        'Content-Type': 'appliction/json'
+                    }
 }
 
 const four04 = {
@@ -12,7 +14,9 @@ const four04 = {
         status: 404
     }),
     'statusCode': 404,
-    'contentType': 'appliction/json'
+    'headers': {
+                        'Content-Type': 'appliction/json'
+                    }
 };
 
 const four00 = (err) => {
@@ -23,7 +27,9 @@ const four00 = (err) => {
             'body': err
         }),
         'statusCode': 400,
-        'contentType': 'appliction/json'
+        'headers': {
+                        'Content-Type': 'appliction/json'
+                    }
     }
 }
 
