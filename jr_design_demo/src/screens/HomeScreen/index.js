@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Button, TextInput, TouchableOpacity } from 'rea
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { getUser } from '../../store.js'
+import styles from '../../globalStyles';
 //import MainLogin from './mainLogin.js';
 // import AlumniLogin from './alumniLogin.js';
 // import StudentLogin from './studentLogin.js';
@@ -86,87 +87,3 @@ export default function HomeScreen( props ) {
         </Tab.Navigator>
     )
 };
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F5F5F5',
-        color: '#F5F5F5',
-        opacity: 100,
-        alignItems: 'stretch',
-        padding: 15,
-        marginTop: 30,
-        justifyContent: 'center',
-    },
-    info: {
-        backgroundColor: '#F5F5F5',
-        color: '#F5F5F5',
-        opacity: 100,
-        alignItems: 'stretch',
-        padding: 15,
-        //marginTop: 30
-    },
-    login: {
-        backgroundColor: '#F5F5F5',
-        opacity: 100,
-        alignItems: 'stretch',
-        padding: 15,
-        justifyContent: 'center',
-        alignContent: 'center'
-    },
-    name: {
-        fontFamily: 'serif',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        fontSize: 25,
-        color: '#B3A369',
-        fontWeight: '700'
-    },
-    title: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'left',
-        fontSize: 25,
-        margin: 15,
-        color: '#B3A369',
-        fontWeight: 'bold',
-    },
-    button: {
-        alignItems: 'center',
-        borderRadius: 15,
-        backgroundColor: '#B3A369',
-        height: 40,
-        justifyContent: "center",
-        margin: 20,
-        marginVertical: 10,
-        bottom: 0
-    },
-    buttonText: {
-        fontSize: 15,
-        fontWeight: 'bold',
-        color: '#FFFFFF'
-    },
-    label: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#B3A369',
-        paddingVertical: 10
-    },
-    inputs: {
-        marginBottom: 15,
-        borderRadius: 15,
-        backgroundColor: '#B3A36975',
-        padding: 10,
-        paddingLeft: 20,
-        height: 40
-    },
-    selector: {
-        margin: 10,
-        flexDirection: 'column',
-        position: 'relative',
-        bottom: -250,
-        alignItems: 'stretch',
-    },
-});

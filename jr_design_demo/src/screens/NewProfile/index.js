@@ -2,7 +2,9 @@ import * as React from 'react';
 import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import {Picker} from '@react-native-picker/picker';
 import { addUser } from '../../store'
+import styles from '../../globalStyles';
 
 class NiceButton extends React.Component {
   constructor(props) {super(props);}
@@ -28,7 +30,7 @@ const userDetails = {
 
 
 export const BasicDetails = ({ navigation }) => {
-  
+
   const [emailValue, onChangeEmail] = React.useState('');
   const [passwordValue, onChangePassword] = React.useState('');
   const [name, onChangeName] = React.useState('');
@@ -54,69 +56,77 @@ export const BasicDetails = ({ navigation }) => {
         <KeyboardAvoidingView>
           <Text style={styles.title}>Initial Profile Setup</Text>
           <Text style={styles.label}>Name</Text>
-          <TextInput 
+          <TextInput
             placeholder="Name"
             style={styles.inputs}
-            value = { name } 
+            value = { name }
             onChangeText = { (text) => onChangeName(text)}
           />
 
           <Text style={styles.label}>Email</Text>
-          <TextInput 
+          <TextInput
                       autoCapitalize = "none"
                       autoCompleteType = 'email'
                       keyboardType = 'email-address'
                       onChangeText = { (text) => onChangeEmail(text)}
-                      value = { emailValue } 
+                      value = { emailValue }
                       placeholder = 'EMAIL'
                       style = {styles.inputs}
                   />
 
           <Text style={styles.label}>Password</Text>
-          <TextInput 
+          <TextInput
                       autoCapitalize = "none"
                       autoCompleteType = 'password'
                       secureTextEntry = { true }
                       onChangeText = { (text) => onChangePassword(text)}
-                      value = { passwordValue } 
+                      value = { passwordValue }
                       placeholder = 'PASSWORD'
                       style = {styles.inputs}
                   />
 
-          <Text style={styles.label}>Degree</Text>
-          <TextInput 
-            placeholder="Dropdown placeholder"
+                <Text style={styles.label}>Degree</Text>
+          <Picker
             style={styles.inputs}
-            value = { degree } 
-            onChangeText = { (text) => onChangeDegree(text)}
-          />
+            selectedValue = {degree}
+            onValueChange = { (value, index) => onChangeDegree(value)}>
+            <Picker.Item label="--Select Your Degree--" value="unselected"/>
+            <Picker.Item label="Undergraduate" value="Undergraduate"/>
+            <Picker.Item label="Graduate" value="Graduate"/>
+          </Picker>
 
           <Text style={styles.label}>Major</Text>
-          <TextInput 
-            placeholder="Dropdown placeholder"
+          <Picker
             style={styles.inputs}
-            value = { major } 
-            onChangeText = { (text) => onChangeMajor(text)}
-          />
+            selectedValue = {major}
+            onValueChange = { (value, index) => onChangeMajor(value)}>
+            <Picker.Item label="--Select Your Major--" value="unselected"/>
+            <Picker.Item label="Computer Science" value="Computer Science"/>
+            <Picker.Item label="Computational Media" value="Computational Media"/>
+          </Picker>
 
-          <Text style={styles.label}>Areas of Interest</Text>
-          <TextInput 
-            placeholder="Dropdown placeholder"
+          <Text style={styles.label}>Interests</Text>
+          <Picker
             style={styles.inputs}
-            value = { interests } 
-            onChangeText = { (text) => onChangeInterests(text)}
-          />
+            selectedValue = {interests}
+            onValueChange = { (value, index) => onChangeInterests(value)}>
+            <Picker.Item label="no multiselect yet..." value="unselected"/>
+            <Picker.Item label="opt1" value="opt2"/>
+            <Picker.Item label="opt2" value="opt2"/>
+          </Picker>
 
           <Text style={styles.label}>Skills</Text>
-          <TextInput 
-            placeholder="Dropdown placeholder"
+          <Picker
             style={styles.inputs}
-            value = { skills } 
-            onChangeText = { (text) => onChangeSkills(text)}
-          />
+            selectedValue = {skills}
+            onValueChange = { (value, index) => onChangeSkills(value)}>
+            <Picker.Item label="no multiselect yet..." value="unselected"/>
+            <Picker.Item label="opt1" value="opt2"/>
+            <Picker.Item label="opt2" value="opt2"/>
+          </Picker>
         </KeyboardAvoidingView>
       </ScrollView>
-      <View style={ style.navButtonContainer }>
+      <View style={ localStyle.navButtonContainer }>
         <NiceButton title="Exit" onPress={() => navigation.goBack()}/>
         <NiceButton title="Picture and Resume" onPress={ saveVals }/>
       </View>
@@ -128,8 +138,8 @@ export const PictureResume = ({ navigation }) => {
   const title = React.useState("Profile Picture and Resume");
 
   return (
-    <View id="page2" style={[style.container, {flex: 1}]}>
-      
+    <View id="page2" style={[localStyle.container, {flex: 1}]}>
+
       <Text style={styles.title}>Profile Picture and Resume</Text>
       <Text style={styles.label}>Profile Picture</Text>
       <Image source={require("../../../assets/defaultskin.png")} style={{
@@ -141,8 +151,8 @@ export const PictureResume = ({ navigation }) => {
       <TextInput placeholder="File picker placeholder" style={styles.inputs}/>
       <Text style={styles.label}>Resume</Text>
       <TextInput placeholder="File picker placeholder" style={styles.inputs}/>
-      
-      <View style={[style.navButtonContainer, {flex: 1}]}>
+
+      <View style={[localStyle.navButtonContainer, {flex: 1}]}>
         <NiceButton title="Basic Info" onPress={() => navigation.navigate("Page1")}/>
         <NiceButton title="Work Experience" onPress={() => navigation.navigate("Page3")}/>
       </View>
@@ -154,7 +164,7 @@ export const PrevExperience = ({ navigation }) => {
   const title = React.useState("Previous Experience");
 
   return (
-    <View id="page3" style = {style.container} >
+    <View id="page3" style = {localStyle.container} >
       <Text style={styles.title}>Previous Experience</Text>
       <Text style={styles.label}>Company</Text>
       <TextInput placeholder="Company/Organization name" style={styles.inputs}/>
@@ -173,7 +183,7 @@ export const PrevExperience = ({ navigation }) => {
       <TouchableOpacity style = { [styles.button, {alignSelf: 'center', width: '100%'} ] }>
         <Text style = { styles.buttonText }>Add Experience</Text>
       </TouchableOpacity>
-      <View style={style.navButtonContainer} >
+      <View style={localStyle.navButtonContainer} >
         <NiceButton title="Picture and Resume" onPress={() => navigation.navigate("Page2")}/>
         <NiceButton title="External Services" onPress={() => navigation.navigate("Page4")}/>
       </View>
@@ -183,12 +193,12 @@ export const PrevExperience = ({ navigation }) => {
 
 export const ExtSites = ({ navigation }) => {
   const title = React.useState("Links to External Services");
-  const login = () => {  
+  const login = () => {
       addUser(userDetails);
       navigation.reset({
           index: 0,
           routes: [
-              { 
+              {
                   name: 'HomeScreen',
                   params: {email: userDetails.email }
               }
@@ -197,7 +207,7 @@ export const ExtSites = ({ navigation }) => {
   }
 
   return (
-    <View style={style.container}>
+    <View style={localStyle.container}>
       <Text style={[styles.title, {marginTop: "6%"}]}>Links to External Services</Text>
 
         <Text style={styles.label}>LinkedIn</Text>
@@ -210,7 +220,7 @@ export const ExtSites = ({ navigation }) => {
         <TouchableOpacity style = { [styles.button, {alignSelf: 'center', width: '100%'} ] }>
         <Text style = { styles.buttonText }>Add Link</Text>
       </TouchableOpacity>
-        <View style={ style.navButtonContainer }>
+        <View style={ localStyle.navButtonContainer }>
           <NiceButton title="Previous Experience" onPress={() => navigation.navigate("Page3")}/>
           <NiceButton title="Finish" onPress={ login }/>
         </View>
@@ -221,7 +231,7 @@ export const ExtSites = ({ navigation }) => {
 const Stack = createStackNavigator();
 
 export default function NewProfile( props ) {
-  return (  
+  return (
     <Stack.Navigator screenOptions = {{headerShown: false}} initialRouteName="Page1">
       <Stack.Screen name="Page1" component={BasicDetails} />
       <Stack.Screen name="Page2" component={PictureResume} />
@@ -231,85 +241,7 @@ export default function NewProfile( props ) {
   );
 };
 
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#F5F5F5',
-        color: '#F5F5F5',
-        opacity: 100,
-        alignItems: 'stretch',
-        padding: 15,
-        marginTop: 30,
-        justifyContent: 'center',
-        flex: 1
-    },
-    login: {
-        backgroundColor: '#F5F5F5',
-        opacity: 100,
-        alignItems: 'stretch',
-        padding: 15,
-        justifyContent: 'center',
-        alignContent: 'center'
-    },
-    name: {
-        fontFamily: 'serif',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        fontSize: 25,
-        color: '#B3A369',
-        fontWeight: '700'
-    },
-    title: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'left',
-        fontSize: 25,
-        marginVertical: 15,
-        color: '#B3A369',
-        fontWeight: 'bold',
-    },
-    button: {
-        alignItems: 'center',
-        borderRadius: 15,
-        backgroundColor: '#B3A369',
-        height: 40,
-        width: '45%',
-        justifyContent: "center",
-        margin: 20,
-        marginVertical: 10,
-        //paddingHorizontal: 10,
-        textAlign: 'center'
-    },
-    buttonText: {
-        fontSize: 15,
-        fontWeight: 'bold',
-        color: '#FFFFFF'
-    },
-    label: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#B3A369',
-        paddingVertical: 10
-    },
-    inputs: {
-        marginBottom: 15,
-        borderRadius: 15,
-        backgroundColor: '#B3A36975',
-        padding: 10,
-        paddingLeft: 20,
-        height: 40
-    },
-    selector: {
-        margin: 10,
-        flexDirection: 'column',
-        position: 'relative',
-        bottom: -250,
-        alignItems: 'stretch',
-    },
-});
-
-const style = StyleSheet.create({//File-specific
+const localStyle = StyleSheet.create({//File-specific
   navButtonContainer: {
     position: "absolute",
     bottom: 0,
