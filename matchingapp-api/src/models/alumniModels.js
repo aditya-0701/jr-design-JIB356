@@ -13,7 +13,7 @@ const Alumni = function(alumni) {
     this.bio = alumni.bio;
 }
 
-Alumni.createAlumni = ( params ) => {
+Alumni.createAlumni = async ( params ) => {
     if (params.username && params.firstName && params.lastName && params.email && params.pwd && params.bio) {
         let hash = '';
         try {
@@ -34,7 +34,7 @@ Alumni.createAlumni = ( params ) => {
     }
 }
 
-Alumni.updateAlumni = ( params ) => {
+Alumni.updateAlumni = async ( params ) => {
     const {username} = params;
     const inputs = Object.assign({}, params);
     delete inputs.username;
@@ -59,7 +59,7 @@ Alumni.updateAlumni = ( params ) => {
     }
 }
 
-Alumni.findAlumniByName = ( params ) => {
+Alumni.findAlumniByName = async ( params ) => {
     // name can be first/middle/last name or username
     const {name} = params;
     if (name) {
@@ -71,13 +71,13 @@ Alumni.findAlumniByName = ( params ) => {
     return alumni;
 };
 
-Alumni.getAll = ( params ) => {
+Alumni.getAll = async ( params ) => {
     let query = `SELECT username, email, firstName, lastName, middleName, bio FROM Alumni`;
     let alumni = await connection.query(query);
     return alumni;
 };
 
-Alumni.deleteAlumniAccount = ( params ) => {
+Alumni.deleteAlumniAccount = async ( params ) => {
     // deletes via the Alumni username NOT id
     const {username} = params;
     let query = `DELETE FROM Alumni WHERE username = ${username}`;
