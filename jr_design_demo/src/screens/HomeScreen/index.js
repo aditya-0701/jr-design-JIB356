@@ -11,6 +11,33 @@ import { useEffect } from 'react';
 
 const Tab = new createBottomTabNavigator();
 
+const Home = ( props ) => {
+  const { navigation } = props;
+  const createNewProject = () => {
+    navigation.navigate("NewProject");
+  }
+  const viewProjects = () => {
+    navigation.navigate("ViewProject");
+  }
+  const viewProfiles = () => {
+    navigation.navigate("ViewProfile");
+  }
+
+    return (
+        <View style = { [styles.container, {alignItems: 'center'}] }>
+            <Text style = {styles.title} >Welcome!</Text>
+            <TouchableOpacity style={styles.button} onPress={ createNewProject }>
+              <Text style={styles.buttonText}>Create Project</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={ viewProjects }>
+              <Text style={styles.buttonText}>View Projects</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={ viewProfiles }>
+              <Text style={styles.buttonText}>View Profiles</Text>
+            </TouchableOpacity>
+        </View>
+    )
+};
 
 const Profile = ( props ) => {
     const { navigation } = props;
@@ -27,7 +54,7 @@ const Profile = ( props ) => {
         navigation.reset({
             index: 0,
             routes: [
-                { 
+                {
                     name: 'Login'
                 }
             ],
@@ -52,7 +79,7 @@ const Profile = ( props ) => {
     })
 
     return (
-        <View style = { styles.container }> 
+        <View style = { styles.container }>
             <Text style = {styles.title}>Profile Details</Text>
             <View style = { styles.info }>
                 <Text style = {styles.label}>Name</Text>
