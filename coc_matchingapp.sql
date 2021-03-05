@@ -157,10 +157,9 @@ CREATE TABLE Projects(
 );
 
 CREATE table StudentSavedProjects(
-    saveId INT unsigned auto_increment,
     gtUsername VARCHAR(50) NOT NULL,
     projectId INT unsigned,
-    primary key (saveId)
+    primary key (gtUsername, projectId),
     foreign key (gtUsername)
         REFERENCES Students(gtUsername)
         ON DELETE CASCADE,

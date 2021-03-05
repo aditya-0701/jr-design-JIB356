@@ -1,12 +1,22 @@
 const Student = require('../models/studentModels');
 
+var rtr = {
+    'body': '',
+    'statusCode': 0,
+    'headers': {
+                        'Content-Type': 'appliction/json'
+                    }
+}
+
 const four04 = {
     'body': JSON.stringify({
         message: 'Record not found with the given input parameters.',
         status: 404
     }),
     'statusCode': 404,
-    'contentType': 'appliction/json'
+    'headers': {
+                        'Content-Type': 'appliction/json'
+                    }
 };
 
 const four00 = (err) => {
@@ -17,7 +27,9 @@ const four00 = (err) => {
             'body': err
         }),
         'statusCode': 400,
-        'contentType': 'appliction/json'
+        'headers': {
+                        'Content-Type': 'appliction/json'
+                    }
     }
 }
 

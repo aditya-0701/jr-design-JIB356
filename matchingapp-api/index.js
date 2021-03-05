@@ -72,15 +72,15 @@ exports.handler = async (event) => {
             switch (method) {
                 case 'GET':
                     if (query) {
-                        return login.findOne(query);
+                        return login.validateSession(query);
                     } else {
-                        return student.getAll();
+                        return login.loginUser( parsedBody );
                     }
                 case 'POST':
-                    return student.create( body );
+                    return student.loginUser( parsedBody );
                 default: 
                     return four03();
-                }
+            }
         default: 
             return four03();
     }
