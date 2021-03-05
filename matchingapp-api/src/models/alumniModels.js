@@ -14,6 +14,7 @@ const Alumni = function(alumni) {
 }
 
 Alumni.createAlumni = async ( params ) => {
+    // params should include all columns even if null 
     if (params.username && params.firstName && params.lastName && params.email && params.pwd && params.bio) {
         let hash = '';
         try {
@@ -22,7 +23,7 @@ Alumni.createAlumni = async ( params ) => {
             throw 'ERROR OCCURED';
         }
         params.pwd = hash;
-        let query = `INSERT INTO Alumni SET ?`;
+        let query = `INSERT INTO Alumni VALUES ?`;
         try {
             var alumni = await connection.query(query, params);
         } catch (e) {

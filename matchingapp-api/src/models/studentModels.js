@@ -9,6 +9,7 @@ const Student = function(student) {
     this.email = student.email;
     this.pwd = student.pwd;
     this.bio = student.bio;
+
 }
 
 Student.findStudent = async ( params ) => {
@@ -239,6 +240,7 @@ Student.getStudentProjectInterests = async (params) => {
 }
 
 Student.addProjectInterest = async ( params ) => {
+    // TODO: Talk with aditya if this should be replaced with update?
     const { gtUsername, projectIDs } = params;
     var interestParams = [];
     for (i = 0; i < projectIDs.length; i++) {
@@ -255,6 +257,8 @@ Student.updateProjectInterests = async (params) => {
     for (i = 0; i < projectIDs.length; i++) {
         interestParams.push([gtUsername, projectIDs[i]]);
     }
+    // TODO: Talk with aditya the best way to update this
+    //       - Delete Then Insert?
     let query = `INSERT IGNORE INTO StudentSavedProjects VALUES ?`;
     var projects = await connection.query(query, interestParams);
     return projects;
