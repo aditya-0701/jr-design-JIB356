@@ -4,8 +4,8 @@ const mysql = require('mysql');
 const util = require('util');
 
 
-var connection = mysql.createConnection(config.dbconfig);
-connection.connect();
+var connection = mysql.createPool(config.dbconfig);
+//connection.connect();
 
 //Promisifying to avoid callback hell. Can use either async/await or pure promises to run all queries now.
 connection.query = util.promisify(connection.query);

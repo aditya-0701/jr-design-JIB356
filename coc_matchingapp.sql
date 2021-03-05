@@ -156,6 +156,18 @@ CREATE TABLE Projects(
         ON UPDATE CASCADE
 );
 
+CREATE table StudentSavedProjects(
+    gtUsername VARCHAR(50) NOT NULL,
+    projectId INT unsigned,
+    primary key (gtUsername, projectId),
+    foreign key (gtUsername)
+        REFERENCES Students(gtUsername)
+        ON DELETE CASCADE,
+    foreign key (projectId)
+        REFERENCES Projects(id)
+        ON DELETE CASCADE   
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE ProjectSkills(
     projectId INT unsigned,
     skillId INT unsigned,

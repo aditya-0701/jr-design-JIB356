@@ -2,13 +2,17 @@ import  React, { useState } from 'react';
 import { View, StyleSheet, Text, ScrollView, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { userExists, userLogin, addUser, getUser } from '../../store.js'
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import { userExists, addUser, getUser } from '../../store.js'
 import styles from '../../globalStyles';
+
 //import MainLogin from './mainLogin.js';
 // import AlumniLogin from './alumniLogin.js';
 // import StudentLogin from './studentLogin.js';
 
 const Stack = createStackNavigator();
+
 
 export const MainLogin = ( props ) => {
 
@@ -41,28 +45,43 @@ export const MainLogin = ( props ) => {
 };
 
 const LoginPage = ( props ) => {
-    //alert("HEELO" + JSON.stringify(props));
     const { navigation } = props;
     const [emailValue, onChangeEmail] = React.useState('');
     const [passwordValue, onChangePassword] = React.useState('');
-    const [errorValue, onChangeError] = React.useState('');
-
-    const login = () => {
-        if (userExists( { email: emailValue, pass: passwordValue } )) {
-            navigation.reset({
-                index: 0,
-                routes: [
-                    {
-                        name: 'HomeScreen',
-                        params: { email: emailValue },
-                    }
-                ],
-            });
-            // onChangeError('Logging In');
-        } else {
-            //alert(JSON.stringify(getUser( { email: emailValue, pass: passwordValue } )))
+    const [errorValue, onChangeError] = React.useState('');    
+    const login = async () => {
+        
+        const sessionId = await AsyncStorage.getItem('sessionId');
+        console.log(sessionId + " Session ID")
+        //var value = false;
+        userLogin( { email: emailValue, pass: passwordValue } )
+        .then(async (resp) => {
+            console.log("Response: " + JSON.stringify(resp.body))
+            const gtUsername = emailValue.split('@')[0];
+            if (resp.body != null && resp.body.gtUsername == gtUsername && resp.status == 200) {
+                try {
+                    await AsyncStorage.setItem('sessionId', resp.body.sessionId)
+                    
+                } catch (e) {
+                    console.log("Error Storing the token: " + e);
+                }
+                navigation.reset({
+                    index: 0,
+                    routes: [
+                        { 
+                            name: 'HomeScreen',
+                            params: { email: emailValue },
+                        }
+                    ],
+                });
+            }  else {
+                onChangeError('Incorrect email or password');
+            }
+        }).catch((err) => {
+            console.log("Error: ");
+            console.log(err);
             onChangeError('Incorrect email or password');
-        }
+        });
     }
 
     const setupProfile = () => {

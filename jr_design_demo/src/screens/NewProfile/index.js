@@ -25,6 +25,7 @@ const userDetails = {
   major: "",
   interests: "",
   skills: "",
+  pwd: ""
 };
 
 
@@ -33,7 +34,8 @@ export const BasicDetails = ({ navigation }) => {
 
   const [emailValue, onChangeEmail] = React.useState('');
   const [passwordValue, onChangePassword] = React.useState('');
-  const [name, onChangeName] = React.useState('');
+  const [firstName, onChangeFirstName] = React.useState('');
+  const [lastName, onChangeLastName] = React.useState('');
   const [degree, onChangeDegree] = React.useState('');
   const [major, onChangeMajor] = React.useState('');
   const [interests, onChangeInterests] = React.useState('');
@@ -42,12 +44,22 @@ export const BasicDetails = ({ navigation }) => {
   const saveVals = () => {
     userDetails.email= emailValue;
     userDetails.pass = passwordValue;
-    userDetails.name= name;
+    userDetails.firstName= firstName;
+    userDetails.lastName= lastName;
     userDetails.degree= degree;
     userDetails.major= major;
     userDetails.interests= interests,
     userDetails.skills= skills;
-    navigation.navigate("Page2");
+    userDetails.pwd= passwordValue;
+    addUser(userDetails)
+    .then((resp) => {
+      console.log(resp);
+      navigation.navigate("Page2");
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("An error occurred in user creation. Please check your inputs and try again.")
+    })
   }
 
   return (
@@ -55,12 +67,19 @@ export const BasicDetails = ({ navigation }) => {
       <ScrollView /* contentContainerStyle={ styles.container } */>
         <KeyboardAvoidingView>
           <Text style={styles.title}>Initial Profile Setup</Text>
-          <Text style={styles.label}>Name</Text>
-          <TextInput
-            placeholder="Name"
+          <Text style={styles.label}>First Name</Text>
+          <TextInput 
+            placeholder="First Name"
             style={styles.inputs}
-            value = { name }
-            onChangeText = { (text) => onChangeName(text)}
+            value = { firstName } 
+            onChangeText = { (text) => onChangeFirstName(text)}
+          />
+          <Text style={styles.label}>Last Name</Text>
+          <TextInput 
+            placeholder="Last Name"
+            style={styles.inputs}
+            value = { lastName } 
+            onChangeText = { (text) => onChangeLastName(text)}
           />
 
           <Text style={styles.label}>Email</Text>

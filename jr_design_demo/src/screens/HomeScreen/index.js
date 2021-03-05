@@ -3,7 +3,10 @@ import { View, StyleSheet, Text, Button, TextInput, TouchableOpacity } from 'rea
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { getUser } from '../../store.js'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
 import styles from '../../globalStyles';
+
 //import MainLogin from './mainLogin.js';
 // import AlumniLogin from './alumniLogin.js';
 // import StudentLogin from './studentLogin.js';
@@ -39,9 +42,16 @@ const Home = ( props ) => {
 };
 
 const Profile = ( props ) => {
-    //alert(JSON.stringify(props));
     const { navigation } = props;
-    const userDetails  = getUser(props.route.params);
+    const [firstName, onChangeFirstName] = React.useState('');
+    const [lastName, onChangeLastName] = React.useState('');
+    const [email, onChangeEmail] = React.useState('');
+    const [skills, onChangeSkills] = React.useState('');
+    const [major, onChangeMajor] = React.useState('');
+    const [interests, onChangeInterests] = React.useState('');
+    const [degree, onChangeDegree] = React.useState('');
+
+    // console.log(userDetails);
     const logout = () => {
         navigation.reset({
             index: 0,
@@ -52,34 +62,61 @@ const Profile = ( props ) => {
             ],
         });
     }
+
+    useEffect(() => {
+        console.log(props)
+        var em = (props != 'undefined' && props != null) ? props.route.params.email : null;
+        if (em == null) return;
+        getUser({email: em})
+        .then((resp) => {
+            console.log(resp.body);
+            onChangeFirstName(resp.body.firstName)
+            onChangeLastName(resp.body.lastName);
+            onChangeEmail(resp.body.email);
+            onChangeDegree(resp.body.degree)
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    })
+
     return (
         <View style = { styles.container }>
             <Text style = {styles.title}>Profile Details</Text>
             <View style = { styles.info }>
                 <Text style = {styles.label}>Name</Text>
-                <Text>{ userDetails.name || "" }</Text>
+                <Text>{ firstName || "" } {lastName || ""}</Text>
                 <Text style = {styles.label}>Email</Text>
-                <Text>{ userDetails.email || "" }</Text>
+                <Text>{ email || "" }</Text>
                 <Text style = {styles.label}>Degree</Text>
-                <Text>{ userDetails.degree || "" }</Text>
+                <Text>{ degree || "" }</Text>
                 <Text style = {styles.label}>Major</Text>
-                <Text>{ userDetails.major || "" }</Text>
+                <Text>{ major || "" }</Text>
                 <Text style = {styles.label}>Skills</Text>
-                <Text>{ userDetails.skills || "" }</Text>
+                <Text>{ skills || "" }</Text>
                 <Text style = {styles.label}>Interests</Text>
-                <Text>{ userDetails.interests || "" }</Text>
+                <Text>{ interests || "" }</Text>
             </View>
             <TouchableOpacity style = { styles.button } onPress = { logout }>
                 <Text style = { styles.buttonText }>Log Out</Text>
             </TouchableOpacity>
         </View>
     )
+}
+
+const Home = ( props ) => {
+    return (
+        <View style = { [styles.container, {alignItems: 'center'}] }> 
+            <Text style = {styles.title} >Welcome!</Text>
+        </View>
+    )
 };
+
 
 export default function HomeScreen( props ) {
     const { email } = props.route.params ;
-    // alert(email);
-    // alert(JSON.stringify(props));
+    // getProf({email: email});
+
     return (
         <Tab.Navigator>
             <Tab.Screen name = "Home" component = { Home } />

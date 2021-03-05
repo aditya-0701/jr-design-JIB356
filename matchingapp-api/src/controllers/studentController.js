@@ -1,96 +1,134 @@
 const Student = require('../models/studentModels');
 
+var rtr = {
+    'body': '',
+    'statusCode': 0,
+    'headers': {
+                        'Content-Type': 'appliction/json'
+                    }
+}
+
+const four04 = {
+    'body': JSON.stringify({
+        message: 'Record not found with the given input parameters.',
+        status: 404
+    }),
+    'statusCode': 404,
+    'headers': {
+                        'Content-Type': 'appliction/json'
+                    }
+};
+
+const four00 = (err) => {
+    return {
+        'body': JSON.stringify({
+            'message': 'Invalid request. Please check your input parameters and retry.',
+            'status': 400,
+            'body': err
+        }),
+        'statusCode': 400,
+        'headers': {
+                        'Content-Type': 'appliction/json'
+                    }
+    }
+}
+
 // Create and Save a new Student
-exports.create = (req) => {
+exports.create = async ( req ) => {
     try {
-        var result = Student.addStudent( req );
+        var result = await Student.addStudent( req );
         if (result === null) {
-            return {
-                'statusCode': 404
-            }
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
         }
-    
-        return result;
       } catch (e) {
-          return {
-              'statusCode': 400
-          } 
+        return four00(e);
       }
-        
+    return result;
 };
 
 // Retrieve all Students from the database.
-exports.getAll = (req) => {
+exports.getAll = async ( req = null ) => {
     try {
-        var result = Student.getAll( req );
+        var result = await Student.getAll( req );
+        console.log(result);
         if (result === null) {
-            return {
-                'statusCode': 404
-            }
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
         }
-    
-        return result;
-      } catch (e) {
-          return {
-              'statusCode': 400
-          } 
-      }
-        
+    } catch (e) {
+    return four00(e);
+    }
+      
+    return result;
 };
 
 // Find a single Student with a StudentId
-exports.findOne = (req) => {
+exports.findOne = async ( req ) => {
   try {
-    var result = Student.findStudent( req );
+    var result = await Student.findStudent( req );
     if (result === null) {
-        return {
-            'statusCode': 404
-        }
+        rtr.body = JSON.stringify({
+            'message': 
+            'Record not found with the given input parameters.',
+            'status': 404
+        });
+        rtr.statusCode = 404;
+        return rtr;
     }
 
-    return result;
   } catch (e) {
-      return {
-          'statusCode': 400
-      } 
+    return four00(e);
   }
+  
+  return result;
     
 };
 
 // Update a Student identified by the StudentId in the request
-exports.update = (req) => {
+exports.update = async ( req ) => {
     try {
-        var result = Student.updateStudent( req );
+        var result = await Student.updateStudent( req );
         if (result === null) {
-            return {
-                'statusCode': 404
-            }
+            rtr.body = JSON.stringify({
+                message: 'Record not found with input ',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
         }
     
         return result;
       } catch (e) {
-          return {
-              'statusCode': 400
-          } 
+        return four00(e);
       }
         
 };
 
 // Delete a Student with the specified StudentId in the request
-exports.delete = (req) => {
+exports.delete = async ( req ) => {
     try {
-        var result = Student.deleteStudent( req );
+        var result = await Student.deleteStudent( req );
         if (result === null) {
-            return {
-                'statusCode': 404
-            }
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
         }
     
         return result;
       } catch (e) {
-          return {
-              'statusCode': 400
-          } 
+        return four00(e);
       }
         
 };
