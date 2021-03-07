@@ -4,7 +4,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { userExists, userLogin, addUser, getUser } from '../../store.js'
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
-import { userExists, addUser, getUser } from '../../store.js'
 import styles from '../../globalStyles';
 
 //import MainLogin from './mainLogin.js';

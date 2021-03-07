@@ -104,14 +104,6 @@ const Profile = ( props ) => {
     )
 }
 
-const Home = ( props ) => {
-    return (
-        <View style = { [styles.container, {alignItems: 'center'}] }> 
-            <Text style = {styles.title} >Welcome!</Text>
-        </View>
-    )
-};
-
 
 export default function HomeScreen( props ) {
     const { email } = props.route.params ;
