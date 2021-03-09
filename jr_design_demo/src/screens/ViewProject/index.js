@@ -10,21 +10,19 @@ import { fromLeft } from 'react-navigation-transitions';
 import { render } from 'react-dom';
 
 
+// class NiceButton extends React.Component {
+//   constructor(props) { super(props); }
+//   render() {
+//     return (
+//       <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
+//         <Text style={styles.buttonText}>{this.props.title}</Text>
+//       </TouchableOpacity>
+//     );
+//   }
+// }
 
-
-const Stack = createStackNavigator();
-
-export default function ViewProject(props) {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false, }} initialRouteName="Page1">
-      <Stack.Screen name="Page1" component={SwipingScreens} initialParams={{ num: 0 }} />
-      {/* i = num;*/}
-      {/* <Stack.Screen name="Page2" component={ProjectExtended} /> */}
-    </Stack.Navigator>
-  );
-};
-
-
+const SCREEN_HEIGHT = Dimensions.get('window').height
+const SCREEN_WIDTH = Dimensions.get('window').width
 const projectDetails = [
   {
     id: "1",
@@ -72,91 +70,237 @@ const projectDetails = [
   }
 ]
 
-var i = 0;
+export class Card extends React.Component {
+
+  constructor() {
+    super()
+
+    this.position = new Animated.ValueXY()
+    this.state = {
+      currentIndex: 0
+    }
+    this.rotate = this.position.x.interpolate({
+      inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
+      outputRange: ['-10deg', '0deg', '10deg'],
+      extrapolate: 'clamp'
+    })
+
+    this.rotateAndTranslate = {
+      transform: [{
+        rotate: this.rotate
+      },
+      ...this.position.getTranslateTransform()
+      ]
+    }
+
+    this.nextCardOpacity = this.position.x.interpolate({
+      inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
+      outputRange: [1, 0, 1],
+      extrapolate: 'clamp'
+    })
+    this.nextCardScale = this.position.x.interpolate({
+      inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
+      outputRange: [1, 0.8, 1],
+      extrapolate: 'clamp'
+    })
+  }
+
+  UNSAFE_componentWillMount() {
+    this.PanResponder = PanResponder.create({
+
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      onPanResponderMove: (evt, gestureState) => {
+        this.useNativeDriver = true,
+          this.position.setValue({ x: gestureState.dx, y: gestureState.dy })
+      },
+      onPanResponderRelease: (evt, gestureState) => {
+        if (gestureState.dx > 120) {
+          Animated.spring(this.position, {
+            toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy }
+            , useNativeDriver: true
+          }).start(() => {
+            this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+              this.position.setValue({ x: 0, y: 0 })
+            })
+          })
+        }
+        else if (gestureState.dx < -120) {
+          Animated.spring(this.position, {
+            toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy },
+            useNativeDriver: true
+          }).start(() => {
+            this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+              this.position.setValue({ x: 0, y: 0 })
+            })
+          })
+        }
+        else {
+          Animated.spring(this.position, {
+            toValue: { x: 0, y: 0 },
+            friction: 4
+            , useNativeDriver: true
+          }).start()
+        }
+      }
+    })
+  }
+
+  renderUsers = () => {
+
+    return projectDetails.map((item, i) => {
+
+      if (i < this.state.currentIndex) {
+        return null
+      } else if (i == this.state.currentIndex) {
+        return (
+          <Animated.View
+            {...this.PanResponder.panHandlers}
+            key={item.id} style={[this.rotateAndTranslate, { height: SCREEN_HEIGHT - 120, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+
+            <Image
+              style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderRadius: 20 }}
+              source={item.uri} />
+          </Animated.View>
+        )
+      } else {
+        return (
+          <Animated.View
+            key={item.id} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: SCREEN_HEIGHT - 120, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+
+            <Image
+              style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderRadius: 20 }}
+              source={item.uri} />
+          </Animated.View>
+        )
+      }
+    }).reverse()
+  }
+
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <View style={{ height: 60 }}>
+
+        </View>
+        <View style={{ flex: 1 }}>
+          {this.renderUsers()}
+        </View>
+        <View style={{ height: 60 }}>
+
+        </View>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+/* var i = 0;
 
 function increaseI() {
   if (i > projectDetails.length - 2) {
-    i = 0;
+              i = 0;
   } else {
-    i++;
+              i++;
   }
 }
 
 function decreaseI() {
   if (i < 1) {
-    i = projectDetails.length - 1;
+              i = projectDetails.length - 1;
   } else {
-    i--;
+              i--;
   }
 }
 
+
 function projectView() {
   return (
-    <View id="page1" style={[style.container, { flex: 1 }]}>
-      {/*} <Image source={require("../../../assets/defaultskin.png")} style={{*/}
-      <Image source={projectDetails[i].uri} style={{
-        width: "100%",
-        alignSelf: "center",
-        resizeMode: "center",
-        flex: 0.75
-      }} />
-      <Text style={styles.title}>{projectDetails[i].name}</Text>
-      <Text style={styles.label}>{projectDetails[i].description}</Text>
-      <View style={[style.navButtonContainer, { flex: 1 }]}>
-        <NiceButton title="Previous" onPress={() => { decreaseI(); navigation.navigate("Page1"); }} />
-        <NiceButton title="See Project" onPress={() => navigation.navigate("Page2")} />
-        <NiceButton title="Next" onPress={() => { increaseI(); projectView() }} />
-      </View>
-    </View>
+            <View id="page1" style={[style.container, { flex: 1 }]}>
+
+              <Image source={require("../../../assets/defaultskin.png")} style={{
+                width: "100%",
+                alignSelf: "center",
+                resizeMode: "center",
+                flex: 0.75
+              }} />
+              <Text style={styles.title}>{projectDetails[i].name}</Text>
+              <Text style={styles.label}>{projectDetails[i].description}</Text>
+              <View style={[style.navButtonContainer, { flex: 1 }]}>
+                <NiceButton title="Previous" onPress={() => { decreaseI(); navigation.navigate("Page1"); }} />
+                <NiceButton title="See Project" onPress={() => navigation.navigate("Page2")} />
+                <NiceButton title="Next" onPress={() => { increaseI(); projectView() }} />
+              </View>
+            </View>
   );
 }
 
-export var ProjectSelector = ({ navigation }) => {
+export var ProjectSelector = ({ navigation}) => {
   const title = React.useState("Project Selector");
   return (
-    <View id="page1" style={[style.container, { flex: 1 }]}>
-      {/*<Image source={require("../../../assets/defaultskin.png")} style={{*/}
-      <Image source={projectDetails[i].uri} style={{
-        width: "100%",
-        alignSelf: "center",
-        resizeMode: "center",
-        flex: 0.75
-      }} />
-      <Text style={styles.title}>{projectDetails[i].name}</Text>
-      <Text style={styles.label}>{projectDetails[i].description}</Text>
-      <View style={[style.navButtonContainer, { flex: 1 }]}>
-        {/* <NiceButton title="Previous" onPress={() => { 0 }} />*/}
-        <NiceButton title="Previous" onPress={() => { decreaseI(); navigation.push("Page1") }} />
-        <NiceButton title="See Project" onPress={() => navigation.push("Page2")} />
-        <NiceButton title="Next" onPress={() => { increaseI(); navigation.push("Page1") }} />
-      </View>
-    </View>
+            <View id="page1" style={[style.container, { flex: 1 }]}>
+
+              <Image source={require("../../../assets/defaultskin.png")} style={{
+                width: "100%",
+                alignSelf: "center",
+                resizeMode: "center",
+                flex: 0.75
+              }} />
+              <Text style={styles.title}>{projectDetails[i].name}</Text>
+              <Text style={styles.label}>{projectDetails[i].description}</Text>
+              <View style={[style.navButtonContainer, { flex: 1 }]}>
+                {/* <NiceButton title="Previous" onPress={() => { 0 }} /> */
+/* <NiceButton title="Previous" onPress={() => { decreaseI(); navigation.push("Page1") }} />
+                <NiceButton title="See Project" onPress={() => navigation.push("Page2")} />
+                <NiceButton title="Next" onPress={() => { increaseI(); navigation.push("Page1") }} />
+              </View>
+            </View>
+  );
+}; */
+
+
+
+/* export const ProjectExtended = ({navigation}) => {
+  const title = React.useState("Project Selector");
+  return (
+            <View id="page2" style={[style.container, { flex: 1 }]}>
+
+              <Image source={require("../../../assets/defaultskin.png")} style={{
+                width: "100%",
+                alignSelf: "center",
+                resizeMode: "center",
+                flex: 0.75
+              }} />
+              <Text style={styles.title}>{projectDetails[i].name}</Text>
+              <Text style={styles.label}>{projectDetails[i].description}</Text>
+              <Text style={styles.label}>Skills: {projectDetails[i].skills}</Text>
+              <Text style={styles.label}>Hours Per Week: {projectDetails[i].hoursPerWeek}</Text>
+              <Text style={styles.label}>Link: {projectDetails[i].externalLink}</Text>
+            </View>
+  );
+}; */
+
+const Stack = createStackNavigator();
+
+
+export default function ViewProject(props) {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false, }} initialRouteName="Page1">
+      <Stack.Screen name="Page1" component={Card} />
+      {/* <Stack.Screen name="Page2" component={ProjectExtended} /> */}
+      {/* <Stack.Screen name="Page3" component={PageFix} /> already prev commented out */}
+    </Stack.Navigator>
   );
 };
 
-export const ProjectExtended = ({ navigation }) => {
-  const title = React.useState("Project Selector");
-  return (
-    <View id="page2" style={[style.container, { flex: 1 }]}>
-      {/* <Image source={require("../../../assets/defaultskin.png")} style={{
-        width: "100%",
-        alignSelf: "center",
-        resizeMode: "center",
-        flex: 0.75
-      }} /> */}
-      <Text style={styles.title}>{projectDetails[i].name}</Text>
-      <Text style={styles.label}>{projectDetails[i].description}</Text>
-      <Text style={styles.label}>Skills: {projectDetails[i].skills}</Text>
-      <Text style={styles.label}>Hours Per Week: {projectDetails[i].hoursPerWeek}</Text>
-      <Text style={styles.label}>Link: {projectDetails[i].externalLink}</Text>
-      <NiceButton title="Return" onPress={() => navigation.push("Page1")} />
-    </View>
-  );
-};
-
-
-
-const styles = StyleSheet.create({
+/* const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F5F5F5',
     color: '#F5F5F5',
@@ -254,4 +398,4 @@ const style = StyleSheet.create({//File-specific
     marginTop: 30,
     flex: 1
   }
-});
+}); */
