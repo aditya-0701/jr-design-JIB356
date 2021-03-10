@@ -1,6 +1,10 @@
 // import * as React from 'react';
 import React from 'react';
+<<<<<<< HEAD
 import { ImageBackground, View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView, Dimensions, Animated, PanResponder } from 'react-native';
+=======
+import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView, Dimensions, Animated, PanResponder, ImageBackground } from 'react-native';
+>>>>>>> a3543270407b02d933c6e4ab28f202222136dd99
 // import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import shouldUseActivityState from 'react-native-screens'
@@ -8,6 +12,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { fromLeft } from 'react-navigation-transitions';
 import { render } from 'react-dom';
+import ProjectData from './projectData.js';
 
 
 // class NiceButton extends React.Component {
@@ -23,6 +28,7 @@ import { render } from 'react-dom';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
+<<<<<<< HEAD
 const projectDetails = [
   {
     id: "1",
@@ -77,8 +83,248 @@ const projectDetails = [
     uri: "N/A"
 
 
+=======
+
+/**
+ * this function tells the page what to display, it needs to be moved when it's integrated with the back-end stuff but idk where to put it
+ * @param {Boolean} bool all this does rn is it swaps between two sets of arrays, back-end needs to figure out how to feed it information but this is a placeholder 
+ * @returns the details for the projects
+ */
+function getProjectDetails(bool) {
+  if (bool) {
+      return([
+          {
+            id: "1",
+            name: "Example Project",
+            description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
+              + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
+              + " Is this example long enough?",
+            skills: "Programming",
+            hoursPerWeek: "10",
+            externalLink: "https://www.google.com",
+            uri: require('../../../assets/1.jpg')
+          },
+          {
+            id: "2",
+            name: "Example Project 2",
+            description: "dka;ldksngadgsn;sadgks",
+            skills: "html, css",
+            hoursPerWeek: "5",
+            externalLink: "bing.com",
+            uri: require('../../../assets/2.jpg')
+          },
+          {
+            id: "3",
+            name: "Project 3",
+            description: ";lskdgn;klsgnl;ksagn;laskdg",
+            hoursPerWeek: "8",
+            externalLink: "yahoo.com",
+            uri: require('../../../assets/3.jpg')
+          },
+          {
+            id: "4",
+            name: "Project 4",
+            description: "kdsn;gkdsng;lskdgn;lsadg",
+            hoursPerWeek: "3",
+            externalLink: "images.google.com",
+            uri: require('../../../assets/4.jpg')
+          },
+          {
+            id: "5",
+            name: "Project 5",
+            description: "lkdgnsd;lkzgnsad;lgnasdg",
+            hoursPerWeek: "7",
+            externalLink: "maps.google.com",
+            uri: require('../../../assets/5.jpg')
+          },
+          {
+              id: "6",
+              name: "Example Project 6",
+              description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
+                + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
+                + " Is this example long enough?",
+              skills: "Programming",
+              hoursPerWeek: "10",
+              externalLink: "https://www.google.com",
+              uri: require('../../../assets/6.jpg')
+            },
+            {
+              id: "7",
+              name: "Example Project 7",
+              description: "dka;ldksngadgsn;sadgks",
+              skills: "html, css",
+              hoursPerWeek: "5",
+              externalLink: "bing.com",
+              uri: require('../../../assets/7.jpg')
+            },
+            {
+              id: "8",
+              name: "Project 8",
+              description: ";lskdgn;klsgnl;ksagn;laskdg",
+              hoursPerWeek: "8",
+              externalLink: "yahoo.com",
+              uri: require('../../../assets/8.jpg')
+            },
+            {
+              id: "9",
+              name: "Project 9",
+              description: "kdsn;gkdsng;lskdgn;lsadg",
+              hoursPerWeek: "3",
+              externalLink: "images.google.com",
+              uri: require('../../../assets/9.jpg')
+            },
+            {
+              id: "10",
+              name: "Project X",
+              description: "lkdgnsd;lkzgnsad;lgnasdg",
+              hoursPerWeek: "7",
+              externalLink: "maps.google.com",
+              uri: require('../../../assets/10.jpg')
+            }
+        ]);
+  } else {
+      return([
+          {
+            id: "1",
+            name: "Example Project",
+            description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
+              + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
+              + " Is this example long enough?",
+            skills: "Programming",
+            hoursPerWeek: "10",
+            externalLink: "https://www.google.com",
+            uri: require('../../../assets/6.jpg')
+          },
+          {
+            id: "2",
+            name: "Example Project 2",
+            description: "dka;ldksngadgsn;sadgks",
+            skills: "html, css",
+            hoursPerWeek: "5",
+            externalLink: "bing.com",
+            uri: require('../../../assets/7.jpg')
+          },
+          {
+            id: "3",
+            name: "Project 3",
+            description: ";lskdgn;klsgnl;ksagn;laskdg",
+            hoursPerWeek: "8",
+            externalLink: "yahoo.com",
+            uri: require('../../../assets/8.jpg')
+          },
+          {
+            id: "4",
+            name: "Project 4",
+            description: "kdsn;gkdsng;lskdgn;lsadg",
+            hoursPerWeek: "3",
+            externalLink: "images.google.com",
+            uri: require('../../../assets/9.jpg')
+          },
+          {
+            id: "5",
+            name: "Project 5",
+            description: "lkdgnsd;lkzgnsad;lgnasdg",
+            hoursPerWeek: "7",
+            externalLink: "maps.google.com",
+            uri: require('../../../assets/10.jpg')
+          },
+          {
+              id: "6",
+              name: "Example Project 6",
+              description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
+                + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
+                + " Is this example long enough?",
+              skills: "Programming",
+              hoursPerWeek: "10",
+              externalLink: "https://www.google.com",
+              uri: require('../../../assets/11.jpg')
+            },
+            {
+              id: "7",
+              name: "Example Project 7",
+              description: "dka;ldksngadgsn;sadgks",
+              skills: "html, css",
+              hoursPerWeek: "5",
+              externalLink: "bing.com",
+              uri: require('../../../assets/12.jpg')
+            },
+            {
+              id: "8",
+              name: "Project 8",
+              description: ";lskdgn;klsgnl;ksagn;laskdg",
+              hoursPerWeek: "8",
+              externalLink: "yahoo.com",
+              uri: require('../../../assets/13.jpg')
+            },
+            {
+              id: "9",
+              name: "Project 9",
+              description: "kdsn;gkdsng;lskdgn;lsadg",
+              hoursPerWeek: "3",
+              externalLink: "images.google.com",
+              uri: require('../../../assets/14.jpg')
+            },
+            {
+              id: "10",
+              name: "Project X",
+              description: "lkdgnsd;lkzgnsad;lgnasdg",
+              hoursPerWeek: "7",
+              externalLink: "maps.google.com",
+              uri: require('../../../assets/15.jpg')
+            }
+        ]);
+>>>>>>> a3543270407b02d933c6e4ab28f202222136dd99
   }
-]
+}
+
+var projectDetails = getProjectDetails(true);
+var bool = true;
+// const projectDetails = [
+//   {
+//     id: "1",
+//     name: "Example Project",
+//     description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
+//       + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
+//       + " Is this example long enough?",
+//     skills: "Programming",
+//     hoursPerWeek: "10",
+//     externalLink: "https://www.google.com",
+//     uri: require('../../../assets/1.jpg')
+//   },
+//   {
+//     id: "2",
+//     name: "Example Project 2",
+//     description: "dka;ldksngadgsn;sadgks",
+//     skills: "html, css",
+//     hoursPerWeek: "5",
+//     externalLink: "bing.com",
+//     uri: require('../../../assets/2.jpg')
+//   },
+//   {
+//     id: "3",
+//     name: "Project 3",
+//     description: ";lskdgn;klsgnl;ksagn;laskdg",
+//     hoursPerWeek: "8",
+//     externalLink: "yahoo.com",
+//     uri: require('../../../assets/3.jpg')
+//   },
+//   {
+//     id: "4",
+//     name: "Project 4",
+//     description: "kdsn;gkdsng;lskdgn;lsadg",
+//     hoursPerWeek: "3",
+//     externalLink: "images.google.com",
+//     uri: require('../../../assets/4.jpg')
+//   },
+//   {
+//     id: "5",
+//     name: "Project 5",
+//     description: "lkdgnsd;lkzgnsad;lgnasdg",
+//     hoursPerWeek: "7",
+//     externalLink: "maps.google.com",
+//     uri: require('../../../assets/5.jpg')
+//   }
+// ]
 
 export class Card extends React.Component {
 
@@ -157,6 +403,16 @@ export class Card extends React.Component {
 
   renderUsers = () => {
 
+    if (this.state.currentIndex == projectDetails.length) {
+      if (bool) {
+        bool = false;
+      } else {
+        bool = true;
+      }
+      projectDetails = getProjectDetails(bool);
+      this.state.currentIndex = 1;
+    }
+
     return projectDetails.map((item, i) => {
 
       if (i < this.state.currentIndex) {
@@ -166,6 +422,7 @@ export class Card extends React.Component {
           <Animated.View
             {...this.PanResponder.panHandlers}
             key={item.id} style={[this.rotateAndTranslate, { height: SCREEN_HEIGHT - 120, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+<<<<<<< HEAD
 
 
             <ImageBackground
@@ -174,6 +431,12 @@ export class Card extends React.Component {
               source={item.uri} >
               <Text style={styles.text}>{item.name} {'\n'} {item.description} {'\n'} {item.hoursPerWeek} {'\n'} {item.externalLink}</Text>
             </ImageBackground>
+=======
+            
+            <ImageBackground
+              style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderRadius: 20 }}
+              source={item.uri}><Text style={styles.title}>TEST</Text></ImageBackground>
+>>>>>>> a3543270407b02d933c6e4ab28f202222136dd99
           </Animated.View>
         )
       } else {
@@ -182,11 +445,16 @@ export class Card extends React.Component {
             key={item.id} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: SCREEN_HEIGHT - 120, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
             <ImageBackground
+<<<<<<< HEAD
               style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
               imageStyle={{ borderRadius: 17 }}
               source={item.uri} >
               <Text style={styles.text}> {item.name} {'\n'} {item.description} {'\n'} {item.hoursPerWeek} {'\n'} {item.externalLink}</Text>
             </ImageBackground>
+=======
+              style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderRadius: 20 }}
+              source={item.uri}><Text style={styles.title}>TEST</Text></ImageBackground>
+>>>>>>> a3543270407b02d933c6e4ab28f202222136dd99
           </Animated.View>
         )
       }
@@ -218,6 +486,7 @@ export class Card extends React.Component {
   }
 }
 
+<<<<<<< HEAD
 // const styles = StyleSheet.create({
 //   container: {
 //     flex: 1,
@@ -226,6 +495,25 @@ export class Card extends React.Component {
 //     justifyContent: 'center',
 //   },
 // });
+=======
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    fontSize: 25,
+    marginVertical: 15,
+    color: '#B3A369',
+    fontWeight: 'bold',
+  },
+});
+>>>>>>> a3543270407b02d933c6e4ab28f202222136dd99
 
 /* var i = 0;
 
@@ -325,6 +613,7 @@ export default function ViewProject(props) {
   );
 };
 
+<<<<<<< HEAD
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -355,6 +644,9 @@ const styles = StyleSheet.create({
 })
 
 /* const styles = StyleSheet.create({
+=======
+/*const styles = StyleSheet.create({
+>>>>>>> a3543270407b02d933c6e4ab28f202222136dd99
   container: {
     backgroundColor: '#F5F5F5',
     color: '#F5F5F5',
