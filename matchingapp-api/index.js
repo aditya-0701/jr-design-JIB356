@@ -77,47 +77,9 @@ exports.handler = async (event) => {
                         return login.loginUser( parsedBody );
                     }
                 case 'POST':
-                    return student.loginUser( parsedBody );
+                    return login.loginUser( parsedBody );
                 default: 
                     return four03();
-            }
-        case '/skills':
-            switch(method) {
-                case 'GET':
-                    return student.getStudentSkills(query);
-                case 'PUT':
-                    return student.updateStudentSkills(parsedBody);
-                case 'DELETE':
-                    return student.deleteAllStudentSkills(query);
-            }
-        case '/interests':
-            switch(method) {
-                case 'GET':
-                    return student.getStudentInterests(query);
-                case 'PUT':
-                    return student.updateStudentInterests(parsedBody);
-                case 'DELETE':
-                    return student.deleteAllStudentInterests(query);
-            }
-        case '/experiences':
-            switch(method) {
-                case 'GET':
-                    return student.getStudentExperiences(query);
-                case 'PUT':
-                    return student.updateStudentExperiences(parsedBody);
-                case 'DELETE':
-                    return student.deleteAllStudentExperiences(query);
-            }
-        case '/projectInterests':
-            switch(method) {
-                case 'GET':
-                    return student.getStudentProjectInterests(query);
-                case 'PUT':
-                    return student.updateProjectInterests(parsedBody);
-                case 'POST':
-                    return student.addProjectInterest(parsedBody);
-                case 'DELETE':
-                    return student.deleteAllStudentProjectInterests(query);
             }
         default: 
             return four03();
