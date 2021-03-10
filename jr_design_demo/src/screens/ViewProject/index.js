@@ -1,6 +1,6 @@
 // import * as React from 'react';
 import React from 'react';
-import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView, Dimensions, Animated, PanResponder } from 'react-native';
+import { ImageBackground, View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView, Dimensions, Animated, PanResponder } from 'react-native';
 // import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import shouldUseActivityState from 'react-native-screens'
@@ -67,6 +67,16 @@ const projectDetails = [
     hoursPerWeek: "7",
     externalLink: "maps.google.com",
     uri: require('../../../assets/5.jpg')
+  },
+  {
+    id: "6",
+    name: "END",
+    description: "End of Projects",
+    hoursPerWeek: "N/A",
+    externalLink: "N/A",
+    uri: "N/A"
+
+
   }
 ]
 
@@ -157,9 +167,13 @@ export class Card extends React.Component {
             {...this.PanResponder.panHandlers}
             key={item.id} style={[this.rotateAndTranslate, { height: SCREEN_HEIGHT - 120, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
-            <Image
-              style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderRadius: 20 }}
-              source={item.uri} />
+
+            <ImageBackground
+              style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
+              imageStyle={{ borderRadius: 17 }}
+              source={item.uri} >
+              <Text style={styles.text}>{item.name} {'\n'} {item.description} {'\n'} {item.hoursPerWeek} {'\n'} {item.externalLink}</Text>
+            </ImageBackground>
           </Animated.View>
         )
       } else {
@@ -167,23 +181,34 @@ export class Card extends React.Component {
           <Animated.View
             key={item.id} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: SCREEN_HEIGHT - 120, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
-            <Image
-              style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderRadius: 20 }}
-              source={item.uri} />
+            <ImageBackground
+              style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
+              imageStyle={{ borderRadius: 17 }}
+              source={item.uri} >
+              <Text style={styles.text}> {item.name} {'\n'} {item.description} {'\n'} {item.hoursPerWeek} {'\n'} {item.externalLink}</Text>
+            </ImageBackground>
           </Animated.View>
         )
       }
     }).reverse()
   }
 
+  renderUserDetails = () => {
+
+  }
+
+
+
   render() {
     return (
       <View style={{ flex: 1 }}>
         <View style={{ height: 60 }}>
-
         </View>
         <View style={{ flex: 1 }}>
           {this.renderUsers()}
+        </View>
+        <View style={{ top: 300, left: 0, right: 0, bottom: 0 }}>
+          <Text style={{ textAlign: 'center' }}>You have reached the end</Text>
         </View>
         <View style={{ height: 60 }}>
 
@@ -193,14 +218,14 @@ export class Card extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+// });
 
 /* var i = 0;
 
@@ -299,6 +324,35 @@ export default function ViewProject(props) {
     </Stack.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    color: 'white',
+    padding: 10,
+    textAlign: 'center',
+    height: 170,
+    top: SCREEN_HEIGHT / 2 + 100,
+    backgroundColor: 'rgba(179, 163, 105, .7)',
+    fontSize: 15,
+    fontWeight: '300'
+  },
+  headingText: {
+    color: 'white',
+    padding: 10,
+    textAlign: 'center',
+    height: 170,
+    top: SCREEN_HEIGHT / 2 + 100,
+    backgroundColor: 'rgba(179, 163, 105, .7)',
+    fontSize: 20,
+    fontWeight: '500'
+  }
+})
 
 /* const styles = StyleSheet.create({
   container: {
