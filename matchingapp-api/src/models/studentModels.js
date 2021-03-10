@@ -259,6 +259,7 @@ Student.updateProjectInterests = async (params) => {
     }
     // TODO: Talk with aditya the best way to update this
     //       - Delete Then Insert?
+    
     let query = `INSERT IGNORE INTO StudentSavedProjects VALUES ?`;
     var projects = await connection.query(query, interestParams);
     return projects;

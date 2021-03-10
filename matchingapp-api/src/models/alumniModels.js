@@ -86,4 +86,49 @@ Alumni.deleteAlumniAccount = async ( params ) => {
     return alumni;
 };
 
+Alumni.addProject = async ( params ) => {
+    // params
+    if (params.alumniId && params.createdAt) {
+        let projectParams = [params.projectTitle, params.projectDescription, params.startDate, params.endDate, params.alumniId, params.createdAt, params.visible];
+        let query = "INSERT INTO Projects (projectTitle, projectDescription, startDate, endDate, projectAlumni, createdAt, visible) SET ?";
+        var project = await connection.query(query, projectParams);
+    } else {
+        throw 'ERROR OCCURRED';
+    }
+
+    let getProjIdQuery = `SELECT id FROM Projects WHERE projectAlumni = ${params.alumniId} AND createdAt = ${params.createdAt};`; 
+    project['id'] = await connection.query();
+
+    if (project) {
+        if (params.skills) {
+            skillsVals = [];
+            for (i = 0; i < params.skills.length; i++) {
+                skillsVals.push([project['id'], params.skills[i]]);
+            }
+            let skillQuery = `INSERT INTO ProjectSkills (projectId, skillId) VALUES ?`;
+            project['skills'] = await connection.query(skillQuery, skillsVals);
+        }
+        if (params.interests) {
+            interestsVals = [];
+            for (i = 0; i < params.interests.length; i++) {
+                interestsVals.push([project['id'], params.interests[i]]);
+            }
+            let interestQuery = `INSERT INTO ProjectInterests (projectId, interestId) VALUES ?`;
+            project['interests'] = await connection.query(interestQuery, interestsVals);
+        }
+        if (params.links) {
+            // assumes params.links follows:
+            // [[label, address], ...]
+            linksVals = [];
+            for (i = 0; i < params.links.length; i++) {
+                linksVals.push([project['id'], null].concat(params.links[i]));
+            }
+            let linkQuery = `INSERT INTO ProjectLinks (projectId, id, label, address) VALUES ?`;
+            project['links'] = await connection.query(linkQuery, linksVals);
+        }
+    }
+    
+    return project;
+};
+
 module.exports = Alumni
