@@ -25,196 +25,199 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 const CARD_HEIGHT = SCREEN_HEIGHT * 0.86
 
+//export var likedProjects[];
+
 /**
  * this function tells the page what to display, it needs to be moved when it's integrated with the back-end stuff but idk where to put it
  * @param {Boolean} bool all this does rn is it swaps between two sets of arrays, back-end needs to figure out how to feed it information but this is a placeholder 
  * @returns the details for the projects
  */
- function getProjectDetails(bool) {
+function getProjectDetails(bool) {
   if (bool) {
-      return([
-          {
-            id: "1",
-            name: "Example Project",
-            description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
-              + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
-              + " Is this example long enough?",
-            skills: "Programming",
-            hoursPerWeek: "10",
-            externalLink: "https://www.google.com",
-            uri: require('../../../assets/1.jpg')
-          },
-          {
-            id: "2",
-            name: "Example Project 2",
-            description: "dka;ldksngadgsn;sadgks",
-            skills: "html, css",
-            hoursPerWeek: "5",
-            externalLink: "bing.com",
-            uri: require('../../../assets/2.jpg')
-          },
-          {
-            id: "3",
-            name: "Project 3",
-            description: ";lskdgn;klsgnl;ksagn;laskdg",
-            hoursPerWeek: "8",
-            externalLink: "yahoo.com",
-            uri: require('../../../assets/3.jpg')
-          },
-          {
-            id: "4",
-            name: "Project 4",
-            description: "kdsn;gkdsng;lskdgn;lsadg",
-            hoursPerWeek: "3",
-            externalLink: "images.google.com",
-            uri: require('../../../assets/4.jpg')
-          },
-          {
-            id: "5",
-            name: "Project 5",
-            description: "lkdgnsd;lkzgnsad;lgnasdg",
-            hoursPerWeek: "7",
-            externalLink: "maps.google.com",
-            uri: require('../../../assets/5.jpg')
-          },
-          {
-              id: "6",
-              name: "Example Project 6",
-              description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
-                + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
-                + " Is this example long enough?",
-              skills: "Programming",
-              hoursPerWeek: "10",
-              externalLink: "https://www.google.com",
-              uri: require('../../../assets/6.jpg')
-            },
-            {
-              id: "7",
-              name: "Example Project 7",
-              description: "dka;ldksngadgsn;sadgks",
-              skills: "html, css",
-              hoursPerWeek: "5",
-              externalLink: "bing.com",
-              uri: require('../../../assets/7.jpg')
-            },
-            {
-              id: "8",
-              name: "Project 8",
-              description: ";lskdgn;klsgnl;ksagn;laskdg",
-              hoursPerWeek: "8",
-              externalLink: "yahoo.com",
-              uri: require('../../../assets/8.jpg')
-            },
-            {
-              id: "9",
-              name: "Project 9",
-              description: "kdsn;gkdsng;lskdgn;lsadg",
-              hoursPerWeek: "3",
-              externalLink: "images.google.com",
-              uri: require('../../../assets/9.jpg')
-            },
-            {
-              id: "10",
-              name: "Project X",
-              description: "lkdgnsd;lkzgnsad;lgnasdg",
-              hoursPerWeek: "7",
-              externalLink: "maps.google.com",
-              uri: require('../../../assets/10.jpg')
-            }
-        ]);
+    return ([
+      {
+        id: "1",
+        name: "Example Project",
+        description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
+          + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
+          + " Is this example long enough?",
+        skills: "Programming",
+        hoursPerWeek: "10",
+        externalLink: "https://www.google.com",
+        uri: require('../../../assets/1.jpg')
+      },
+      {
+        id: "2",
+        name: "Example Project 2",
+        description: "dka;ldksngadgsn;sadgks",
+        skills: "html, css",
+        hoursPerWeek: "5",
+        externalLink: "bing.com",
+        uri: require('../../../assets/2.jpg')
+      },
+      {
+        id: "3",
+        name: "Project 3",
+        description: ";lskdgn;klsgnl;ksagn;laskdg",
+        hoursPerWeek: "8",
+        externalLink: "yahoo.com",
+        uri: require('../../../assets/3.jpg')
+      },
+      {
+        id: "4",
+        name: "Project 4",
+        description: "kdsn;gkdsng;lskdgn;lsadg",
+        hoursPerWeek: "3",
+        externalLink: "images.google.com",
+        uri: require('../../../assets/4.jpg')
+      },
+      {
+        id: "5",
+        name: "Project 5",
+        description: "lkdgnsd;lkzgnsad;lgnasdg",
+        hoursPerWeek: "7",
+        externalLink: "maps.google.com",
+        uri: require('../../../assets/5.jpg')
+      },
+      {
+        id: "6",
+        name: "Example Project 6",
+        description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
+          + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
+          + " Is this example long enough?",
+        skills: "Programming",
+        hoursPerWeek: "10",
+        externalLink: "https://www.google.com",
+        uri: require('../../../assets/6.jpg')
+      },
+      {
+        id: "7",
+        name: "Example Project 7",
+        description: "dka;ldksngadgsn;sadgks",
+        skills: "html, css",
+        hoursPerWeek: "5",
+        externalLink: "bing.com",
+        uri: require('../../../assets/7.jpg')
+      },
+      {
+        id: "8",
+        name: "Project 8",
+        description: ";lskdgn;klsgnl;ksagn;laskdg",
+        hoursPerWeek: "8",
+        externalLink: "yahoo.com",
+        uri: require('../../../assets/8.jpg')
+      },
+      {
+        id: "9",
+        name: "Project 9",
+        description: "kdsn;gkdsng;lskdgn;lsadg",
+        hoursPerWeek: "3",
+        externalLink: "images.google.com",
+        uri: require('../../../assets/9.jpg')
+      },
+      {
+        id: "10",
+        name: "Project X",
+        description: "lkdgnsd;lkzgnsad;lgnasdg",
+        hoursPerWeek: "7",
+        externalLink: "maps.google.com",
+        uri: require('../../../assets/10.jpg')
+      }
+    ]);
   } else {
-      return([
-        {
-            id: "6",
-            name: "Example Project 6",
-            description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
-              + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
-              + " Is this example long enough?",
-            skills: "Programming",
-            hoursPerWeek: "10",
-            externalLink: "https://www.google.com",
-            uri: require('../../../assets/6.jpg')
-          },
-          {
-            id: "7",
-            name: "Example Project 7",
-            description: "dka;ldksngadgsn;sadgks",
-            skills: "html, css",
-            hoursPerWeek: "5",
-            externalLink: "bing.com",
-            uri: require('../../../assets/7.jpg')
-          },
-          {
-            id: "8",
-            name: "Project 8",
-            description: ";lskdgn;klsgnl;ksagn;laskdg",
-            hoursPerWeek: "8",
-            externalLink: "yahoo.com",
-            uri: require('../../../assets/8.jpg')
-          },
-          {
-            id: "9",
-            name: "Project 9",
-            description: "kdsn;gkdsng;lskdgn;lsadg",
-            hoursPerWeek: "3",
-            externalLink: "images.google.com",
-            uri: require('../../../assets/9.jpg')
-          },
-          {
-            id: "10",
-            name: "Project X",
-            description: "lkdgnsd;lkzgnsad;lgnasdg",
-            hoursPerWeek: "7",
-            externalLink: "maps.google.com",
-            uri: require('../../../assets/10.jpg')
-          },
-          {
-            id: "11",
-            name: "Project Eleven",
-            description: "I am a project!",
-            hoursPerWeek: "30",
-            externalLink: "twitter.com",
-            uri: require('../../../assets/11.jpg')
-          },
-          {
-            id: "12",
-            name: "12th Project",
-            description: "Project number 12 kjdfs kldsfjkl sdfjklfds jkldsf jklsdf",
-            hoursPerWeek: "7",
-            externalLink: "gatech.edu",
-            uri: require('../../../assets/12.jpg')
-          },
-          {
-            id: "13",
-            name: "Project Number 13",
-            description: "It was a bright cold day in April, and the clocks were striking thirteen.",
-            hoursPerWeek: "6",
-            externalLink: "goodreads.com",
-            uri: require('../../../assets/13.jpg')
-          },
-          {
-            id: "14",
-            name: "Fourteenth Project",
-            description: "There are 14 days in two weeks!",
-            hoursPerWeek: "12",
-            externalLink: "canvas.gatech.edu",
-            uri: require('../../../assets/14.jpg')
-          },
-          {
-            id: "15",
-            name: "Final Project",
-            description: "'Cause when you're fifteen, Somebody tells you they love you, You're gonna believe them, And when you're fifteen",
-            hoursPerWeek: "3",
-            externalLink: "https://genius.com/Taylor-swift-fifteen-lyrics",
-            uri: require('../../../assets/15.jpg')
-          }
-        ]);
+    return ([
+      {
+        id: "6",
+        name: "Example Project 6",
+        description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
+          + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
+          + " Is this example long enough?",
+        skills: "Programming",
+        hoursPerWeek: "10",
+        externalLink: "https://www.google.com",
+        uri: require('../../../assets/6.jpg')
+      },
+      {
+        id: "7",
+        name: "Example Project 7",
+        description: "dka;ldksngadgsn;sadgks",
+        skills: "html, css",
+        hoursPerWeek: "5",
+        externalLink: "bing.com",
+        uri: require('../../../assets/7.jpg')
+      },
+      {
+        id: "8",
+        name: "Project 8",
+        description: ";lskdgn;klsgnl;ksagn;laskdg",
+        hoursPerWeek: "8",
+        externalLink: "yahoo.com",
+        uri: require('../../../assets/8.jpg')
+      },
+      {
+        id: "9",
+        name: "Project 9",
+        description: "kdsn;gkdsng;lskdgn;lsadg",
+        hoursPerWeek: "3",
+        externalLink: "images.google.com",
+        uri: require('../../../assets/9.jpg')
+      },
+      {
+        id: "10",
+        name: "Project X",
+        description: "lkdgnsd;lkzgnsad;lgnasdg",
+        hoursPerWeek: "7",
+        externalLink: "maps.google.com",
+        uri: require('../../../assets/10.jpg')
+      },
+      {
+        id: "11",
+        name: "Project Eleven",
+        description: "I am a project!",
+        hoursPerWeek: "30",
+        externalLink: "twitter.com",
+        uri: require('../../../assets/11.jpg')
+      },
+      {
+        id: "12",
+        name: "12th Project",
+        description: "Project number 12 kjdfs kldsfjkl sdfjklfds jkldsf jklsdf",
+        hoursPerWeek: "7",
+        externalLink: "gatech.edu",
+        uri: require('../../../assets/12.jpg')
+      },
+      {
+        id: "13",
+        name: "Project Number 13",
+        description: "It was a bright cold day in April, and the clocks were striking thirteen.",
+        hoursPerWeek: "6",
+        externalLink: "goodreads.com",
+        uri: require('../../../assets/13.jpg')
+      },
+      {
+        id: "14",
+        name: "Fourteenth Project",
+        description: "There are 14 days in two weeks!",
+        hoursPerWeek: "12",
+        externalLink: "canvas.gatech.edu",
+        uri: require('../../../assets/14.jpg')
+      },
+      {
+        id: "15",
+        name: "Final Project",
+        description: "'Cause when you're fifteen, Somebody tells you they love you, You're gonna believe them, And when you're fifteen",
+        hoursPerWeek: "3",
+        externalLink: "https://genius.com/Taylor-swift-fifteen-lyrics",
+        uri: require('../../../assets/15.jpg')
+      }
+    ]);
   }
 }
 
 var bool = true;
 var projectDetails = getProjectDetails(bool);
 var viewSwitch = false;
+// var i = 0;
 
 export class Card extends React.Component {
 
@@ -279,6 +282,7 @@ export class Card extends React.Component {
               this.position.setValue({ x: 0, y: 0 })
             })
           })
+          // likedProjects[i] = projectDetails[currentIndex];
         }
         else {
           Animated.spring(this.position, {
