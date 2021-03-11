@@ -1,6 +1,6 @@
 // import * as React from 'react';
 import React from 'react';
-import { ImageBackground, View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView, Dimensions, Animated, PanResponder, requireNativeComponent } from 'react-native';
+import { ImageBackground, View, Text, StyleSheet, Dimensions, Animated, PanResponder, Touchable } from 'react-native';
 // import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import shouldUseActivityState from 'react-native-screens'
@@ -214,6 +214,7 @@ const CARD_HEIGHT = SCREEN_HEIGHT * 0.86
 
 var bool = true;
 var projectDetails = getProjectDetails(bool);
+var viewSwitch = false;
 
 export class Card extends React.Component {
 
@@ -424,103 +425,3 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   }
 })
-
-/* const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#F5F5F5',
-    color: '#F5F5F5',
-    opacity: 100,
-    alignItems: 'stretch',
-    padding: 15,
-    marginTop: 30,
-    justifyContent: 'center',
-    flex: 1
-  },
-  login: {
-    backgroundColor: '#F5F5F5',
-    opacity: 100,
-    alignItems: 'stretch',
-    padding: 15,
-    justifyContent: 'center',
-    alignContent: 'center'
-  },
-  name: {
-    fontFamily: 'serif',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    fontSize: 25,
-    color: '#B3A369',
-    fontWeight: '700'
-  },
-  title: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'left',
-    fontSize: 25,
-    marginVertical: 15,
-    color: '#B3A369',
-    fontWeight: 'bold',
-  },
-  button: {
-    alignItems: 'center',
-    borderRadius: 15,
-    backgroundColor: '#B3A369',
-    height: 40,
-    width: '25%',
-    justifyContent: "center",
-    margin: 20,
-    marginVertical: 10,
-    //paddingHorizontal: 10,
-    textAlign: 'center'
-  },
-  buttonText: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: '#FFFFFF'
-  },
-  label: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#B3A369',
-    paddingVertical: 10
-  },
-  inputs: {
-    marginBottom: 15,
-    borderRadius: 15,
-    backgroundColor: '#B3A36975',
-    padding: 10,
-    paddingLeft: 20,
-    height: 40
-  },
-  selector: {
-    margin: 10,
-    flexDirection: 'column',
-    position: 'relative',
-    bottom: -250,
-    alignItems: 'stretch',
-  },
-});
-
-const style = StyleSheet.create({//File-specific
-  navButtonContainer: {
-    position: "absolute",
-    bottom: 0,
-    alignSelf: 'center',
-    //width: "100%",
-    backgroundColor: '#F5F5F5',
-    flexDirection: "row",
-    alignItems: 'stretch',
-    justifyContent: 'center',
-    margin: 5,
-    marginTop: 5
-  },
-  container: {
-    backgroundColor: '#F5F5F5',
-    color: '#F5F5F5',
-    //opacity: 100,
-    padding: 15,
-    marginTop: 30,
-    flex: 1
-  }
-}); */
