@@ -1,6 +1,6 @@
 // import * as React from 'react';
 import React from 'react';
-import { ImageBackground, View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView, Dimensions, Animated, PanResponder } from 'react-native';
+import { ImageBackground, View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView, Dimensions, Animated, PanResponder, requireNativeComponent } from 'react-native';
 // import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import shouldUseActivityState from 'react-native-screens'
@@ -8,7 +8,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { fromLeft } from 'react-navigation-transitions';
 import { render } from 'react-dom';
-import ProjectData from './projectData.js';
 
 
 // class NiceButton extends React.Component {
@@ -24,62 +23,197 @@ import ProjectData from './projectData.js';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
-const projectDetails = [
-  {
-    id: "1",
-    name: "Example Project",
-    description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
-      + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
-      + " Is this example long enough?",
-    skills: "Programming",
-    hoursPerWeek: "10",
-    externalLink: "https://www.google.com",
-    uri: require('../../../assets/1.jpg')
-  },
-  {
-    id: "2",
-    name: "Example Project 2",
-    description: "dka;ldksngadgsn;sadgks",
-    skills: "html, css",
-    hoursPerWeek: "5",
-    externalLink: "bing.com",
-    uri: require('../../../assets/2.jpg')
-  },
-  {
-    id: "3",
-    name: "Project 3",
-    description: ";lskdgn;klsgnl;ksagn;laskdg",
-    hoursPerWeek: "8",
-    externalLink: "yahoo.com",
-    uri: require('../../../assets/3.jpg')
-  },
-  {
-    id: "4",
-    name: "Project 4",
-    description: "kdsn;gkdsng;lskdgn;lsadg",
-    hoursPerWeek: "3",
-    externalLink: "images.google.com",
-    uri: require('../../../assets/4.jpg')
-  },
-  {
-    id: "5",
-    name: "Project 5",
-    description: "lkdgnsd;lkzgnsad;lgnasdg",
-    hoursPerWeek: "7",
-    externalLink: "maps.google.com",
-    uri: require('../../../assets/5.jpg')
-  },
-  {
-    id: "6",
-    name: "END",
-    description: "End of Projects",
-    hoursPerWeek: "N/A",
-    externalLink: "N/A",
-    uri: "N/A"
+const CARD_HEIGHT = SCREEN_HEIGHT * 0.86
 
-
+/**
+ * this function tells the page what to display, it needs to be moved when it's integrated with the back-end stuff but idk where to put it
+ * @param {Boolean} bool all this does rn is it swaps between two sets of arrays, back-end needs to figure out how to feed it information but this is a placeholder 
+ * @returns the details for the projects
+ */
+ function getProjectDetails(bool) {
+  if (bool) {
+      return([
+          {
+            id: "1",
+            name: "Example Project",
+            description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
+              + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
+              + " Is this example long enough?",
+            skills: "Programming",
+            hoursPerWeek: "10",
+            externalLink: "https://www.google.com",
+            uri: require('../../../assets/1.jpg')
+          },
+          {
+            id: "2",
+            name: "Example Project 2",
+            description: "dka;ldksngadgsn;sadgks",
+            skills: "html, css",
+            hoursPerWeek: "5",
+            externalLink: "bing.com",
+            uri: require('../../../assets/2.jpg')
+          },
+          {
+            id: "3",
+            name: "Project 3",
+            description: ";lskdgn;klsgnl;ksagn;laskdg",
+            hoursPerWeek: "8",
+            externalLink: "yahoo.com",
+            uri: require('../../../assets/3.jpg')
+          },
+          {
+            id: "4",
+            name: "Project 4",
+            description: "kdsn;gkdsng;lskdgn;lsadg",
+            hoursPerWeek: "3",
+            externalLink: "images.google.com",
+            uri: require('../../../assets/4.jpg')
+          },
+          {
+            id: "5",
+            name: "Project 5",
+            description: "lkdgnsd;lkzgnsad;lgnasdg",
+            hoursPerWeek: "7",
+            externalLink: "maps.google.com",
+            uri: require('../../../assets/5.jpg')
+          },
+          {
+              id: "6",
+              name: "Example Project 6",
+              description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
+                + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
+                + " Is this example long enough?",
+              skills: "Programming",
+              hoursPerWeek: "10",
+              externalLink: "https://www.google.com",
+              uri: require('../../../assets/6.jpg')
+            },
+            {
+              id: "7",
+              name: "Example Project 7",
+              description: "dka;ldksngadgsn;sadgks",
+              skills: "html, css",
+              hoursPerWeek: "5",
+              externalLink: "bing.com",
+              uri: require('../../../assets/7.jpg')
+            },
+            {
+              id: "8",
+              name: "Project 8",
+              description: ";lskdgn;klsgnl;ksagn;laskdg",
+              hoursPerWeek: "8",
+              externalLink: "yahoo.com",
+              uri: require('../../../assets/8.jpg')
+            },
+            {
+              id: "9",
+              name: "Project 9",
+              description: "kdsn;gkdsng;lskdgn;lsadg",
+              hoursPerWeek: "3",
+              externalLink: "images.google.com",
+              uri: require('../../../assets/9.jpg')
+            },
+            {
+              id: "10",
+              name: "Project X",
+              description: "lkdgnsd;lkzgnsad;lgnasdg",
+              hoursPerWeek: "7",
+              externalLink: "maps.google.com",
+              uri: require('../../../assets/10.jpg')
+            }
+        ]);
+  } else {
+      return([
+        {
+            id: "6",
+            name: "Example Project 6",
+            description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
+              + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
+              + " Is this example long enough?",
+            skills: "Programming",
+            hoursPerWeek: "10",
+            externalLink: "https://www.google.com",
+            uri: require('../../../assets/6.jpg')
+          },
+          {
+            id: "7",
+            name: "Example Project 7",
+            description: "dka;ldksngadgsn;sadgks",
+            skills: "html, css",
+            hoursPerWeek: "5",
+            externalLink: "bing.com",
+            uri: require('../../../assets/7.jpg')
+          },
+          {
+            id: "8",
+            name: "Project 8",
+            description: ";lskdgn;klsgnl;ksagn;laskdg",
+            hoursPerWeek: "8",
+            externalLink: "yahoo.com",
+            uri: require('../../../assets/8.jpg')
+          },
+          {
+            id: "9",
+            name: "Project 9",
+            description: "kdsn;gkdsng;lskdgn;lsadg",
+            hoursPerWeek: "3",
+            externalLink: "images.google.com",
+            uri: require('../../../assets/9.jpg')
+          },
+          {
+            id: "10",
+            name: "Project X",
+            description: "lkdgnsd;lkzgnsad;lgnasdg",
+            hoursPerWeek: "7",
+            externalLink: "maps.google.com",
+            uri: require('../../../assets/10.jpg')
+          },
+          {
+            id: "11",
+            name: "Project Eleven",
+            description: "I am a project!",
+            hoursPerWeek: "30",
+            externalLink: "twitter.com",
+            uri: require('../../../assets/11.jpg')
+          },
+          {
+            id: "12",
+            name: "12th Project",
+            description: "Project number 12 kjdfs kldsfjkl sdfjklfds jkldsf jklsdf",
+            hoursPerWeek: "7",
+            externalLink: "gatech.edu",
+            uri: require('../../../assets/12.jpg')
+          },
+          {
+            id: "13",
+            name: "Project Number 13",
+            description: "It was a bright cold day in April, and the clocks were striking thirteen.",
+            hoursPerWeek: "6",
+            externalLink: "goodreads.com",
+            uri: require('../../../assets/13.jpg')
+          },
+          {
+            id: "14",
+            name: "Fourteenth Project",
+            description: "There are 14 days in two weeks!",
+            hoursPerWeek: "12",
+            externalLink: "canvas.gatech.edu",
+            uri: require('../../../assets/14.jpg')
+          },
+          {
+            id: "15",
+            name: "Final Project",
+            description: "'Cause when you're fifteen, Somebody tells you they love you, You're gonna believe them, And when you're fifteen",
+            hoursPerWeek: "3",
+            externalLink: "https://genius.com/Taylor-swift-fifteen-lyrics",
+            uri: require('../../../assets/15.jpg')
+          }
+        ]);
   }
-]
+}
+
+var bool = true;
+var projectDetails = getProjectDetails(bool);
 
 export class Card extends React.Component {
 
@@ -156,6 +290,7 @@ export class Card extends React.Component {
     })
   }
 
+
   renderUsers = () => {
     if (this.state.currentIndex == projectDetails.length) {
       if (bool) {
@@ -164,7 +299,7 @@ export class Card extends React.Component {
         bool = true;
       }
       projectDetails = getProjectDetails(bool);
-      this.state.currentIndex = 1;
+      this.state.currentIndex = 0;
     }
 
     return projectDetails.map((item, i) => {
@@ -175,27 +310,37 @@ export class Card extends React.Component {
         return (
           <Animated.View
             {...this.PanResponder.panHandlers}
-            key={item.id} style={[this.rotateAndTranslate, { height: SCREEN_HEIGHT - 120, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+            key={item.id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
 
             <ImageBackground
               style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
               imageStyle={{ borderRadius: 17 }}
               source={item.uri} >
-              <Text style={styles.text}>{item.name} {'\n'} {item.description} {'\n'} {item.hoursPerWeek} {'\n'} {item.externalLink}</Text>
+              <Text style={styles.textAbstract}>
+                <Text style={styles.textTitle}>{item.name}</Text>
+                <Text style={styles.textHours}>{'\n'}{item.hoursPerWeek} hours per week</Text>
+                <Text style={styles.textSpace}>{'\n'}</Text>
+                <Text style={styles.textMain}>{'\n'}{item.description}{'\n'}{item.externalLink}</Text>
+              </Text>
             </ImageBackground>
           </Animated.View>
         )
       } else {
         return (
           <Animated.View
-            key={item.id} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: SCREEN_HEIGHT - 120, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+            key={item.id} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: CARD_HEIGHT, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
             <ImageBackground
               style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
               imageStyle={{ borderRadius: 17 }}
-              source={item.uri} >
-              <Text style={styles.text}> {item.name} {'\n'} {item.description} {'\n'} {item.hoursPerWeek} {'\n'} {item.externalLink}</Text>
+              source={item.uri}>
+              <Text style={styles.textAbstract}>
+                <Text style={styles.textTitle}>{item.name}</Text>
+                <Text style={styles.textHours}>{'\n'}{item.hoursPerWeek} hours per week</Text>
+                <Text style={styles.textSpace}>{'\n'}</Text>
+                <Text style={styles.textMain}>{'\n'}{item.description}{'\n'}{item.externalLink}</Text>
+              </Text>
             </ImageBackground>
           </Animated.View>
         )
@@ -206,8 +351,6 @@ export class Card extends React.Component {
   renderUserDetails = () => {
 
   }
-
-
 
   render() {
     return (
@@ -228,109 +371,11 @@ export class Card extends React.Component {
   }
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
-
-/* var i = 0;
-
-function increaseI() {
-  if (i > projectDetails.length - 2) {
-              i = 0;
-  } else {
-              i++;
-  }
-}
-
-function decreaseI() {
-  if (i < 1) {
-              i = projectDetails.length - 1;
-  } else {
-              i--;
-  }
-}
-
-
-function projectView() {
-  return (
-            <View id="page1" style={[style.container, { flex: 1 }]}>
-
-              <Image source={require("../../../assets/defaultskin.png")} style={{
-                width: "100%",
-                alignSelf: "center",
-                resizeMode: "center",
-                flex: 0.75
-              }} />
-              <Text style={styles.title}>{projectDetails[i].name}</Text>
-              <Text style={styles.label}>{projectDetails[i].description}</Text>
-              <View style={[style.navButtonContainer, { flex: 1 }]}>
-                <NiceButton title="Previous" onPress={() => { decreaseI(); navigation.navigate("Page1"); }} />
-                <NiceButton title="See Project" onPress={() => navigation.navigate("Page2")} />
-                <NiceButton title="Next" onPress={() => { increaseI(); projectView() }} />
-              </View>
-            </View>
-  );
-}
-
-export var ProjectSelector = ({ navigation}) => {
-  const title = React.useState("Project Selector");
-  return (
-            <View id="page1" style={[style.container, { flex: 1 }]}>
-
-              <Image source={require("../../../assets/defaultskin.png")} style={{
-                width: "100%",
-                alignSelf: "center",
-                resizeMode: "center",
-                flex: 0.75
-              }} />
-              <Text style={styles.title}>{projectDetails[i].name}</Text>
-              <Text style={styles.label}>{projectDetails[i].description}</Text>
-              <View style={[style.navButtonContainer, { flex: 1 }]}>
-                {/* <NiceButton title="Previous" onPress={() => { 0 }} /> */
-/* <NiceButton title="Previous" onPress={() => { decreaseI(); navigation.push("Page1") }} />
-                <NiceButton title="See Project" onPress={() => navigation.push("Page2")} />
-                <NiceButton title="Next" onPress={() => { increaseI(); navigation.push("Page1") }} />
-              </View>
-            </View>
-  );
-}; */
-
-
-
-/* export const ProjectExtended = ({navigation}) => {
-  const title = React.useState("Project Selector");
-  return (
-            <View id="page2" style={[style.container, { flex: 1 }]}>
-
-              <Image source={require("../../../assets/defaultskin.png")} style={{
-                width: "100%",
-                alignSelf: "center",
-                resizeMode: "center",
-                flex: 0.75
-              }} />
-              <Text style={styles.title}>{projectDetails[i].name}</Text>
-              <Text style={styles.label}>{projectDetails[i].description}</Text>
-              <Text style={styles.label}>Skills: {projectDetails[i].skills}</Text>
-              <Text style={styles.label}>Hours Per Week: {projectDetails[i].hoursPerWeek}</Text>
-              <Text style={styles.label}>Link: {projectDetails[i].externalLink}</Text>
-            </View>
-  );
-}; */
-
 const Stack = createStackNavigator();
-
-
 export default function ViewProject(props) {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, }} initialRouteName="Page1">
       <Stack.Screen name="Page1" component={Card} />
-      {/* <Stack.Screen name="Page2" component={ProjectExtended} /> */}
-      {/* <Stack.Screen name="Page3" component={PageFix} /> already prev commented out */}
     </Stack.Navigator>
   );
 };
@@ -342,14 +387,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  text: {
+  textAbstract: {
     color: 'white',
-    padding: 10,
+    padding: 20,
     textAlign: 'center',
-    height: 170,
-    top: SCREEN_HEIGHT / 2 + 100,
+    height: CARD_HEIGHT * 0.3,
+    top: CARD_HEIGHT * 0.7,
     backgroundColor: 'rgba(179, 163, 105, .7)',
     fontSize: 15,
+    fontWeight: '300'
+  },
+  textTitle: {
+    fontSize: 25,
+    fontWeight: '400'
+  },
+  textHours: {
+    fontSize: 17,
+    fontWeight: '300'
+  },
+  textMain: {
+    fontSize: 15,
+    fontWeight: '300'
+  },
+  textSpace: {
+    fontSize: 2,
     fontWeight: '300'
   },
   headingText: {
