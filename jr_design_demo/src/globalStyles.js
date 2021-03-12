@@ -75,4 +75,12 @@ export default StyleSheet.create({
         bottom: -250,
         alignItems: 'stretch',
     },
+    selectToggle: {
+      marginBottom: 15,
+      borderRadius: 15,
+      backgroundColor: '#B3A36975',
+      padding: 10,
+      paddingLeft: 20,
+      height: 40
+    }
 });

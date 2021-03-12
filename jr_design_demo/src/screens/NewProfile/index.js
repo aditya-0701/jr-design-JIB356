@@ -2,7 +2,8 @@ import * as React from 'react';
 import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import {Picker} from '@react-native-picker/picker';
+import SectionedMultiSelect from 'react-native-sectioned-multi-select'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import { addUser } from '../../store'
 import styles from '../../globalStyles';
 
@@ -23,21 +24,102 @@ const userDetails = {
   name: "",
   degree: "",
   major: "",
-  interests: "",
-  skills: "",
+  interests: [],
+  skills: [],
 };
 
-
+const degreeLibrary = [{
+  name: "Degree",
+  id: 0,
+  children: [
+    {
+      name: "Graduate",
+      id: 10
+    },
+    {
+      name: "Undergraduate",
+      id: 11
+    }
+  ]
+}];
+const majorLibrary = [{
+  name: "Major",
+  id: 0,
+  children: [
+    {
+      name: "Computer Science",
+      id: 10
+    },
+    {
+      name: "Computational Media",
+      id: 11
+    }
+  ]
+}];
+const skillLibrary = [
+  {
+    name: "Skills",
+    id: 0,
+    children: [
+      {
+        name: "SkillA",
+        id: 10
+      }, {
+        name: "SkillB",
+        id: 11
+      }, {
+        name: "SkillC",
+        id: 12
+      }, {
+        name: "SkillD",
+        id: 13
+      }, {
+        name: "SkillE",
+        id: 14
+      }, {
+        name: "SkillF",
+        id: 15
+      }
+    ]
+  }
+];
+const interestLibrary = [
+  {
+    name: "Interests",
+    id: 0,
+    children: [
+      {
+        name: "interestA",
+        id: 10
+      }, {
+        name: "interestB",
+        id: 11
+      }, {
+        name: "interestC",
+        id: 12
+      }, {
+        name: "interestD",
+        id: 13
+      }, {
+        name: "interestE",
+        id: 14
+      }, {
+        name: "interestF",
+        id: 15
+      }
+    ]
+  }
+];
 
 export const BasicDetails = ({ navigation }) => {
 
   const [emailValue, onChangeEmail] = React.useState('');
   const [passwordValue, onChangePassword] = React.useState('');
   const [name, onChangeName] = React.useState('');
-  const [degree, onChangeDegree] = React.useState('');
-  const [major, onChangeMajor] = React.useState('');
-  const [interests, onChangeInterests] = React.useState('');
-  const [skills, onChangeSkills] = React.useState('');
+  const [degree, onChangeDegree] = React.useState([]);
+  const [major, onChangeMajor] = React.useState([]);
+  const [interests, onChangeInterests] = React.useState([]);
+  const [skills, onChangeSkills] = React.useState([]);
 
   const saveVals = () => {
     userDetails.email= emailValue;
@@ -86,45 +168,72 @@ export const BasicDetails = ({ navigation }) => {
                   />
 
                 <Text style={styles.label}>Degree</Text>
-          <Picker
-            style={styles.inputs}
-            selectedValue = {degree}
-            onValueChange = { (value, index) => onChangeDegree(value)}>
-            <Picker.Item label="--Select Your Degree--" value="unselected"/>
-            <Picker.Item label="Undergraduate" value="Undergraduate"/>
-            <Picker.Item label="Graduate" value="Graduate"/>
-          </Picker>
+                  <SectionedMultiSelect
+                  items={degreeLibrary}
+                  uniqueKey="name"
+                  subKey="children"
+                  selectText="Select your degree..."
+                  IconRenderer={Icon}
+                  showDropDowns={false}
+                  readOnlyHeadings={true}
+                  hideSearch={true}
+                  showChips={true}
+                  single={true}
+                  onSelectedItemsChange={onChangeDegree}
+                  selectedItems={degree}
+                  styles={[styles, localStyle]}
+                />
 
           <Text style={styles.label}>Major</Text>
-          <Picker
-            style={styles.inputs}
-            selectedValue = {major}
-            onValueChange = { (value, index) => onChangeMajor(value)}>
-            <Picker.Item label="--Select Your Major--" value="unselected"/>
-            <Picker.Item label="Computer Science" value="Computer Science"/>
-            <Picker.Item label="Computational Media" value="Computational Media"/>
-          </Picker>
+            <SectionedMultiSelect
+            items={majorLibrary}
+            uniqueKey="name"
+            subKey="children"
+            selectText="Select your major..."
+            IconRenderer={Icon}
+            showDropDowns={false}
+            readOnlyHeadings={true}
+            hideSearch={true}
+            showChips={true}
+            single={true}
+            onSelectedItemsChange={onChangeMajor}
+            selectedItems={major}
+            styles={[styles, localStyle]}
+          />
 
           <Text style={styles.label}>Interests</Text>
-          <Picker
-            style={styles.inputs}
-            selectedValue = {interests}
-            onValueChange = { (value, index) => onChangeInterests(value)}>
-            <Picker.Item label="no multiselect yet..." value="unselected"/>
-            <Picker.Item label="opt1" value="opt2"/>
-            <Picker.Item label="opt2" value="opt2"/>
-          </Picker>
+            <SectionedMultiSelect
+            items={interestLibrary}
+            uniqueKey="name"
+            subKey="children"
+            selectText="Select some interests..."
+            IconRenderer={Icon}
+            showDropDowns={false}
+            readOnlyHeadings={true}
+            hideSearch={true}
+            showChips={false}
+            onSelectedItemsChange={onChangeInterests}
+            selectedItems={interests}
+            styles={[styles, localStyle]}
+          />
 
           <Text style={styles.label}>Skills</Text>
-          <Picker
-            style={styles.inputs}
-            selectedValue = {skills}
-            onValueChange = { (value, index) => onChangeSkills(value)}>
-            <Picker.Item label="no multiselect yet..." value="unselected"/>
-            <Picker.Item label="opt1" value="opt2"/>
-            <Picker.Item label="opt2" value="opt2"/>
-          </Picker>
+            <SectionedMultiSelect
+            items={skillLibrary}
+            uniqueKey="name"
+            subKey="children"
+            selectText="Select your skills..."
+            IconRenderer={Icon}
+            showDropDowns={false}
+            readOnlyHeadings={true}
+            hideSearch={true}
+            showChips={false}
+            onSelectedItemsChange={onChangeSkills}
+            selectedItems={skills}
+            styles={[styles, localStyle]}
+          />
         </KeyboardAvoidingView>
+        <View><Text>{"\n"}</Text></View>
       </ScrollView>
       <View style={ localStyle.navButtonContainer }>
         <NiceButton title="Exit" onPress={() => navigation.goBack()}/>
@@ -252,7 +361,13 @@ const localStyle = StyleSheet.create({//File-specific
     alignItems: 'stretch',
     justifyContent: 'center',
     margin: 5,
-    marginTop: 5
+    marginTop: 5,
+    borderRadius: 15,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderWidth: 2,
+    borderBottomWidth: 0,
+    borderColor: "black"
   },
   container: {
       backgroundColor: '#F5F5F5',
@@ -261,6 +376,14 @@ const localStyle = StyleSheet.create({//File-specific
       padding: 15,
       marginTop: 30,
       flex: 1
+  },
+  selectToggle: {
+    marginBottom: 15,
+    borderRadius: 15,
+    backgroundColor: '#B3A36975',
+    padding: 10,
+    paddingLeft: 20,
+    height: 40
   }
 });
 
