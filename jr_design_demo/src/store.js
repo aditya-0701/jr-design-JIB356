@@ -60,12 +60,12 @@ export async function userLogin( params ) {
 }
 
 
-export function addUser( params ) {
+export function addStudent( params ) {
     superagent.post(URI + '/student')
     .send( params )
 };
 
-export function updateUser( params ) {
+export function updateStudent( params ) {
     let rtrUser = null;
     const { email } = params;
     var gtUsername = email.split('@')[0];
@@ -76,7 +76,7 @@ export function updateUser( params ) {
 } 
 
 
-export function getUser( params ) {
+export function getStudent( params ) {
     const { email }  = ( params != null ) ? params : {};
     if (email != 'undefined' && email != null) {
         var gtUsername = email.split('@')[0];
@@ -88,11 +88,205 @@ export function getUser( params ) {
     }
 } 
 
-export function getAllUsers ( params ) {
+export function getAllStudents ( params ) {
     superagent.get(URI + '/student')
     .send()
 }
 
+
 //getUser({'gtUsername': 'asudarshan30@gatech.edu'});
 //getAllUsers();
-    
+
+
+// export function userExists( params ) {
+//     let exists = false;
+//     const { email, pass } = params;
+//     var gtUsername = email.split('@')[0];
+//     console.log(gtUsername);
+
+//     superagent.get(URI + '/student')
+//     .query({'gtUsername': gtUsername})
+//     .send()
+// }
+
+/*
+    To be implemented on backend, might not be necessary to have a separate function in store.js
+*/
+// export async function alumni( params ) {
+//     const { email, pass } = params;
+//     const gtUsername = email.split('@')[0];
+//     console.log(gtUsername + " GT Username");
+//     const sessionId = await AsyncStorage.getItem('sessionId');
+//     console.log(sessionId + " Session ID")
+//     //var value = false;
+//     if (sessionId != null && sessionId != '') {
+//         // console.log("Session ID Found")
+//         // return superagent.get(URI + '/login')
+//         // .query({'gtUsername': gtUsername, 'sessionId': sessionId})
+//         // .send()
+//     }
+//     console.log("Session ID NOT Found")
+//     return superagent.post(URI + '/login')
+//     .send({'gtUsername': gtUsername, 'password': pass})
+// }
+
+
+export function addAlumni( params ) {
+    superagent.post(URI + '/alumni')
+    .send( params )
+};
+
+export function updateAlumni( params ) {
+    superagent.put(URI + '/alumni')
+    .send( params )
+} 
+
+
+export function getAlumni( params ) {
+    const { name }  = ( params != null ) ? params : {};
+    if (name != 'undefined' && name != null) {
+        return superagent.get(URI + '/alumni')
+        .query({'name':  name})
+        .send()
+    }
+} 
+
+export function getAllAlumni ( params ) {
+    superagent.get(URI + '/alumni')
+    .send()
+}
+
+
+// Skills
+export function getStudentSkills ( params ) {
+    const { email }  = ( params != null ) ? params : {};
+    if (email != 'undefined' && email != null) {
+        var gtUsername = email.split('@')[0];
+        console.log(gtUsername);
+
+        return superagent.get(URI + '/skills')
+        .query({'gtUsername':  gtUsername})
+        .send()
+    }
+}
+
+export function updateSkills ( params ) {
+    return superagent.put(URI + '/skills')
+    .send( params )
+}
+
+    // TBD in backend
+export function addSkills ( params ) {
+    return superagent.post(URI + '/skills')
+    .send( params )
+}
+
+    // TBD in backend
+export function getAllSkills ( params ) {
+    superagent.get(URI + '/skills')
+}
+
+// Interests
+export function getStudentInterests ( params ) {
+    const { email }  = ( params != null ) ? params : {};
+    if (email != 'undefined' && email != null) {
+        var gtUsername = email.split('@')[0];
+        console.log(gtUsername);
+
+        return superagent.get(URI + '/interests')
+        .query({'gtUsername':  gtUsername})
+        .send()
+    }
+}
+
+export function updateInterests ( params ) {
+    return superagent.put(URI + '/skills')
+    .send( params )
+}
+
+    // TBD in backend
+export function addInterests ( params ) {
+    return superagent.post(URI + '/skills')
+    .send( params )
+}
+
+    // TBD in backend
+export function getAllInterests ( params ) {
+    superagent.get(URI + '/skills')
+}
+
+// Experiences
+export function getStudentExperiences ( params ) {
+    const { email }  = ( params != null ) ? params : {};
+    if (email != 'undefined' && email != null) {
+        var gtUsername = email.split('@')[0];
+        console.log(gtUsername);
+
+        return superagent.get(URI + '/experiences')
+        .query({'gtUsername':  gtUsername})
+        .send()
+    }
+}
+
+export function updateExperiences ( params ) {
+    return superagent.put(URI + '/experiences')
+    .send( params )
+}
+
+    // TBD in backend
+export function addExperiences ( params ) {
+    return superagent.post(URI + '/experiences')
+    .send( params )
+}
+
+    // TBD in backend
+export function getAllExperiences ( params ) {
+    superagent.get(URI + '/experiences')
+}
+
+
+// Student Projects
+export function getStudentProjectInterests ( params ) {
+    const { email }  = ( params != null ) ? params : {};
+    if (email != 'undefined' && email != null) {
+        var gtUsername = email.split('@')[0];
+        console.log(gtUsername);
+
+        return superagent.get(URI + '/projectInterests')
+        .query({'gtUsername':  gtUsername})
+        .send()
+    }
+}
+
+export function updateProjectInterests ( params ) {
+    return superagent.put(URI + '/projectInterests')
+    .send( params )
+}
+
+export function addProjectInterests ( params ) {
+    return superagent.post(URI + '/projectInterests')
+    .send( params )
+}
+
+// Projects
+export function getAllProjects ( params ) {
+    return superagent.get(URI + '/projects')
+    .send()
+}
+
+export function getProject ( params ) {
+    return superagent.get(URI + '/projects')
+    .query (params)
+    .send()
+}
+
+
+export function updateProject ( params ) {
+    return superagent.put(URI + '/projects')
+    .send( params )
+}
+
+export function addProject ( params ) {
+    return superagent.post(URI + '/projects')
+    .send( params )
+}

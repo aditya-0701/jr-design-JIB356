@@ -3,7 +3,7 @@ import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {Picker} from '@react-native-picker/picker';
-import { addUser } from '../../store'
+import { addStudent } from '../../store'
 import styles from '../../globalStyles';
 
 class NiceButton extends React.Component {
@@ -51,7 +51,7 @@ export const BasicDetails = ({ navigation }) => {
     userDetails.interests= interests,
     userDetails.skills= skills;
     userDetails.pwd= passwordValue;
-    addUser(userDetails)
+    addStudent(userDetails)
     .then((resp) => {
       console.log(resp);
       navigation.navigate("Page2");
@@ -213,7 +213,7 @@ export const PrevExperience = ({ navigation }) => {
 export const ExtSites = ({ navigation }) => {
   const title = React.useState("Links to External Services");
   const login = () => {
-      addUser(userDetails);
+      addStudent(userDetails);
       navigation.reset({
           index: 0,
           routes: [

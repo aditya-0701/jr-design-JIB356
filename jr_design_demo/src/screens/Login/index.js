@@ -12,6 +12,7 @@ import styles from '../../globalStyles';
 
 const Stack = createStackNavigator();
 
+var userRole = 'S';
 
 export const MainLogin = ( props ) => {
 
@@ -123,6 +124,7 @@ const LoginPage = ( props ) => {
 }
 
 export const StudentLogin = ( props ) => {
+    userRole = 'S';
     return (
         <ScrollView contentContainerStyle={ styles.container }>
             <Text style = {styles.title} >
@@ -134,6 +136,7 @@ export const StudentLogin = ( props ) => {
 };
 
 export const AlumniLogin = ( props ) => {
+    userRole = 'A';
     return (
         <ScrollView contentContainerStyle={ styles.container }>
             <Text style = {styles.title} >

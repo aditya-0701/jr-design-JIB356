@@ -2,7 +2,7 @@ import  React, { useState } from 'react';
 import { View, StyleSheet, Text, Button, TextInput, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { getUser } from '../../store.js'
+import { getStudent, getAlumni } from '../../store.js'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
 import styles from '../../globalStyles';
@@ -67,7 +67,7 @@ const Profile = ( props ) => {
         console.log(props)
         var em = (props != 'undefined' && props != null) ? props.route.params.email : null;
         if (em == null) return;
-        getUser({email: em})
+        getStudent({email: em})
         .then((resp) => {
             console.log(resp.body);
             onChangeFirstName(resp.body.firstName)
