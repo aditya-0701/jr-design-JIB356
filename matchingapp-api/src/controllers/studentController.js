@@ -24,7 +24,7 @@ const four00 = (err) => {
         'body': JSON.stringify({
             'message': 'Invalid request. Please check your input parameters and retry.',
             'status': 400,
-            'body': err
+            'error': err
         }),
         'statusCode': 400,
         'headers': {
@@ -52,8 +52,9 @@ exports.create = async ( req ) => {
 };
 
 // Retrieve all Students from the database.
-exports.getAll = async ( req = null ) => {
+exports.getAll = async ( req = {} ) => {
     try {
+        req = (req == null) ? {} : r
         var result = await Student.getAll( req );
         console.log(result);
         if (result === null) {

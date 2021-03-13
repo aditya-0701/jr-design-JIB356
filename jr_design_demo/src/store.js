@@ -88,7 +88,7 @@ export function getStudent( params ) {
     }
 } 
 
-export function getAllStudents ( params ) {
+export function getAllStudents ( ) {
     superagent.get(URI + '/student')
     .send()
 }
@@ -151,7 +151,7 @@ export function getAlumni( params ) {
     }
 } 
 
-export function getAllAlumni ( params ) {
+export function getAllAlumni ( ) {
     superagent.get(URI + '/alumni')
     .send()
 }
@@ -182,7 +182,7 @@ export function addSkills ( params ) {
 }
 
     // TBD in backend
-export function getAllSkills ( params ) {
+export function getAllSkills ( ) {
     superagent.get(URI + '/skills')
 }
 
