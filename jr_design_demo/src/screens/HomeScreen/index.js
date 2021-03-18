@@ -24,6 +24,9 @@ const Home = ( props ) => {
   const viewProfiles = () => {
     navigation.navigate("ViewProfile");
   }
+  const viewSaved = () => {
+    navigation.navigate("ViewSaved");
+  }
 
     return (
         <View style = { [styles.container, {alignItems: 'center'}] }>
@@ -36,6 +39,9 @@ const Home = ( props ) => {
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={ viewProfiles }>
               <Text style={styles.buttonText}>View Profiles</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={ viewSaved }>
+              <Text style={styles.buttonText}>View Saved</Text>
             </TouchableOpacity>
         </View>
     )

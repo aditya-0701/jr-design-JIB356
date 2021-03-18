@@ -8,6 +8,7 @@ import NewProject from './screens/NewProject'
 import HomeScreen from './screens/HomeScreen'
 import ViewProfile from './screens/ViewProfile'
 import ViewProject from './screens/ViewProject'
+import ShowSaved from "./screens/ViewSaved"
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,7 @@ export default function App ( props ) {
                 <Stack.Screen name="HomeScreen" component={ HomeScreen } />
                 <Stack.Screen name="ViewProject" component={ ViewProject } />
                 <Stack.Screen name="ViewProfile" component={ ViewProfile } />
+                <Stack.Screen name="ViewSaved" component={ ViewSaved } />
             </Stack.Navigator>
         </NavigationContainer>
     )
