@@ -1,7 +1,5 @@
-//const superagent = require('superagent');
-import superagent from 'superagent';
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
-const URI = 'https://i0n5tznua4.execute-api.us-east-2.amazonaws.com';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, Button, TextInput, TouchableOpacity } from 'react-native';
 
 const users = [
     {
@@ -11,7 +9,7 @@ const users = [
         major: 'Computer Science',
         skills: 'Porgamming',
         degree: 'B.S',
-        interests: 'Sports, Gaming, Programming' 
+        interests: 'Sports, Gaming, Programming'
     },
     {
         email: "sam.sanders@gatech.edu",
@@ -21,78 +19,62 @@ const users = [
         major: 'Computer Science',
         skills: 'Porgamming',
         degree: 'B.S',
+    },
+    {
+        email: "a",
+        pass: "a",
+        name: 'a',
+        interests: 'Sports, Music',
+        major: 'Computer Science',
+        skills: 'Porgamming',
+        degree: 'B.S',
     }
 ]
 
-/*
- Function checks whether the student with the given gtUsername
-*/
-export function userExists( params ) {
+export function userExists(props) {
     let exists = false;
-    const { email, pass } = params;
-    var gtUsername = email.split('@')[0];
-    console.log(gtUsername);
-
-    superagent.get(URI + '/student')
-    .query({'gtUsername': gtUsername})
-    .send()
+    const { email, pass } = props;
+    users.forEach((user) => {
+        if (email.toLowerCase() === user.email && pass === user.pass) {
+            console.log(email);
+            exists = true;
+        }
+    })
+    return exists;
 }
 
-/*
-    Logs in the user with the given username and password combination
-*/
-export async function userLogin( params ) {
-    const { email, pass } = params;
-    const gtUsername = email.split('@')[0];
-    console.log(gtUsername + " GT Username");
-    const sessionId = await AsyncStorage.getItem('sessionId');
-    console.log(sessionId + " Session ID")
-    //var value = false;
-    if (sessionId != null && sessionId != '') {
-        // console.log("Session ID Found")
-        // return superagent.get(URI + '/login')
-        // .query({'gtUsername': gtUsername, 'sessionId': sessionId})
-        // .send()
+export function addUser(props) {
+    const {
+        email,
+        pass,
+        name,
+        major,
+        skills,
+        degree,
+        interests } = props;
+    if (!userExists({ email, pass })) {
+        users.push({
+            email: email,
+            pass: pass,
+            name: name,
+            major: major,
+            skills: skills,
+            degree: degree,
+            interests: interests,
+        });
+        return true;
     }
-    console.log("Session ID NOT Found")
-    return superagent.post(URI + '/login')
-    .send({'gtUsername': gtUsername, 'password': pass})
-}
-
-
-export function addUser( params ) {
-    superagent.post(URI + '/student')
-    .send( params )
+    return false;
 };
 
-export function updateUser( params ) {
+export function getUser(props) {
     let rtrUser = null;
-    const { email } = params;
-    var gtUsername = email.split('@')[0];
-    console.log(gtUsername);
-
-    superagent.put(URI + '/student')
-    .send( params )
-} 
-
-
-export function getUser( params ) {
-    const { email }  = ( params != null ) ? params : {};
-    if (email != 'undefined' && email != null) {
-        var gtUsername = email.split('@')[0];
-        console.log(gtUsername);
-
-        return superagent.get(URI + '/student')
-        .query({'gtUsername':  gtUsername})
-        .send()
-    }
-} 
-
-export function getAllUsers ( params ) {
-    superagent.get(URI + '/student')
-    .send()
+    const { email } = props;
+    users.forEach((user) => {
+        if (email.toLowerCase() === user.email) {
+            //console.log(email);
+            rtrUser = user;
+        }
+    })
+    return rtrUser;
 }
-
-//getUser({'gtUsername': 'asudarshan30@gatech.edu'});
-//getAllUsers();
-    

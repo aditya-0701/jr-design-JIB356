@@ -6,7 +6,6 @@ import { getUser } from '../../store.js'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
 import styles from '../../globalStyles';
-
 //import MainLogin from './mainLogin.js';
 // import AlumniLogin from './alumniLogin.js';
 // import StudentLogin from './studentLogin.js';
