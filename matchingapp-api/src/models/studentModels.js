@@ -63,26 +63,26 @@ Student.getAll = async ( params ) => {
     let gtUnames = [];
     
     if (params.skills) {
-        let skills = 'SELECT gtUsername from StudentSkills WHERE skillId IN' + connection.escape(params.skills);
+        let skills = 'SELECT gtUsername from StudentSkills WHERE skillId IN ' + connection.escape([params.skills]);
         let skillIds = await connection.query(skills);
         gtUnames.push(skillIds.map(element => element['gtUsername']));
         
     }
     
     if (params.interests) {
-        let interests = 'SELECT gtUsername from StudentInterests WHERE interestId IN' + connection.escape(params.interests);
+        let interests = 'SELECT gtUsername from StudentInterests WHERE interestId IN ' + connection.escape([params.interests]);
         let interestIds = await connection.query(interests);
         gtUnames.push(interestIds.map(element => element['gtUsername']));
     }
     
       if (params.degree) {
-        let degrees = 'SELECT gtUsername from StudentDegrees WHERE degreeId IN' + connection.escape(params.degree);
+        let degrees = 'SELECT gtUsername from StudentDegrees WHERE degreeId IN ' + connection.escape([params.degree]);
         let degreeIds = await connection.query(degrees);
         gtUnames.push(degreeIds.map(element => element['gtUsername']));
     }
     
     if (params.major) {
-        let majors = 'SELECT gtUsername from StudentMajors WHERE majorId IN' + connection.escape(params.major);
+        let majors = 'SELECT gtUsername from StudentMajors WHERE majorId IN ' + connection.escape([params.major]);
         let majorIds = await connection.query(majors);
         gtUnames.push(majorIds.map(element => element['gtUsername']));
     }
@@ -99,7 +99,7 @@ Student.getAll = async ( params ) => {
         } else {
             query += ' WHERE '
         }
-        query += 'weekHours > ' + connection.escape(params.hours);
+        query += 'weekHours >= ' + connection.escape(params.hours);
     }
     
     var students = await connection.query(query);

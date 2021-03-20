@@ -54,7 +54,7 @@ exports.create = async ( req ) => {
 // Retrieve all Students from the database.
 exports.getAll = async ( req = {} ) => {
     try {
-        req = (req == null) ? {} : r
+        req = (req == null) ? {} : req;
         var result = await Student.getAll( req );
         console.log(result);
         if (result === null) {

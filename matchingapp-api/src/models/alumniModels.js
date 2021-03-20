@@ -131,7 +131,71 @@ Alumni.addProject = async ( params ) => {
 };
 
 Alumni.getAlumniProjects = async ( params ) => {
+    let query = `SELECT projectTitle, projectDescription, startDate, endDate, projectAlumni, weekHours FROM Projects`;
+    let projIds = [];
     
-}
+    if (params.skills) {
+        let skills = 'SELECT projectId from ProjectSkills WHERE skillId IN ' + connection.escape([params.skills]);
+        let skillIds = await connection.query(skills);
+        projIds.push(skillIds.map(element => element['gtUsername']));
+        
+    }
+    
+    if (params.interests) {
+        let interests = 'SELECT projectId from ProjectInterests WHERE interestId IN ' + connection.escape([params.interests]);
+        let interestIds = await connection.query(interests);
+        projIds.push(interestIds.map(element => element['gtUsername']));
+    }
+    
+    // To be implemented in DB
+    // if (params.degree) {
+    //     let degrees = 'SELECT projectId from ProjectDegrees WHERE degreeId IN ' + connection.escape([params.degree]);
+    //     let degreeIds = await connection.query(degrees);
+    //     projIds.push(degreeIds.map(element => element['gtUsername']));
+    // }
+    
+    // if (params.major) {
+    //     let majors = 'SELECT projectId from ProjectMajors WHERE majorId IN ' + connection.escape([params.major]);
+    //     let majorIds = await connection.query(majors);
+    //     projIds.push(majorIds.map(element => element['gtUsername']));
+    // }
+    var whereActive = false;
+    
+    if (projIds != null && projIds != [] && projIds.length != 0) {
+        whereActive = true;
+        query += ' WHERE gtUsername IN ' + connection.escape(projIds);
+    }
+    
+    
+    if (whereActive) {
+        query += ' AND '    
+    } else {
+        query += ' WHERE '
+    }
+    if (params.hours && params.startDate && params.endDate) {
+        query += 'weekHours >= ' + connection.escape(params.hours);
+        query += ' AND ' + 'startDate >= ' + connection.escape(params.startDate);
+        query += ' AND ' + 'endDate z<= ' + connection.escape(params.endDate);
+        
+    } else if (params.hours && params.startDate) {
+        query += 'weekHours >= ' + connection.escape(params.hours);
+        query += ' AND ' + 'startDate >= ' + connection.escape(params.startDate);
+    } else if (params.hours && params.endDate) {
+        query += 'weekHours >= ' + connection.escape(params.hours);
+        query += ' AND ' + 'endDate <= ' + connection.escape(params.endDate);
+    } else if (params.startDate && params.endDate) {
+        query += 'startDate >= ' + connection.escape(params.startDate);
+        query += ' AND ' + 'endDate <= ' + connection.escape(params.endDate);
+    } else if (params.hours) {
+        query += 'weekHours >= ' + connection.escape(params.hours);
+    } else if (params.startDate) {
+        query += 'startDate >= ' + connection.escape(params.startDate);
+    } else if (params.endDate) {
+        query += 'endDate <= ' + connection.escape(params.endDate);
+    }
+    
+    var students = await connection.query(query);
+    return students;
+};
 
 module.exports = Alumni
