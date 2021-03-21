@@ -9,6 +9,8 @@ import HomeScreen from './screens/HomeScreen'
 import ViewProfile from './screens/ViewProfile'
 import ViewProject from './screens/ViewProject'
 import SavedProjects from './screens/SavedProjects'
+import SearchProject from './screens/SearchProject'
+import SearchProfile from './screens/SearchProfile';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +25,8 @@ export default function App(props) {
                 <Stack.Screen name="ViewProject" component={ViewProject} />
                 <Stack.Screen name="ViewProfile" component={ViewProfile} />
                 <Stack.Screen name="SavedProjects" component={SavedProjects} />
+                <Stack.Screen name="SearchProject" component={SearchProject} />
+                <Stack.Screen name="SearchProfile" component={SearchProfile} />
             </Stack.Navigator>
         </NavigationContainer>
     )

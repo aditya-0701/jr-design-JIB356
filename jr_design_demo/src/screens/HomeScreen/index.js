@@ -4,9 +4,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { getUser } from '../../store.js'
 import styles from '../../globalStyles';
-//import MainLogin from './mainLogin.js';
-// import AlumniLogin from './alumniLogin.js';
-// import StudentLogin from './studentLogin.js';
 
 const Tab = new createBottomTabNavigator();
 
@@ -24,6 +21,12 @@ const Home = (props) => {
     const savedProjects = () => {
         navigation.navigate("SavedProjects");
     }
+    const searchProject = () => {
+        navigation.navigate("SearchProject");
+    }
+    const searchProfile = () => {
+        navigation.navigate("SearchProfile");
+    }
 
     return (
         <View style={[styles.container, { alignItems: 'center' }]}>
@@ -39,6 +42,12 @@ const Home = (props) => {
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={savedProjects}>
                 <Text style={styles.buttonText}>Saved Projects</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={searchProject}>
+                <Text style={styles.buttonText}>Search Projects</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={searchProfile}>
+                <Text style={styles.buttonText}>Search Profiles</Text>
             </TouchableOpacity>
         </View>
     )
