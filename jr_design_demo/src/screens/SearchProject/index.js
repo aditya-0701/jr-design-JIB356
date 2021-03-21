@@ -2,17 +2,20 @@ import * as React from 'react';
 import { View, ScrollView, Switch, Text, Dimensions, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import styles from '../../globalStyles';
 
 class NiceButton extends React.Component {
   constructor(props) {super(props);}
   render() {
     return (
-      <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
+      <TouchableOpacity style={style.button} onPress={this.props.onPress}>
         <Text style={styles.buttonText}>{this.props.title}</Text>
       </TouchableOpacity>
     );
   }
 }
+
+const SCREEN_WIDTH = Dimensions.get('window').width
 
 export const ProjectFilterPage = ({ navigation }) => {
   const [search, onChangeSearch] = React.useState('');
@@ -53,24 +56,24 @@ export const ProjectFilterPage = ({ navigation }) => {
   const toggleInterest6 = () => onChangeInterest6(previousState => !previousState);
 
   return(
-    <View style={styles.container} >
+    <View style={style.container} >
       <ScrollView>
         <KeyboardAvoidingView>
          <View style={{padding:5}}></View>
           <TextInput
             placeholder="Search"
-            style={styles.inputs}
+            style={style.inputs}
             value = { search }
             onChangeText = { (text) => onChangeSearch(text)}
           />
-          <Text style={styles.label}>Skills Required</Text>
+          <Text style={style.label}>Skills Required</Text>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
               onValueChange={toggleSkill1}
               value={skill1}
             />
             <View style={{padding: 5}}></View>
-            <Text style={styles.label2}>Skill 1</Text>
+            <Text style={style.label2}>Skill 1</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -78,7 +81,7 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={skill2}
             />
             <View style={{padding: 5}}></View>
-            <Text style={styles.label2}>Skill 2</Text>
+            <Text style={style.label2}>Skill 2</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -86,7 +89,7 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={skill3}
             />
             <View style={{padding: 5}}></View>
-            <Text style={styles.label2}>Skill 3</Text>
+            <Text style={style.label2}>Skill 3</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -94,7 +97,7 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={skill4}
             />
             <View style={{padding: 5}}></View>
-            <Text style={styles.label2}>Skill 4</Text>
+            <Text style={style.label2}>Skill 4</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -102,7 +105,7 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={skill5}
             />
             <View style={{padding: 5}}></View>
-            <Text style={styles.label2}>Skill 5</Text>
+            <Text style={style.label2}>Skill 5</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -110,55 +113,55 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={skill6}
             />
             <View style={{padding: 5}}></View>
-            <Text style={styles.label2}>Skill 6</Text>
+            <Text style={style.label2}>Skill 6</Text>
           </View>
-          <Text style={styles.label}>Hours/Week Required</Text>
+          <Text style={style.label}>Hours/Week Required</Text>
           <TextInput
             placeholder="Min Hours/Week"
-            style={styles.inputs}
+            style={style.inputs}
             value = { minHours }
             onChangeText = { (text) => onChangeMinHours(text)}
           />
           <TextInput
             placeholder="Max Hours/Week"
-            style={styles.inputs}
+            style={style.inputs}
             value = { maxHours }
             onChangeText = { (text) => onChangeMaxHours(text)}
           />
-          <Text style={styles.label}>Start Date (DD/MM/YY)</Text>
+          <Text style={style.label}>Start Date (DD/MM/YY)</Text>
           <TextInput
             placeholder="Min Start Date"
-            style={styles.inputs}
+            style={style.inputs}
             value = { minStart }
             onChangeText = { (text) => onChangeMinStart(text)}
           />
           <TextInput
             placeholder="Max Start Date"
-            style={styles.inputs}
+            style={style.inputs}
             value = { maxStart }
             onChangeText = { (text) => onChangeMaxStart(text)}
           />
-          <Text style={styles.label}>End Date (DD/MM/YY)</Text>
+          <Text style={style.label}>End Date (DD/MM/YY)</Text>
           <TextInput
             placeholder="Min End Date"
-            style={styles.inputs}
+            style={style.inputs}
             value = { minEnd }
             onChangeText = { (text) => onChangeMinEnd(text)}
           />
           <TextInput
             placeholder="Max End Date"
-            style={styles.inputs}
+            style={style.inputs}
             value = { maxEnd }
             onChangeText = { (text) => onChangeMaxEnd(text)}
           />
-          <Text style={styles.label}>Project Interests</Text>
+          <Text style={style.label}>Project Interests</Text>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
               onValueChange={toggleInterest1}
               value={interest1}
             />
             <View style={{padding: 5}}></View>
-            <Text style={styles.label2}>Interest 1</Text>
+            <Text style={style.label2}>Interest 1</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -166,7 +169,7 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={interest2}
             />
             <View style={{padding: 5}}></View>
-            <Text style={styles.label2}>Interest 2</Text>
+            <Text style={style.label2}>Interest 2</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -174,7 +177,7 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={interest3}
             />
             <View style={{padding: 5}}></View>
-            <Text style={styles.label2}>Interest 3</Text>
+            <Text style={style.label2}>Interest 3</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -182,7 +185,7 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={interest4}
             />
             <View style={{padding: 5}}></View>
-            <Text style={styles.label2}>Interest 4</Text>
+            <Text style={style.label2}>Interest 4</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -190,7 +193,7 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={interest5}
             />
             <View style={{padding: 5}}></View>
-            <Text style={styles.label2}>Interest 5</Text>
+            <Text style={style.label2}>Interest 5</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -198,11 +201,15 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={interest6}
             />
             <View style={{padding: 5}}></View>
-            <Text style={styles.label2}>Interest 6</Text>
+            <Text style={style.label2}>Interest 6</Text>
           </View>
-          <View style={{padding:20}}></View>
+          <View style={{padding:40}}></View>
         </KeyboardAvoidingView>
       </ScrollView>
+      <View style={ style.buttonContainer }>
+        <NiceButton title="Back" onPress={() => navigation.goBack()}/>
+        <NiceButton title="Submit" onPress={() => console.log("The submit button has been pressed!")}/>
+      </View>
     </View>
   );
 }
@@ -217,7 +224,21 @@ export default function SearchProject( props ) {
   );
 };
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
+  buttonContainer: {
+    position: "absolute",
+    bottom: 0,
+    alignSelf: 'center',
+    //width: "100%",
+    backgroundColor: '#F5F5F5',
+    flexDirection: "row",
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    margin: 5,
+    marginTop: 5,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   container: {
     backgroundColor: '#F5F5F5',
     color: '#F5F5F5',
@@ -247,5 +268,17 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingLeft: 20,
     height: 40
+  },
+  button: {
+      alignItems: 'center',
+      borderRadius: 15,
+      backgroundColor: '#B3A369',
+      height: 40,
+      width: SCREEN_WIDTH / 2.5,
+      justifyContent: "center",
+      margin: 20,
+      marginVertical: 10,
+      paddingHorizontal: 10,
+      textAlign: 'center'
   },
 });
