@@ -2,6 +2,8 @@ import * as React from 'react';
 import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import SectionedMultiSelect from 'react-native-sectioned-multi-select'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import styles from '../../globalStyles';
 
 class NiceButton extends React.Component {
@@ -23,13 +25,39 @@ const projectDetails = {
   externalLink: ""
 };
 
-
+const skillLibrary = [
+  {
+    name: "Skills",
+    id: 0,
+    children: [
+      {
+        name: "SkillA",
+        id: 10
+      }, {
+        name: "SkillB",
+        id: 11
+      }, {
+        name: "SkillC",
+        id: 12
+      }, {
+        name: "SkillD",
+        id: 13
+      }, {
+        name: "SkillE",
+        id: 14
+      }, {
+        name: "SkillF",
+        id: 15
+      }
+    ]
+  }
+];
 
 export const BasicDetails = ({ navigation }) => {
 
   const [name, onChangeName] = React.useState('');
   const [description, onChangeDescription] = React.useState('');
-  const [skills, onChangeSkills] = React.useState('');
+  const [skills, onChangeSkills] = React.useState([]);
   const [hoursPerWeek, onChangeHours] = React.useState('');
   const [externalLink, onChangeExternalLink] = React.useState('');
 
@@ -62,11 +90,19 @@ export const BasicDetails = ({ navigation }) => {
             style = {styles.inputs}
         />
         <Text style={styles.label}>What Skills Would Be Useful for Your Project?</Text>
-        <TextInput
-            placeholder="Dropdown placeholder"
-            style={styles.inputs}
-            value = { skills }
-            onChangeText = { (text) => onChangeSkills(text)}
+          <SectionedMultiSelect
+          items={skillLibrary}
+          uniqueKey="name"
+          subKey="children"
+          selectText="Select some skills..."
+          IconRenderer={Icon}
+          showDropDowns={false}
+          readOnlyHeadings={true}
+          hideSearch={true}
+          showChips={false}
+          onSelectedItemsChange={onChangeSkills}
+          selectedItems={skills}
+          styles={[styles, localStyle]}
         />
         <Text style={styles.label}>How many Hours per week are expected?</Text>
         <TextInput
@@ -136,7 +172,13 @@ const localStyle = StyleSheet.create({//File-specific
     alignItems: 'stretch',
     justifyContent: 'center',
     margin: 5,
-    marginTop: 5
+    marginTop: 5,
+    borderRadius: 15,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderWidth: 2,
+    borderBottomWidth: 0,
+    borderColor: "black"
   },
   container: {
       backgroundColor: '#F5F5F5',
