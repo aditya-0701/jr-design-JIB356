@@ -57,8 +57,9 @@ const LoginPage = ( props ) => {
         userLogin( { email: emailValue, pass: passwordValue } )
         .then(async (resp) => {
             console.log("Response: " + JSON.stringify(resp.body))
+            console.log(resp.body.gtUsername);
             const gtUsername = emailValue.split('@')[0];
-            if (resp.body != null && resp.body.gtUsername == gtUsername && resp.status == 200) {
+            if (resp.body != null && resp.status == 200) {
                 try {
                     await AsyncStorage.setItem('sessionId', resp.body.sessionId)
                     

@@ -51,15 +51,6 @@ export const BasicDetails = ({ navigation }) => {
     userDetails.interests= interests,
     userDetails.skills= skills;
     userDetails.pwd= passwordValue;
-    addStudent(userDetails)
-    .then((resp) => {
-      console.log(resp);
-      navigation.navigate("Page2");
-    })
-    .catch((err) => {
-      console.log(err);
-      alert("An error occurred in user creation. Please check your inputs and try again.")
-    })
   }
 
   return (
@@ -155,7 +146,18 @@ export const BasicDetails = ({ navigation }) => {
 
 export const PictureResume = ({ navigation }) => {
   const title = React.useState("Profile Picture and Resume");
-
+  const saveVals = () => {
+    userDetails.email= emailValue;
+    userDetails.pass = passwordValue;
+    userDetails.firstName= firstName;
+    userDetails.lastName= lastName;
+    userDetails.degree= degree;
+    userDetails.major= major;
+    userDetails.interests= interests,
+    userDetails.skills= skills;
+    userDetails.pwd= passwordValue;
+    navigation.navigate("Page3");
+  }
   return (
     <View id="page2" style={[localStyle.container, {flex: 1}]}>
 
@@ -173,7 +175,7 @@ export const PictureResume = ({ navigation }) => {
 
       <View style={[localStyle.navButtonContainer, {flex: 1}]}>
         <NiceButton title="Basic Info" onPress={() => navigation.navigate("Page1")}/>
-        <NiceButton title="Work Experience" onPress={() => navigation.navigate("Page3")}/>
+        <NiceButton title="Work Experience" onPress={ savevals }/>
       </View>
     </View>
   );
@@ -213,16 +215,23 @@ export const PrevExperience = ({ navigation }) => {
 export const ExtSites = ({ navigation }) => {
   const title = React.useState("Links to External Services");
   const login = () => {
-      addStudent(userDetails);
+    addStudent(userDetails)
+    .then((resp) => {
+      console.log(resp);
       navigation.reset({
-          index: 0,
-          routes: [
-              {
-                  name: 'HomeScreen',
-                  params: {email: userDetails.email }
-              }
-          ],
+        index: 0,
+        routes: [
+            {
+                name: 'HomeScreen',
+                params: {email: userDetails.email }
+            }
+        ],
       });
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("An error occurred in user creation. Please check your inputs and try again.")
+    })
   }
 
   return (
