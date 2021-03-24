@@ -66,11 +66,9 @@ export function addStudent( params ) {
 };
 
 export function updateStudent( params ) {
-    let rtrUser = null;
     const { email } = params;
     var gtUsername = email.split('@')[0];
     console.log(gtUsername);
-
     superagent.put(URI + '/student')
     .send( params )
 } 
@@ -82,14 +80,14 @@ export function getStudent( params ) {
         var gtUsername = email.split('@')[0];
         console.log(gtUsername);
 
-        return superagent.get(URI + '/student')
-        .query({'gtUsername':  gtUsername})
+        return superagent.get(URI + `/student/${gtUsername}`)
         .send()
     }
 } 
 
-export function getAllStudents ( ) {
+export function getAllStudents ( query ) {
     superagent.get(URI + '/student')
+    .query( query )
     .send()
 }
 
@@ -269,14 +267,23 @@ export function addProjectInterests ( params ) {
 }
 
 // Projects
+
+/*
+    Optional fields:
+    - search: The search string
+    - skills: an array of skills IDs converted to a string and inserted into URL in
+    this format: skills
+
+*/
 export function getAllProjects ( params ) {
     return superagent.get(URI + '/projects')
+    .query ( params )
     .send()
 }
 
 export function getProject ( params ) {
-    return superagent.get(URI + '/projects')
-    .query (params)
+    var projId = params.projId;
+    return superagent.get(URI + '/projects/' + projId)
     .send()
 }
 
