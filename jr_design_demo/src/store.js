@@ -9,7 +9,7 @@ const users = [
         pass: "password",
         name: 'Aditya Sudarshan',
         major: 'Computer Science',
-        skills: 'Porgamming',
+        skills: 'Programming',
         degree: 'B.S',
         interests: 'Sports, Gaming, Programming' 
     },

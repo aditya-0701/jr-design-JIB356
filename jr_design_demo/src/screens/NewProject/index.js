@@ -187,5 +187,21 @@ const localStyle = StyleSheet.create({//File-specific
       padding: 15,
       marginTop: 30,
       flex: 1
-  }
+  },
+  listContainer: {
+    backgroundColor: '#F5F5F5',
+    color: '#F5F5F5',
+    //opacity: 100,
+    padding: 15,
+    marginTop: 30,
+    flex: 1
+},
+backdrop: {
+  backgroundColor: '#F5F5F5',
+  color: '#F5F5F5',
+  //opacity: 100,
+  padding: 15,
+  marginTop: 30,
+  flex: 1
+}
 });
