@@ -5,6 +5,7 @@ import { TouchableOpacity, ImageBackground, View, Text, StyleSheet, Dimensions, 
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import shouldUseActivityState from 'react-native-screens'
 import { NavigationContainer } from '@react-navigation/native';
+import { StackNavigator } from 'react-navigation';
 import { createStackNavigator } from '@react-navigation/stack';
 import { fromLeft } from 'react-navigation-transitions';
 import { render } from 'react-dom';
@@ -32,9 +33,8 @@ const projectDetails = [
   {
     id: "1",
     name: "Example Project",
-    description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
-      + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
-      + " Is this example long enough?",
+    shortDescription: "hdsalkgdsgsdgadsfadfasdadggsd",
+    bio: "dfskj?",
     skills: "Programming",
     hoursPerWeek: "10",
     externalLink: "https://www.google.com",
@@ -43,7 +43,8 @@ const projectDetails = [
   {
     id: "2",
     name: "Example Project 2",
-    description: "dka;ldksngadgsn;sadgks",
+    shortDescription: "hdsalkgdsgsdg",
+    bio: "dka;ldksngadgsn;sadgks",
     skills: "html, css",
     hoursPerWeek: "5",
     externalLink: "bing.com",
@@ -52,7 +53,8 @@ const projectDetails = [
   {
     id: "3",
     name: "Project 3",
-    description: ";lskdgn;klsgnl;ksagn;laskdg",
+    shortDescription: "hdsalkgdsgsdg",
+    bio: ";lskdgn;klsgnl;ksagn;laskdg",
     hoursPerWeek: "8",
     externalLink: "yahoo.com",
     uri: require('../../../assets/3.jpg')
@@ -60,7 +62,8 @@ const projectDetails = [
   {
     id: "4",
     name: "Project 4",
-    description: "kdsn;gkdsng;lskdgn;lsadg",
+    shortDescription: "hdsalkgdsgsdg",
+    bio: "kdsn;gkdsng;lskdgn;lsadg",
     hoursPerWeek: "3",
     externalLink: "images.google.com",
     uri: require('../../../assets/4.jpg')
@@ -68,7 +71,8 @@ const projectDetails = [
   {
     id: "5",
     name: "Project 5",
-    description: "lkdgnsd;lkzgnsad;lgnasdg",
+    shortDescription: "hdsalkgdsgsdg",
+    bio: "lkdgnsd;lkzgnsad;lgnasdg",
     hoursPerWeek: "7",
     externalLink: "maps.google.com",
     uri: require('../../../assets/5.jpg')
@@ -266,7 +270,7 @@ const projectDetails = [
 // var bool = true;
 // var projectDetails = getProjectDetails(bool);
 var viewSwitch = false;
-// var i = 0;
+var x = 0;
 
 export class Card extends React.Component {
 
@@ -346,6 +350,7 @@ export class Card extends React.Component {
   }
 
 
+
   renderUsers = () => {
     // if (this.state.currentIndex == projectDetails.length) {
     //   if (bool) {
@@ -356,12 +361,14 @@ export class Card extends React.Component {
     //   projectDetails = getProjectDetails(bool);
     //   this.state.currentIndex = 0;
     // }
+    const { navigate } = this.props.navigation;
 
     return projectDetails.map((item, i) => {
 
       if (i < this.state.currentIndex) {
         return null
       } else if (i == this.state.currentIndex) {
+        x = projectDetails.indexOf(item);
         return (
           <Animated.View
             {...this.PanResponder.panHandlers}
@@ -373,19 +380,29 @@ export class Card extends React.Component {
               imageStyle={{ borderRadius: 17 }}
               source={item.uri} >
               <Text style={styles.textAbstract}>
-                <Text style={styles.textTitle}>{item.name}</Text>
-                <Text style={styles.textHours}>{'\n'}{item.hoursPerWeek} hours per week</Text>
-                <Text style={styles.textSpace}>{'\n'}</Text>
-                <Text style={styles.textMain}>{'\n'}{item.description}{'\n'}{item.externalLink}</Text>
+                <Text style={styles.textTitle}>{item.name}{'\n'}</Text>
+                {/* <Text style={styles.textHours}>{'\n'}{item.hoursPerWeek} hours per week</Text> */}
+                {/* <Text style={styles.textSpace}>{'\n'}</Text> */}
+                <Text style={styles.textMain}>{'\n'}{item.shortDescription}</Text>
+                {/* <Button
+                  title="Go to Details"
+                  onPress={() => {
+                    /* 1. Navigate to the Details route with params 
+                    this.props.navigation.navigate('Details', {
+                      itemId: item.id,
+                    });
+                  }}
+                /> */}
                 <NiceButton
                   title="View Project Details"
-                  onPress={() => navigation.push("Page2")}
+                  onPress={() => this.props.navigation.navigate("Page2")}
                 />
               </Text>
             </ImageBackground>
           </Animated.View>
         )
       } else {
+        // x = projectDetails.indexOf(item);
         return (
           <Animated.View
             key={item.id} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: CARD_HEIGHT, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
@@ -395,13 +412,28 @@ export class Card extends React.Component {
               imageStyle={{ borderRadius: 17 }}
               source={item.uri}>
               <Text style={styles.textAbstract}>
-                <Text style={styles.textTitle}>{item.name}</Text>
-                <Text style={styles.textHours}>{'\n'}{item.hoursPerWeek} hours per week</Text>
-                <Text style={styles.textSpace}>{'\n'}</Text>
-                <Text style={styles.textMain}>{'\n'}{item.description}{'\n'}{item.externalLink}</Text>
+                <Text style={styles.textTitle}>{item.name}{'\n'}</Text>
+                {/* <Text style={styles.textHours}>{'\n'}{item.hoursPerWeek} hours per week</Text> */}
+                {/* <Text style={styles.textSpace}>{'\n'}</Text> */}
+                <Text style={styles.textMain}>{'\n'}{item.shortDescription}</Text>
+                {/*<Button
+                  title="Go to Details"
+                  onPress={() => {
+                    /* 1. Navigate to the Details route with params 
+                    this.props.navigation.navigate('Details', {
+                      itemId: item.id,
+                    });
+                  }}
+                /> */}
                 <NiceButton
                   title="View Project Details"
-                  onPress={() => navigation.push("Page2")}
+                  onPress={() => {
+                    this.props.navigation.navigate("Page2")
+                  }}
+                // this.props.navigation.navigate('Details', {
+                //   itemId: 86,
+                //   otherParam: 'anything you want here',
+                // });
                 />
               </Text>
             </ImageBackground>
@@ -431,31 +463,92 @@ export class Card extends React.Component {
   }
 }
 
-export const ProjectExtended = ({ navigation }) => {
-  const title = React.useState("Project Selector");
-  return (
-    <View id="page2" style={[style.container, { flex: 1 }]}>
-      <Image source={require("../../../assets/defaultskin.png")} style={{
-        width: "100%",
-        alignSelf: "center",
-        resizeMode: "center",
-        flex: 0.75
-      }} />
-      <Text style={styles.title}>{projectDetails[0].name}</Text>
-      <Text style={styles.label}>{projectDetails[0].description}</Text>
-      <Text style={styles.label}>Skills: {projectDetails[0].skills}</Text>
-      <Text style={styles.label}>Hours Per Week: {projectDetails[0].hoursPerWeek}</Text>
-      <Text style={styles.label}>Link: {projectDetails[0].externalLink}</Text>
-    </View>
-  );
-};
+class DetailsScreen extends React.Component {
+  render() {
+    // /* 2. Read the params from the navigation state */
+    // const { params } = this.props.navigation;
+    // // const itemId = params ? params.itemId : null;
+    // const itemId = params ? params.itemId : null;
+    // // // const otherParam = params ? params.otherParam : null;
+
+
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>Project Details</Text>
+        <Text>  {projectDetails[x].name}</Text>
+        <Text>  {projectDetails[x].bio}</Text>
+        <Text>  {projectDetails[x].skills}</Text>
+        <Text>  {projectDetails[x].hoursPerWeek}</Text>
+        <Text>  {projectDetails[x].externalLink}</Text>
+        {/* <Text>itemId: {JSON.stringify(itemId)}</Text>
+        <Text>otherParam: {JSON.stringify(otherParam)}</Text> */}
+        {/* <Button
+          title="Go to Details... again"
+          onPress={() => this.props.navigation.navigate('Details')}
+        /> */}
+        <Button
+          title="Go back"
+          onPress={() => this.props.navigation.goBack()}
+        />
+      </View>
+    );
+  }
+}
+
+// export var ProjectExtended = ({ navigation }) => {
+
+//   // const title = React.useState("Project Selector");
+//   return (
+//     <View id="page2" style={[styles.container, { flex: 1 }]}>
+//       <Text>Hello</Text>
+//       {/* <Image source={require("../../../assets/defaultskin.png")} style={{
+//         width: "100%",
+//         alignSelf: "center",
+//         resizeMode: "center",
+//         flex: 0.75
+//       }} /> */}
+//       <Text >{projectDetails[x].name}</Text>
+//       <Text >{projectDetails[x].bio}</Text>
+//       <Text >Skills: {projectDetails[x].skills}</Text>
+//       <Text >Hours Per Week: {projectDetails[x].hoursPerWeek}</Text>
+//       <Text >Link: {projectDetails[x].externalLink}</Text>
+//       <Button title="Return"
+//         color="rgba(179, 163, 105, 1)"
+//         onPress={() => navigation.push("Page1")}></Button>
+//       {/* <NiceButton title="Return"
+//         style={{ backgroundColor: 'rgba(179, 163, 105, 1)' }}
+//         onPress={() => this.props.navigation.goBack()}></NiceButton> */}
+//     </View>
+//   );
+// };
+
+
+// const Rootstack = StackNavigator({
+//   Main: {
+//     screen: Card,
+//   },
+//   Details: {
+//     screen: DetailsScreen,
+//   },
+// },
+//   {
+//     initialRouteName: 'Main',
+//   }
+// );
+
+// export default class ViewProject extends React.Component {
+//   render() {
+//     return <RootStack />;
+//   }
+// }
 
 const Stack = createStackNavigator();
+
 export default function ViewProject(props) {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, }} initialRouteName="Page1">
       <Stack.Screen name="Page1" component={Card} />
-      <Stack.Screen name="Page2" component={ProjectExtended} />
+      <Stack.Screen name="Page2" component={DetailsScreen} />
     </Stack.Navigator>
   );
 };
@@ -486,8 +579,10 @@ const styles = StyleSheet.create({
     fontWeight: '300'
   },
   textMain: {
-    fontSize: 15,
-    fontWeight: '300'
+    fontSize: 17,
+    fontWeight: '300',
+    textAlign: 'center',
+    justifyContent: 'center'
   },
   textSpace: {
     fontSize: 2,
@@ -504,11 +599,10 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
   button: {
-    color: 'white',
-    backgroundColor: 'rgba(179, 163, 105, .7)',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    paddingTop: CARD_HEIGHT * .1
   },
   buttonText: {
-
+    color: 'white'
   }
 })
