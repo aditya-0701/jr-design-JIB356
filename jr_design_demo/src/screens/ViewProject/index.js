@@ -1,9 +1,9 @@
 // import * as React from 'react';
 import React from 'react';
-import { TouchableOpacity, ImageBackground, View, Text, StyleSheet, Dimensions, Animated, PanResponder, Touchable, Button } from 'react-native';
+import { Image, TouchableOpacity, ImageBackground, View, Text, StyleSheet, Dimensions, Animated, PanResponder, Touchable, Button } from 'react-native';
 // import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import shouldUseActivityState from 'react-native-screens'
+import shouldUseActivityState, { screensEnabled } from 'react-native-screens'
 import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigator } from 'react-navigation';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -27,7 +27,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 const CARD_HEIGHT = SCREEN_HEIGHT * 0.86
 
-//export var likedProjects[];
+var likedProjects = [];
 
 const projectDetails = [
   {
@@ -271,6 +271,7 @@ const projectDetails = [
 // var projectDetails = getProjectDetails(bool);
 var viewSwitch = false;
 var x = 0;
+var index = 0;
 
 export class Card extends React.Component {
 
@@ -294,6 +295,17 @@ export class Card extends React.Component {
       ...this.position.getTranslateTransform()
       ]
     }
+
+    this.likeOpacity = this.position.x.interpolate({
+      inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
+      outputRange: [0, 0, 1],
+      extrapolate: 'clamp'
+    })
+    this.dislikeOpacity = this.position.x.interpolate({
+      inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
+      outputRange: [1, 0, 0],
+      extrapolate: 'clamp'
+    })
 
     this.nextCardOpacity = this.position.x.interpolate({
       inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
@@ -325,6 +337,9 @@ export class Card extends React.Component {
               this.position.setValue({ x: 0, y: 0 })
             })
           })
+          likedProjects.push(this.state.currentIndex);
+          // likedProjects[index] = this.state.currentIndex;
+          // index++;
         }
         else if (gestureState.dx < -120) {
           Animated.spring(this.position, {
@@ -335,8 +350,6 @@ export class Card extends React.Component {
               this.position.setValue({ x: 0, y: 0 })
             })
           })
-          // likedProjects[i] = projectDetails[currentIndex];
-          //i++;
         }
         else {
           Animated.spring(this.position, {
@@ -369,10 +382,19 @@ export class Card extends React.Component {
         return null
       } else if (i == this.state.currentIndex) {
         x = projectDetails.indexOf(item);
+
         return (
           <Animated.View
             {...this.PanResponder.panHandlers}
-            key={item.id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+            key={item.id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+
+            <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
+              <Text style={{ borderWidth: 1, borderColor: 'rgba(179, 163, 105, 1)', color: 'rgba(179, 163, 105, 1)', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
+            </Animated.View>
+
+            <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
+              <Text style={{ borderWidth: 1, borderColor: 'rgba(179, 163, 105, 1)', color: 'rgba(179, 163, 105, 1)', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
+            </Animated.View>
 
 
             <ImageBackground
@@ -381,18 +403,7 @@ export class Card extends React.Component {
               source={item.uri} >
               <Text style={styles.textAbstract}>
                 <Text style={styles.textTitle}>{item.name}{'\n'}</Text>
-                {/* <Text style={styles.textHours}>{'\n'}{item.hoursPerWeek} hours per week</Text> */}
-                {/* <Text style={styles.textSpace}>{'\n'}</Text> */}
-                <Text style={styles.textMain}>{'\n'}{item.shortDescription}</Text>
-                {/* <Button
-                  title="Go to Details"
-                  onPress={() => {
-                    /* 1. Navigate to the Details route with params 
-                    this.props.navigation.navigate('Details', {
-                      itemId: item.id,
-                    });
-                  }}
-                /> */}
+                <Text style={styles.textMain}>{'\n'}{item.shortDescription}{'\n'}</Text>
                 <NiceButton
                   title="View Project Details"
                   onPress={() => this.props.navigation.navigate("Page2")}
@@ -402,10 +413,19 @@ export class Card extends React.Component {
           </Animated.View>
         )
       } else {
-        // x = projectDetails.indexOf(item);
         return (
+
           <Animated.View
-            key={item.id} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: CARD_HEIGHT, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+            key={item.id} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+
+            <Animated.View style={{ opacity: 0, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
+              <Text style={{ borderWidth: 1, borderColor: 'rgba(179, 163, 105, 1)', color: 'rgba(179, 163, 105, 1)', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
+            </Animated.View>
+
+            <Animated.View style={{ opacity: 0, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
+              <Text style={{ borderWidth: 1, borderColor: 'rgba(179, 163, 105, 1)', color: 'rgba(179, 163, 105, 1)', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
+            </Animated.View>
+
 
             <ImageBackground
               style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
@@ -413,27 +433,12 @@ export class Card extends React.Component {
               source={item.uri}>
               <Text style={styles.textAbstract}>
                 <Text style={styles.textTitle}>{item.name}{'\n'}</Text>
-                {/* <Text style={styles.textHours}>{'\n'}{item.hoursPerWeek} hours per week</Text> */}
-                {/* <Text style={styles.textSpace}>{'\n'}</Text> */}
-                <Text style={styles.textMain}>{'\n'}{item.shortDescription}</Text>
-                {/*<Button
-                  title="Go to Details"
-                  onPress={() => {
-                    /* 1. Navigate to the Details route with params 
-                    this.props.navigation.navigate('Details', {
-                      itemId: item.id,
-                    });
-                  }}
-                /> */}
+                <Text style={styles.textMain}>{'\n'}{item.shortDescription}{'\n'}</Text>
                 <NiceButton
                   title="View Project Details"
                   onPress={() => {
                     this.props.navigation.navigate("Page2")
                   }}
-                // this.props.navigation.navigate('Details', {
-                //   itemId: 86,
-                //   otherParam: 'anything you want here',
-                // });
                 />
               </Text>
             </ImageBackground>
@@ -451,6 +456,19 @@ export class Card extends React.Component {
         </View>
         <View style={{ flex: 1 }}>
           {this.renderUsers()}
+          <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', top: SCREEN_HEIGHT * .73 }}>
+            <TouchableOpacity style={styles.leftButton} >
+              <Text style={styles.leftRightNav}> &#171; </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.heartButton} onPress={() => {
+              this.props.navigation.navigate("Page3")
+            }}>
+              <Text style={styles.heart}> &#9829;</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.rightButton}>
+              <Text style={styles.leftRightNav}> &#187; </Text>
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={{ top: 300, left: 0, right: 0, bottom: 0 }}>
           <Text style={{ textAlign: 'center' }}>You have reached the end</Text>
@@ -463,15 +481,63 @@ export class Card extends React.Component {
   }
 }
 
+// class NavigatePages extends React.Component {
+//   render() {
+//     return (
+
+//     );
+//   }
+
+// }
+
+
+class SavedProjects extends React.Component {
+  render() {
+    // for (var i = 0; i < likedProjects.length - 1; i++) {
+    //   index = i;
+    //   this.displayProjects(index);
+    // }
+    // return (
+
+    // )
+    // displayProjects() {
+    //   <View style={styles.favoritedPage}>
+    //     <Text style={{ color: 'rgba(179, 163, 105, 1)', bottom: SCREEN_HEIGHT * .34, fontSize: 27, fontWeight: '600' }}>Favorited Projects</Text>
+    //     <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', }}>
+    //       <ImageBackground style={styles.favoritedImages} source={projectDetails[index].uri}>
+    //         <Text style={styles.favoritedTitle}> hello </Text>
+    //       </ImageBackground>
+    //     </View>
+    //     <TouchableOpacity
+    //       style={{ top: SCREEN_HEIGHT * .3, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
+    //       onPress={() => this.props.navigation.goBack()}>
+    //       <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
+    //     </TouchableOpacity>
+    //   </View>
+    // }
+
+    return (
+      <View style={styles.favoritedPage}>
+        <Text style={{ color: 'rgba(179, 163, 105, 1)', bottom: SCREEN_HEIGHT * .34, fontSize: 27, fontWeight: '600' }}>Favorited Projects</Text>
+        <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', }}>
+          <ImageBackground style={styles.favoritedImages} >
+            <Text style={styles.favoritedTitle}> hello </Text>
+          </ImageBackground>
+        </View>
+        <TouchableOpacity
+          style={{ top: SCREEN_HEIGHT * .3, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
+          onPress={() => this.props.navigation.goBack()}>
+          <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+
+}
+
 class DetailsScreen extends React.Component {
   render() {
-    // /* 2. Read the params from the navigation state */
-    // const { params } = this.props.navigation;
-    // // const itemId = params ? params.itemId : null;
-    // const itemId = params ? params.itemId : null;
-    // // // const otherParam = params ? params.otherParam : null;
-
-
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Project Details</Text>
@@ -480,67 +546,17 @@ class DetailsScreen extends React.Component {
         <Text>  {projectDetails[x].skills}</Text>
         <Text>  {projectDetails[x].hoursPerWeek}</Text>
         <Text>  {projectDetails[x].externalLink}</Text>
-        {/* <Text>itemId: {JSON.stringify(itemId)}</Text>
-        <Text>otherParam: {JSON.stringify(otherParam)}</Text> */}
-        {/* <Button
-          title="Go to Details... again"
-          onPress={() => this.props.navigation.navigate('Details')}
-        /> */}
-        <Button
-          title="Go back"
-          onPress={() => this.props.navigation.goBack()}
-        />
+        <TouchableOpacity
+          style={{ top: SCREEN_HEIGHT * .3, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
+          onPress={() => this.props.navigation.goBack()}>
+          <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
+        </TouchableOpacity>
       </View>
     );
   }
 }
 
-// export var ProjectExtended = ({ navigation }) => {
 
-//   // const title = React.useState("Project Selector");
-//   return (
-//     <View id="page2" style={[styles.container, { flex: 1 }]}>
-//       <Text>Hello</Text>
-//       {/* <Image source={require("../../../assets/defaultskin.png")} style={{
-//         width: "100%",
-//         alignSelf: "center",
-//         resizeMode: "center",
-//         flex: 0.75
-//       }} /> */}
-//       <Text >{projectDetails[x].name}</Text>
-//       <Text >{projectDetails[x].bio}</Text>
-//       <Text >Skills: {projectDetails[x].skills}</Text>
-//       <Text >Hours Per Week: {projectDetails[x].hoursPerWeek}</Text>
-//       <Text >Link: {projectDetails[x].externalLink}</Text>
-//       <Button title="Return"
-//         color="rgba(179, 163, 105, 1)"
-//         onPress={() => navigation.push("Page1")}></Button>
-//       {/* <NiceButton title="Return"
-//         style={{ backgroundColor: 'rgba(179, 163, 105, 1)' }}
-//         onPress={() => this.props.navigation.goBack()}></NiceButton> */}
-//     </View>
-//   );
-// };
-
-
-// const Rootstack = StackNavigator({
-//   Main: {
-//     screen: Card,
-//   },
-//   Details: {
-//     screen: DetailsScreen,
-//   },
-// },
-//   {
-//     initialRouteName: 'Main',
-//   }
-// );
-
-// export default class ViewProject extends React.Component {
-//   render() {
-//     return <RootStack />;
-//   }
-// }
 
 const Stack = createStackNavigator();
 
@@ -549,6 +565,7 @@ export default function ViewProject(props) {
     <Stack.Navigator screenOptions={{ headerShown: false, }} initialRouteName="Page1">
       <Stack.Screen name="Page1" component={Card} />
       <Stack.Screen name="Page2" component={DetailsScreen} />
+      <Stack.Screen name="Page3" component={SavedProjects} />
     </Stack.Navigator>
   );
 };
@@ -565,7 +582,7 @@ const styles = StyleSheet.create({
     padding: 20,
     textAlign: 'center',
     height: CARD_HEIGHT * 0.3,
-    top: CARD_HEIGHT * 0.7,
+    top: CARD_HEIGHT * 0.55,
     backgroundColor: 'rgba(179, 163, 105, .7)',
     fontSize: 15,
     fontWeight: '300'
@@ -599,10 +616,63 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
   button: {
+    alignContent: 'center',
     fontWeight: 'bold',
-    paddingTop: CARD_HEIGHT * .1
+    paddingTop: CARD_HEIGHT * .1,
+    paddingLeft: SCREEN_WIDTH * .28
   },
   buttonText: {
-    color: 'white'
+    color: 'white',
+    fontWeight: 'bold'
+  },
+  rightButton: {
+    width: 70,
+    height: 70,
+    borderRadius: 100,
+    backgroundColor: 'rgba(179, 163, 105, .7)',
+    top: 20,
+    // right: 50
+  },
+  leftButton: {
+    width: 70,
+    height: 70,
+    borderRadius: 100,
+    backgroundColor: 'rgba(179, 163, 105, .7)',
+    top: 20,
+    right: 15
+  },
+  leftRightNav: {
+    bottom: 10,
+    right: 5,
+    textAlign: 'center',
+    color: 'white',
+    fontWeight: '800',
+    fontSize: 70
+  },
+  heart: {
+    top: 5,
+    right: 15,
+    color: 'rgba(179, 163, 105, .7)',
+    fontSize: 80
+  },
+  favoritedImages: {
+    width: 40,
+    height: 40
+  },
+  favoritedTitle: {
+
+  },
+  favoritedPage: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: SCREEN_HEIGHT * .87,
+    width: SCREEN_WIDTH * .95,
+    position: 'absolute',
+    top: CARD_HEIGHT * .1,
+    left: SCREEN_WIDTH * .027,
+    borderColor: 'rgba(179, 163, 105, 1)',
+    borderWidth: 3,
+    borderRadius: 15
   }
 })
