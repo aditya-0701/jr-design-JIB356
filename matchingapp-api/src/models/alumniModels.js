@@ -167,31 +167,46 @@ Alumni.getAlumniProjects = async ( params ) => {
     }
     
     
-    if (whereActive) {
-        query += ' AND '    
-    } else {
-        query += ' WHERE '
+    
+    if (params.hours || params.startDate || params.endDate) {
+        if (whereActive) {
+            query += ' AND '    
+        } else {
+            whereActive = true;
+            query += ' WHERE '
+        }
+        if (params.hours && params.startDate && params.endDate) {
+            query += 'weekHours >= ' + connection.escape(params.hours);
+            query += ' AND ' + 'startDate >= ' + connection.escape(params.startDate);
+            query += ' AND ' + 'endDate <= ' + connection.escape(params.endDate);
+            
+        } else if (params.hours && params.startDate) {
+            query += 'weekHours >= ' + connection.escape(params.hours);
+            query += ' AND ' + 'startDate >= ' + connection.escape(params.startDate);
+        } else if (params.hours && params.endDate) {
+            query += 'weekHours >= ' + connection.escape(params.hours);
+            query += ' AND ' + 'endDate <= ' + connection.escape(params.endDate);
+        } else if (params.startDate && params.endDate) {
+            query += 'startDate >= ' + connection.escape(params.startDate);
+            query += ' AND ' + 'endDate <= ' + connection.escape(params.endDate);
+        } else if (params.hours) {
+            query += 'weekHours >= ' + connection.escape(params.hours);
+        } else if (params.startDate) {
+            query += 'startDate >= ' + connection.escape(params.startDate);
+        } else if (params.endDate) {
+            query += 'endDate <= ' + connection.escape(params.endDate);
+        }
     }
-    if (params.hours && params.startDate && params.endDate) {
-        query += 'weekHours >= ' + connection.escape(params.hours);
-        query += ' AND ' + 'startDate >= ' + connection.escape(params.startDate);
-        query += ' AND ' + 'endDate z<= ' + connection.escape(params.endDate);
-        
-    } else if (params.hours && params.startDate) {
-        query += 'weekHours >= ' + connection.escape(params.hours);
-        query += ' AND ' + 'startDate >= ' + connection.escape(params.startDate);
-    } else if (params.hours && params.endDate) {
-        query += 'weekHours >= ' + connection.escape(params.hours);
-        query += ' AND ' + 'endDate <= ' + connection.escape(params.endDate);
-    } else if (params.startDate && params.endDate) {
-        query += 'startDate >= ' + connection.escape(params.startDate);
-        query += ' AND ' + 'endDate <= ' + connection.escape(params.endDate);
-    } else if (params.hours) {
-        query += 'weekHours >= ' + connection.escape(params.hours);
-    } else if (params.startDate) {
-        query += 'startDate >= ' + connection.escape(params.startDate);
-    } else if (params.endDate) {
-        query += 'endDate <= ' + connection.escape(params.endDate);
+
+    
+    if (params.search) {
+        var searchString = connection.escape(params.search);
+        if (whereActive) {
+            query += ' AND '
+        } else {
+            query += ' WHERE '
+        }
+        query += `MATCH(projectTitle, projectDescription) AGAINST (${searchString})`
     }
     
     var students = await connection.query(query);

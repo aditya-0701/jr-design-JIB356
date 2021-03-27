@@ -43,6 +43,19 @@ Student.findStudent = async ( params ) => {
             let interestQuery = `SELECT interest, id FROM Interests 
                 WHERE id IN ( SELECT interestId FROM StudentInterests WHERE gtUsername = "${gtUsername}")`
             student['interests'] = await connection.query(interestQuery);
+            
+            let majorQuery = `SELECT major, id FROM Majors 
+                WHERE id IN ( SELECT majorId FROM StudentMajors WHERE gtUsername = "${gtUsername}")`
+            student['major'] = await connection.query(majorQuery); 
+            
+            let degreeQuery = `SELECT degree, id FROM Degrees 
+                WHERE id IN ( SELECT degreeId FROM StudentDegrees WHERE gtUsername = "${gtUsername}")`
+            student['degree'] = await connection.query(degreeQuery); 
+            
+            let expQuery = `SELECT * FROM Experience WHERE gtUsername = "${gtUsername}"`
+            student['experiences'] = await connection.query(expQuery); 
+            
+            
         }
         return student;
     } catch (e) {
@@ -98,8 +111,19 @@ Student.getAll = async ( params ) => {
             query += ' AND '    
         } else {
             query += ' WHERE '
+            whereActive = true;
         }
         query += 'weekHours >= ' + connection.escape(params.hours);
+    }
+    
+    if (params.search) {
+        var searchString = connection.escape(params.search);
+        if (whereActive) {
+            query += ' AND '
+        } else {
+            query += ' WHERE '
+        }
+        query += `MATCH(firstName, lastName, middleName, bio) AGAINST (${searchString})`
     }
     
     var students = await connection.query(query);
@@ -111,6 +135,8 @@ Student.addStudent = async ( params ) => {
     delete inputs.skills;
     delete inputs.interests;
     delete inputs.experiences;
+    delete inputs.degree;
+    delete inputs.major;
     
     if (inputs.gtUsername && inputs.pwd && inputs.firstName && inputs.lastName && inputs.email) {
         let hash = '';
@@ -134,16 +160,16 @@ Student.addStudent = async ( params ) => {
                     skillsVals.push([params.gtUsername, params.skills[i]]);
                 }
                 let skillQuery = `INSERT INTO StudentSkills (gtUsername, skillId) VALUES ?`;
-                students['skills'] = await connection.query(skillQuery, skillsVals); 
+                students['skills'] = await connection.query(skillQuery, [skillsVals]); 
             }
             
             if (params.interests) {
                 var interestsVals = [];
                 for (let i = 0; i < params.interests.length; i++) {
-                    skillsVals.push([params.gtUsername, params.interests[i]]);
+                    interestsVals.push([params.gtUsername, params.interests[i]]);
                 }
                 let skillQuery = `INSERT INTO StudentInterests (gtUsername, interestId) VALUES ?`;
-                students['interests'] = await connection.query(skillQuery, interestsVals); 
+                students['interests'] = await connection.query(skillQuery, [interestsVals]); 
             }
 
             if (params.experiences) {
@@ -151,10 +177,14 @@ Student.addStudent = async ( params ) => {
                 // [[description, company name, start date, end date], ...]
                 var experiencesVals = [];
                 for (let i = 0; i < params.experiences.length; i++) {
-                    experiencesVals.push([params.gtUsername].concat(params.experiences[i]));
+                    let exp = params.experiences[i];
+                    let gtU = params.gtUsername;
+                    let expVals = [gtU, exp.expDescription, exp.companyName, exp.start_date, exp.end_date, exp.position]
+                    // experiencesVals.push(connection.escape(expVals));
+                    experiencesVals.push(expVals);
                 }
-                let experiencesQuery = `INSERT INTO Experience (gtUsername, expDescription, companyName, start_date, end_date) VALUES ?`;
-                students['experiences'] = await connection.query(experiencesQuery, experiencesVals);
+                let experiencesQuery = `INSERT INTO Experience (gtUsername, expDescription, companyName, start_date, end_date, position) VALUES ?`;
+                students['experiences'] = await connection.query(experiencesQuery, [experiencesVals]);
             }
         }
         return students;
