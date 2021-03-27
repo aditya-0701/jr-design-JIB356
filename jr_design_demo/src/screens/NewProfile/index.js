@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { addUser, updateExperiences } from '../../store'
+import { addStudent, updateExperiences } from '../../store'
 import styles from '../../globalStyles';
 import DatePicker from 'react-native-datepicker';
 
@@ -22,12 +22,22 @@ class NiceButton extends React.Component {
 const userDetails = {
   email: "",
   pass: "",
-  name: "",
-  degree: "",
-  major: "",
-  interests: "",
-  skills: "",
-  pwd: ""
+  firstName: "",
+  lastName: "",
+  middleName: "",
+  pwd: "",
+  degree: [],
+  major: [],
+  interests: [],
+  skills: [],
+  experiences: [{
+    'companyName': '',
+    'position': '',
+    'expDescription': '',
+    'start_date': new Date(),
+    'end_date': new Date()
+  }],
+  links: []
 };
 
 const degreeLibrary = [{
@@ -213,14 +223,14 @@ const interestLibrary = [{
 
 export const BasicDetails = ({ navigation }) => {
 
-  const [emailValue, onChangeEmail] = React.useState('');
-  const [passwordValue, onChangePassword] = React.useState('');
-  const [firstName, onChangeFirstName] = React.useState('');
-  const [lastName, onChangeLastName] = React.useState('');
-  const [degree, onChangeDegree] = React.useState([]);
-  const [major, onChangeMajor] = React.useState([]);
-  const [interests, onChangeInterests] = React.useState([]);
-  const [skills, onChangeSkills] = React.useState([]);
+  const [emailValue, onChangeEmail] = React.useState(userDetails.email);
+  const [passwordValue, onChangePassword] = React.useState(userDetails.pwd);
+  const [firstName, onChangeFirstName] = React.useState(userDetails.firstName);
+  const [lastName, onChangeLastName] = React.useState(userDetails.lastName);
+  const [degree, onChangeDegree] = React.useState(userDetails.degree);
+  const [major, onChangeMajor] = React.useState(userDetails.major);
+  const [interests, onChangeInterests] = React.useState(userDetails.interests);
+  const [skills, onChangeSkills] = React.useState(userDetails.skills);
 
   const saveVals = () => {
     userDetails.email= emailValue;
@@ -405,15 +415,8 @@ export const PrevExperience = ({ navigation }) => {
   const saveVals = () => {
     userDetails['experiences'] = experiences;
     console.log(experiences);
-    navigation.navigate("Page4")
   }
-  var [experiences, onChangeExperiences] = React.useState([{
-      'companyName': '',
-      'position': '',
-      'expDescription': '',
-      'start_date': new Date(),
-      'end_date': new Date()
-  }]);
+  var [experiences, onChangeExperiences] = React.useState(userDetails.experiences);
   const updateExperience = ( index, key, value ) => {
     const oldExperiences = JSON.parse(JSON.stringify(experiences));
     oldExperiences[index][key] = value
@@ -544,16 +547,53 @@ export const PrevExperience = ({ navigation }) => {
       />
       
       <View style={localStyle.navButtonContainer} >
-        <NiceButton title="Basic Info" onPress={() => navigation.navigate("Page1")}/>
-        <NiceButton title="External Services" onPress={() => {saveVals()}}/>
+        <NiceButton title="Basic Info" onPress={() => {saveVals(); navigation.navigate("Page1")}}/>
+        <NiceButton title="External Services" onPress={() => {saveVals(); navigation.navigate("Page4")}}/>
       </View>
     </View>
   );
 };
 
 export const ExtSites = ({ navigation }) => {
-  const title = React.useState("Links to External Services");
+  var [links, onChangeLink] = React.useState(links);
+  const saveVals = () => {
+    userDetails['links'] = links;
+    console.log(links);
+    // navigation.navigate("Page4")
+  }
+
+  const updateLink = ( index, key, value ) => {
+    const oldLinks = JSON.parse(JSON.stringify(links));
+    oldLinks[index][key] = value
+    onChangeLink(oldLinks);
+  }
+
+  const addLink = () => {
+    const oldLinks = JSON.parse(JSON.stringify(links));
+    console.log("old" + oldLinks)
+    oldLinks.push({
+      'label': '',
+      'address': '',
+    });
+    console.log("new" + oldLinks)
+    onChangeLink(oldLinks);
+  }
+
+  const removeLink = ( index ) => {
+    const oldLinks = JSON.parse(JSON.stringify(links));
+    oldLinks.splice(index, 1);
+    console.log(oldLinks)
+    onChangeLink(oldLinks);
+  }
+
+  /**[{
+    'label': '',
+    'id': '',
+    'address': '',
+}]); */
   const login = () => {
+    saveVals();
+    console.log(JSON.parse("" || JSON.stringify(userDetails)));
     addStudent(userDetails)
     .then((resp) => {
       console.log(resp);
@@ -583,13 +623,38 @@ export const ExtSites = ({ navigation }) => {
         <Text style={styles.label}>Github</Text>
         <TextInput placeholder="Github Link" style={styles.inputs}/>
         <Text style={styles.label}>Add other Links</Text>
-        <Text style={styles.label}>Link Name</Text>
-        <TextInput placeholder="Additional External Link" style={styles.inputs}/>
-        <TouchableOpacity style = { [styles.button, {alignSelf: 'center', width: '100%'} ] }>
-        <Text style = { styles.buttonText }>Add Link</Text>
-      </TouchableOpacity>
+        <FlatList
+          style = {{marginBottom: 50}}
+          data = {links}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem = {({item, index}) => (
+          <View key = {index}>
+              <Text style={styles.label}>Link Label</Text>
+              <TextInput
+                value={item.label}
+                onChangeText={(text) => {updateLink(index, 'label', text)}}
+                style={styles.inputs}
+              />
+              <Text style={styles.label}>Link Address</Text>
+              <TextInput
+                value={item.address}
+                onChangeText={(text) => {updateLink(index, 'address', text)}}
+                style={styles.inputs}
+              />
+            <TouchableOpacity onPress = {() => removeLink(index)} 
+                style = { [styles.button, {alignSelf: 'center', width: '90%'} ] }>
+                <Text style = { styles.buttonText }>Remove Link</Text>
+              </TouchableOpacity>
+          </View>
+          )}
+        ListFooterComponent = {
+          <TouchableOpacity onPress = {() => {addLink()}} style = { [styles.button, {alignSelf: 'center', width: '100%'} ] }>
+            <Text style = { styles.buttonText }>Add Link</Text>
+          </TouchableOpacity>
+        }
+        />
         <View style={ localStyle.navButtonContainer }>
-          <NiceButton title="Previous Experience" onPress={() => navigation.navigate("Page3")}/>
+          <NiceButton title="Previous Experience" onPress={() => {saveVals(); navigation.navigate("Page3")}}/>
           <NiceButton title="Finish" onPress={ login }/>
         </View>
     </View>

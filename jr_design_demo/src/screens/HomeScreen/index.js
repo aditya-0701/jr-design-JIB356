@@ -6,6 +6,7 @@ import { getStudent, getAlumni } from '../../store.js'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
 import styles from '../../globalStyles';
+import { ScrollView } from 'react-native-gesture-handler';
 
 //import MainLogin from './mainLogin.js';
 // import AlumniLogin from './alumniLogin.js';
@@ -50,6 +51,7 @@ const Profile = ( props ) => {
     const [major, onChangeMajor] = React.useState('');
     const [interests, onChangeInterests] = React.useState('');
     const [degree, onChangeDegree] = React.useState('');
+    const [experiences, onChangeExperience] = React.useState('');
 
     // console.log(userDetails);
     const logout = () => {
@@ -77,9 +79,9 @@ const Profile = ( props ) => {
             onChangeMajor(resp.body.major[0].major)
             let skills = resp.body.skills.map( ({skill}) => skill).join(', ');
             let interests = resp.body.interests.map( ({interest}) => interest).join(', ');
-            let experiences = resp.body.experiences;
             onChangeSkills(skills);
             onChangeInterests(interests);
+            onChangeExperience(resp.body.experiences);
         })
         .catch((err) => {
             console.log(err);
@@ -88,6 +90,7 @@ const Profile = ( props ) => {
 
     return (
         <View style = { styles.container }>
+            <ScrollView>
             <Text style = {styles.title}>Profile Details</Text>
             <View style = { styles.info }>
                 <Text style = {styles.label}>Name</Text>
@@ -107,7 +110,9 @@ const Profile = ( props ) => {
                 <Text>{ skills || "" }</Text>
                 <Text style = {styles.label}>Interests</Text>
                 <Text>{ interests || "" }</Text>
+                <Text style = {styles.label}>Experiences</Text>
             </View>
+            </ScrollView>
             <TouchableOpacity style = { styles.button } onPress = { logout }>
                 <Text style = { styles.buttonText }>Log Out</Text>
             </TouchableOpacity>
