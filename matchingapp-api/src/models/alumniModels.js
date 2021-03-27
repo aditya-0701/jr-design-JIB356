@@ -163,7 +163,7 @@ Alumni.getAlumniProjects = async ( params ) => {
     
     if (projIds != null && projIds != [] && projIds.length != 0) {
         whereActive = true;
-        query += ' WHERE gtUsername IN ' + connection.escape(projIds);
+        query += ' WHERE id IN ' + connection.escape(projIds);
     }
     
     

@@ -393,3 +393,174 @@ exports.deleteAllStudentProjectInterests = async ( req ) => {
       }
         
 };
+
+exports.getStudentMajor = async ( req ) => {
+    try {
+        var result = await Student.getStudentMajor( req );
+        if (result === null) {
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
+        }
+    
+        return result;
+      } catch (e) {
+        return four00(e);
+      }
+        
+};
+
+exports.updateStudentMajor = async ( req ) => {
+    try {
+        var result = await Student.updateStudentMajor( req );
+        if (result === null) {
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
+        }
+    
+        return result;
+      } catch (e) {
+        return four00(e);
+      }
+        
+};
+
+exports.deleteStudentMajor = async ( req ) => {
+    try {
+        var result = await Student.deleteStudentMajor( req );
+        if (result === null) {
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
+        }
+    
+        return result;
+      } catch (e) {
+        return four00(e);
+      }
+        
+};
+
+exports.getStudentDegree = async ( req ) => {
+    try {
+        var result = await Student.getStudentDegree( req );
+        if (result === null) {
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
+        }
+    
+        return result;
+      } catch (e) {
+        return four00(e);
+      }
+        
+};
+
+exports.updateStudentDegree = async ( req ) => {
+    try {
+        var result = await Student.updateStudentDegree( req );
+        if (result === null) {
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
+        }
+    
+        return result;
+      } catch (e) {
+        return four00(e);
+      }
+        
+};
+
+exports.deleteStudentDegree = async ( req ) => {
+    try {
+        var result = await Student.deleteStudentDegree( req );
+        if (result === null) {
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
+        }
+    
+        return result;
+      } catch (e) {
+        return four00(e);
+      }
+        
+};
+
+exports.getStudentLinks = async ( req ) => {
+    try {
+        var result = await Student.getStudentLinks( req );
+        if (result === null) {
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
+        }
+    
+        return result;
+      } catch (e) {
+        return four00(e);
+      }
+        
+};
+
+exports.updateStudentLinks = async ( req ) => {
+    try {
+        var result = await Student.updateStudentLinks( req );
+        if (result === null) {
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
+        }
+    
+        return result;
+      } catch (e) {
+        return four00(e);
+      }
+        
+};
+
+exports.deleteStudentLinks = async ( req ) => {
+    try {
+        var result = await Student.deleteStudentLinks( req );
+        if (result === null) {
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
+        }
+    
+        return result;
+      } catch (e) {
+        return four00(e);
+      }
+        
+};

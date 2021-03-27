@@ -137,7 +137,8 @@ Student.addStudent = async ( params ) => {
     delete inputs.experiences;
     delete inputs.degree;
     delete inputs.major;
-    
+    delete inputs.links;
+
     if (inputs.gtUsername && inputs.pwd && inputs.firstName && inputs.lastName && inputs.email) {
         let hash = '';
         try {
@@ -185,6 +186,25 @@ Student.addStudent = async ( params ) => {
                 }
                 let experiencesQuery = `INSERT INTO Experience (gtUsername, expDescription, companyName, start_date, end_date, position) VALUES ?`;
                 students['experiences'] = await connection.query(experiencesQuery, [experiencesVals]);
+            }
+            if (params.major) {
+                let majorQuery = `INSERT INTO StudentMajors (gtUsername, majorId) VALUES (${connection.escape(params.gtUsername)}, ${connection.escape(params.major)})`;
+                students['major'] = await connection.query(majorQuery);
+            }
+            if (params.degree) {
+                let degreeQuery = `INSERT INTO StudentDgrees (gtUsername, degreeId) VALUES (${connection.escape(params.gtUsername)}, ${connection.escape(params.degree)})`;
+                students['degree'] = await connection.query(degreeQuery);
+            }
+            if (params.links) {
+                var linksVals = [];
+                let gtU = params.gtUsername;
+                for (let i = 0; i < params.links.length; i++) {
+                    let link = params.links[i];
+                    let linkVal = [gtU, null, link.label, link.address];
+                    linksVals.push(linkVal);
+                }
+                let linkQuery = `INSERT INTO StudentLinks (gtUsername, id, label, address) VALUES ?`;
+                student['links'] = await connection.query(linkQuery, linksVals);
             }
         }
         return students;
@@ -377,7 +397,7 @@ Student.updateProjectInterests = async (params) => {
     // TODO: Talk with aditya the best way to update this
     //       - Delete Then Insert?
     
-    let query = `INSERT IGNORE INTO StudentSavedProjects VALUES ?`;
+    let query = `INSERT IGNORE INTO StudentSavedProjects (gtUsername, projectId) VALUES ?`;
     var projects = await connection.query(query, interestParams);
     return projects;
 }
@@ -387,6 +407,80 @@ Student.deleteAllStudentProjectInterests = async (params) => {
     let query = `DELETE FROM StudentSavedProjects WHERE gtUsername = ${gtUsername}`;
     var interests = await connection.query(query);
     return interests;
+}
+
+Student.getStudentMajor = async (params) => {
+    const {gtUsername} = params;
+    let query = `SELECT major FROM Majors WHERE id IN (SELECT majorId FROM StudentMajors WHERE gtUsername = ${connection.escape(gtUsername)})`;
+    var major = await connection.query(query);
+    return major;
+}
+Student.updateStudentMajor = async (params) => {
+    const {gtUsername, newMajor} = params;
+    let deleteQuery = `DELETE FROM StudentMajors WHERE gtUsername = ${connection.escape(gtUsername)}`;
+    let insertQuery = `INSERT INTO StudentMajors (gtUsername, majorId) VALUES (${connection.escape(gtUsername)}), ${connection.escape(newMajor)}`;
+    await connection.query(deleteQuery);
+    var major = await connection.query(insertQuery);
+    return major;
+}
+Student.deleteStudentMajor = async (params) => {
+    const {gtUsername} = params;
+    let deleteQuery = `DELETE FROM StudentMajors WHERE gtUsername = ${connection.escape(gtUsername)}`;
+    var major = await connection.query(deleteQuery);
+    return major;
+}
+
+Student.getStudentDegree = async (params) => {
+    const {gtUsername} = params;
+    let query = `SELECT degree FROM Degrees WHERE id IN (SELECT degreeId FROM StudentDegrees WHERE gtUsername = ${connection.escape(gtUsername)})`;
+    var degree = await connection.query(query);
+    return degree;
+}
+
+Student.updateStudentDegree = async (params) => {
+    const {gtUsername, newDegree} = params;
+    let deleteQuery = `DELETE FROM StudentDegrees WHERE gtUsername = ${connection.escape(gtUsername)}`;
+    let insertQuery = `INSERT INTO StudentDegrees (gtUsername, majorId) VALUES (${connection.escape(gtUsername)}), ${connection.escape(newDegree)}`;
+    await connection.query(deleteQuery);
+    var degree = await connection.query(insertQuery);
+    return degree;
+}
+
+Student.deleteStudentDegree = async (params) => {
+    const {gtUsername} = params;
+    let deleteQuery = `DELETE FROM StudentDegrees WHERE gtUsername = ${connection.escape(gtUsername)}`;
+    var degree = await connection.query(deleteQuery);
+    return degree; 
+}
+
+Student.getStudentLinks = async (params) => {
+    const {gtUsername} = params;
+    let query = `SELECT * FROM StudentLinks WHERE gtUsername = ${connection.escape(gtUsername)}`;
+    var links = await connection.query(query);
+    return links;
+}
+
+Student.updateStudentLinks = async (params) => {
+    const {gtUsername, newLinks} = params;
+    var linksVals = [];
+    
+    for (let i = 0; i < newLinks.length; i++) {
+        let link = newLinks[i];
+        let linkVal = [gtUsername, null, link.label, link.address];
+        linksVals.push(linkVal);
+    }
+    let deleteQuery = `DELETE FROM StudentLinks WHERE gtUsername = ${connection.escape(gtUsername)}`;
+    let linkQuery = `INSERT INTO StudentLinks (gtUsername, id, label, address) VALUES ?`;
+    await connection.query(deleteQuery);
+    links = await connection.query(linkQuery, connection.escape(linksVals));
+    return links;
+}
+
+Student.deleteStudentLinks = async (params) => {
+    const {gtUsername} = params;
+    let deleteQuery = `DELETE FROM StudentLinks WHERE gtUsername = ${connection.escape(gtUsername)}`;
+    var links = await connection.query(deleteQuery);
+    return links; 
 }
 
 module.exports = Student;

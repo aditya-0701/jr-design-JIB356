@@ -132,6 +132,37 @@ exports.handler = async (event) => {
                 case 'DELETE':
                     return alumni.deleteProject(query);
             }
+        case 'studentMajor': 
+            switch(method) {
+                case 'GET':
+                    return student.getStudentMajor(query);
+                case 'PUT':
+                    return student.updateStudentMajor(parsedBody);
+                case 'POST':
+                case 'DELETE':    
+                    return student.deleteStudentMajor(query);
+            }
+        case 'studentDegree': 
+            switch(method) {
+                case 'GET':
+                    return student.getStudentDegree(query);
+                case 'PUT':
+                    return student.updateStudentDegree(parsedBody);
+                case 'POST':
+                case 'DELETE':    
+                    return student.deleteStudentDegree(query);
+            }
+        case 'studentLinks': 
+            switch(method) {
+                case 'GET':
+                    return student.getStudentLinks(query);
+                case 'PUT':
+                    return student.updateStudentLinks(parsedBody);
+                case 'POST':
+                case 'DELETE':    
+                    return student.deleteStudentLinks(query);
+            }
+
         default: 
             return four03();
     }
