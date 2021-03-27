@@ -1,7 +1,6 @@
 const student = require('./src/controllers/studentController.js');
 const alumni = require('./src/controllers/alumniController.js');
 const login = require('./src/login.js');
-const dbinit = require('./src/dbInit.js');
 
 const four03 = () => {
     return {
@@ -24,7 +23,8 @@ const four03 = () => {
  */
 exports.handler = async (event) => {
     const { rawPath, routeKey, rawQueryString=null, body } = event;
-    let mainPath = rawPath.split('/')[1];
+    let pathArr = rawPath.split('/');
+    let mainPath = pathArr[1];
     let parsedBody = (body) ? JSON.parse(body) : null;
     let query = (rawQueryString != null && rawQueryString != '') ? parseQuery(rawQueryString) : null;
     let method = event.requestContext.http.method;

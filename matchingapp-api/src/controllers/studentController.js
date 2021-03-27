@@ -46,6 +46,7 @@ exports.create = async ( req ) => {
             return rtr;
         }
       } catch (e) {
+          console.log(e);
         return four00(e);
       }
     return result;
