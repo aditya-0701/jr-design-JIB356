@@ -8,7 +8,7 @@ import NewProject from './screens/NewProject'
 import HomeScreen from './screens/HomeScreen'
 import ViewProfile from './screens/ViewProfile'
 import ViewProject from './screens/ViewProject'
-import ShowSaved from "./screens/ViewSaved"
+import ViewSaved from "./screens/ViewSaved"
 
 const Stack = createStackNavigator();
 
