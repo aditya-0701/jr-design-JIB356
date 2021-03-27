@@ -204,7 +204,7 @@ Student.addStudent = async ( params ) => {
                     linksVals.push(linkVal);
                 }
                 let linkQuery = `INSERT INTO StudentLinks (gtUsername, id, label, address) VALUES ?`;
-                student['links'] = await connection.query(linkQuery, linksVals);
+                students['links'] = await connection.query(linkQuery, linksVals);
             }
         }
         return students;
@@ -280,7 +280,34 @@ Student.updateStudent = async ( params ) => {
         await connection.query(deleteQuery);
         student['experiences'] = await connection.query(experiencesQuery, connection.escape(experiencesVals));
     }
+
+    if (params.major) {
+        let deleteQuery = `DELETE FROM StudentMajors WHERE gtUsername = ${connection.escape(gtUsername)}`;
+        let insertQuery = `INSERT INTO StudentMajors (gtUsername, majorId) VALUES (${connection.escape(gtUsername)}), ${connection.escape(params.major)}`;
+        await connection.query(deleteQuery);
+        student['major'] = await connection.query(insertQuery);
+    }
+
+    if (params.degree) {
+        let deleteQuery = `DELETE FROM StudentDegrees WHERE gtUsername = ${connection.escape(gtUsername)}`;
+        let insertQuery = `INSERT INTO StudentDegrees (gtUsername, degreeId) VALUES (${connection.escape(gtUsername)}), ${connection.escape(params.degre)}`;
+        await connection.query(deleteQuery);
+        student['degree'] = await connection.query(insertQuery);
+    }
     
+    if (params.links) {
+        var linksVals = [];
+        
+        for (let i = 0; i < params.links.length; i++) {
+            let link = params.links[i];
+            let linkVal = [gtUsername, null, link.label, link.address];
+            linksVals.push(linkVal);
+        }
+        let deleteQuery = `DELETE FROM StudentLinks WHERE gtUsername = ${connection.escape(gtUsername)}`;
+        let linkQuery = `INSERT INTO StudentLinks (gtUsername, id, label, address) VALUES ?`;
+        await connection.query(deleteQuery);
+        student['links'] = await connection.query(linkQuery, connection.escape(linksVals));
+    }
     
     return student;
 }
@@ -472,7 +499,7 @@ Student.updateStudentLinks = async (params) => {
     let deleteQuery = `DELETE FROM StudentLinks WHERE gtUsername = ${connection.escape(gtUsername)}`;
     let linkQuery = `INSERT INTO StudentLinks (gtUsername, id, label, address) VALUES ?`;
     await connection.query(deleteQuery);
-    links = await connection.query(linkQuery, connection.escape(linksVals));
+    var links = await connection.query(linkQuery, connection.escape(linksVals));
     return links;
 }
 
