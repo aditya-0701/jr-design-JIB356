@@ -554,23 +554,23 @@ export const PrevExperience = ({ navigation }) => {
 export const ExtSites = ({ navigation }) => {
   const title = React.useState("Links to External Services");
   const login = () => {
-    // addStudent(userDetails)
-    // .then((resp) => {
-    //   console.log(resp);
-    //   navigation.reset({
-    //     index: 0,
-    //     routes: [
-    //         {
-    //             name: 'HomeScreen',
-    //             params: {email: userDetails.email }
-    //         }
-    //     ],
-    //   });
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    //   alert("An error occurred in user creation. Please check your inputs and try again.")
-    // })
+    addStudent(userDetails)
+    .then((resp) => {
+      console.log(resp);
+      navigation.reset({
+        index: 0,
+        routes: [
+            {
+                name: 'HomeScreen',
+                params: {email: userDetails.email }
+            }
+        ],
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("An error occurred in user creation. Please check your inputs and try again.")
+    })
     console.log(JSON.parse(JSON.stringify(userDetails)))
   }
 

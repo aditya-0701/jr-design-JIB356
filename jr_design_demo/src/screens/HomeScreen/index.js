@@ -1,5 +1,5 @@
 import  React, { useState } from 'react';
-import { View, StyleSheet, Text, Button, TextInput, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Button, TextInput, TouchableOpacity, Linking } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { getStudent, getAlumni } from '../../store.js'
@@ -73,7 +73,13 @@ const Profile = ( props ) => {
             onChangeFirstName(resp.body.firstName)
             onChangeLastName(resp.body.lastName);
             onChangeEmail(resp.body.email);
-            onChangeDegree(resp.body.degree)
+            onChangeDegree(resp.body.degree[0].degree)
+            onChangeMajor(resp.body.major[0].major)
+            let skills = resp.body.skills.map( ({skill}) => skill).join(', ');
+            let interests = resp.body.interests.map( ({interest}) => interest).join(', ');
+            let experiences = resp.body.experiences;
+            onChangeSkills(skills);
+            onChangeInterests(interests);
         })
         .catch((err) => {
             console.log(err);
@@ -87,7 +93,12 @@ const Profile = ( props ) => {
                 <Text style = {styles.label}>Name</Text>
                 <Text>{ firstName || "" } {lastName || ""}</Text>
                 <Text style = {styles.label}>Email</Text>
-                <Text>{ email || "" }</Text>
+                <Text 
+                    onPress = {() => Linking.openURL('mailto:'+ email)}
+                    style = {{color: '#0000EE', fontWeight: 'bold'}}
+                >
+                    { email || "" }
+                </Text>
                 <Text style = {styles.label}>Degree</Text>
                 <Text>{ degree || "" }</Text>
                 <Text style = {styles.label}>Major</Text>
