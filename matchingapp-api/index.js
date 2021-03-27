@@ -126,11 +126,11 @@ exports.handler = async (event) => {
                 case 'GET':
                     // return student.getStudentProjectInterests(query);
                 case 'PUT':
-                    // return student.updateProjectInterests(parsedBody);
+                    return alumni.updateProject(parsedBody);
                 case 'POST':
                     return alumni.addProject( parsedBody );
                 case 'DELETE':
-                    // return student.deleteAllStudentProjectInterests(query);
+                    return alumni.deleteProject(query);
             }
         default: 
             return four03();

@@ -196,20 +196,25 @@ Student.updateStudent = async ( params ) => {
     let student = await connection.query(query, inputs);
     
     if (params.skills) {
-                var skillsVals = [];
-                for (let i = 0; i < params.skills.length; i++) {
-                    skillsVals.push([params.gtUsername, params.skills[i]]);
-                }
-                let skillQuery = "INSERT INTO StudentSkills (gtUsername, skillId) VALUES" + connection.escape(skillsVals);
-                student['skills'] = await connection.query(skillQuery); 
-            }
+        var skillsVals = [];
+        for (let i = 0; i < params.skills.length; i++) {
+            skillsVals.push([gtUsername, params.skills[i]]); // Should we connection escape here too?
+        }
+        // TODO: delete before insert
+        let deleteQuery = `DELETE FROM StudentSkills WHERE gtUsername = ${connection.escape(gtUsername)}`;
+        let skillQuery = "INSERT INTO StudentSkills (gtUsername, skillId) VALUES ?";
+        await connection.query(deleteQuery);
+        student['skills'] = await connection.query(skillQuery, connection.escape(skillsVals)); 
+    }
             
     if (params.interests) {
         var interestsVals = [];
         for (let i = 0; i < params.interests.length; i++) {
             skillsVals.push([params.gtUsername, params.interests[i]]);
         }
-        let skillQuery = `RE INTO StudentInterests (gtUsername, interestId) VALUES ?`;
+        let deleteQuery = `DELETE FROM StudentInterests WHERE gtUsername = ${connection.escape(gtUsername)}`;
+        let skillQuery = `INSERT INTO StudentInterests (gtUsername, interestId) VALUES ?`;
+        await connection.query(deleteQuery);
         student['interests'] = await connection.query(skillQuery, connection.escape(interestsVals)); 
     }
 
@@ -220,7 +225,9 @@ Student.updateStudent = async ( params ) => {
         for (let i = 0; i < params.experiences.length; i++) {
             experiencesVals.push([params.gtUsername].concat(params.experiences[i]));
         }
+        let deleteQuery = `DELETE FROM Experience WHERE gtUsername = ${gtUsername}`;
         let experiencesQuery = `INSERT INTO Experience (gtUsername, expDescription, companyName, start_date, end_date) VALUES ?`;
+        await connection.query(deleteQuery);
         student['experiences'] = await connection.query(experiencesQuery, connection.escape(experiencesVals));
     }
     

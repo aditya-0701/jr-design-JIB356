@@ -89,13 +89,13 @@ Alumni.addProject = async ( params ) => {
     // params
     if (params.alumniId && params.createdAt) {
         let projectParams = [params.projectTitle, params.projectDescription, params.startDate, params.endDate, params.alumniId, params.createdAt, params.visible];
-        let query = "INSERT INTO Projects (projectTitle, projectDescription, startDate, endDate, projectAlumni, createdAt, visible) SET ?";
-        var project = await connection.query(query, projectParams);
+        let query = "INSERT INTO Projects (projectTitle, projectDescription, startDate, endDate, projectAlumni, createdAt, visible) VALUES ?";
+        var project = await connection.query(query, connection.escape(projectParams));
     } else {
         throw 'ERROR OCCURRED';
     }
 
-    let getProjIdQuery = `SELECT id FROM Projects WHERE projectAlumni = ${params.alumniId} AND createdAt = ${params.createdAt};`; 
+    let getProjIdQuery = `SELECT id FROM Projects WHERE projectAlumni = ${connection.escape(params.alumniId)} AND createdAt = ${connection.escape(params.createdAt)};`; 
     project['id'] = await connection.query();
 
     if (project) {
@@ -105,7 +105,7 @@ Alumni.addProject = async ( params ) => {
                 skillsVals.push([project['id'], params.skills[i]]);
             }
             let skillQuery = `INSERT INTO ProjectSkills (projectId, skillId) VALUES ?`;
-            project['skills'] = await connection.query(skillQuery, skillsVals);
+            project['skills'] = await connection.query(skillQuery, connection.escape(skillsVals));
         }
         if (params.interests) {
             let interestsVals = [];
@@ -113,7 +113,7 @@ Alumni.addProject = async ( params ) => {
                 interestsVals.push([project['id'], params.interests[i]]);
             }
             let interestQuery = `INSERT INTO ProjectInterests (projectId, interestId) VALUES ?`;
-            project['interests'] = await connection.query(interestQuery, interestsVals);
+            project['interests'] = await connection.query(interestQuery, connection.escape(interestsVals));
         }
         if (params.links) {
             // assumes params.links follows:
@@ -123,7 +123,7 @@ Alumni.addProject = async ( params ) => {
                 linksVals.push([project['id'], null].concat(params.links[i]));
             }
             let linkQuery = `INSERT INTO ProjectLinks (projectId, id, label, address) VALUES ?`;
-            project['links'] = await connection.query(linkQuery, linksVals);
+            project['links'] = await connection.query(linkQuery, connection.escape(linksVals));
         }
     }
     
@@ -196,6 +196,59 @@ Alumni.getAlumniProjects = async ( params ) => {
     
     var students = await connection.query(query);
     return students;
+};
+
+Alumni.deleteAlumniProject = async (params) => {
+    let query = `DELETE FROM Projects WHERE id = ${connectio.escape(params.projectId)} AND projectAlumni = ${connection.escape(params.alumniId)}`;
+    var projects = await connection.query(query);
+    return projects;
+};
+
+Alumni.updateProject = async (params) => {
+    // need projectId
+    if (params.projectId) {
+        let projectParams = [params.projectTitle, params.projectDescription, params.startDate, params.endDate, params.visible, params.projectId];
+        let query = "UPDATE Projects SET projectTitle = ?, projectDescription = ?, startDate = ?, endDate = ?, projectAlumni = ?, createdAt = ?, visible = ? WHERE id = ?";
+        var project = await connection.query(query, connection.escape(projectParams));
+    } else {
+        throw 'ERROR OCCURRED';
+    }
+    if (project) {
+        if (params.skills) {
+            let skillsVals = [];
+            for (let i = 0; i < params.skills.length; i++) {
+                skillsVals.push([params.projectId, params.skills[i]]);
+            }
+            let deleteQuery = `DELETE FROM ProjectSkills WHERE projectId = ${connection.escape(params.projectId)}`;
+            let skillQuery = `INSERT INTO ProjectSkills (projectId, skillId) VALUES ?`;
+            await connection.query(deleteQuery);
+            project['skills'] = await connection.query(skillQuery, connection.escape(skillsVals));
+        }
+        if (params.interests) {
+            let interestsVals = [];
+            for (let i = 0; i < params.interests.length; i++) {
+                interestsVals.push([params.projectId, params.interests[i]]);
+            }
+            let deleteQuery = `DELETE FROM ProjectInterests WHERE projectId = ${connection.escape(params.projectId)}`;
+            let interestQuery = `INSERT INTO ProjectInterests (projectId, interestId) VALUES ?`;
+            await connection.query(deleteQuery);
+            project['interests'] = await connection.query(interestQuery, connection.escape(interestsVals));
+        }
+        if (params.links) {
+            // assumes params.links follows:
+            // [[label, address], ...]
+            let linksVals = [];
+            for (let i = 0; i < params.links.length; i++) {
+                linksVals.push([params.projectId, null].concat(params.links[i]));
+            }
+            let deleteQuery = `DELETE FROM ProjectLinks WHERE projectId = ${connection.escape(params.projectId)}`;
+            let linkQuery = `INSERT INTO ProjectLinks (projectId, id, label, address) VALUES ?`;
+            await connection.query(deleteQuery);
+            project['links'] = await connection.query(linkQuery, connection.escape(linksVals));
+        }
+    }
+    
+    return project;
 };
 
 module.exports = Alumni
