@@ -71,7 +71,7 @@ const LoginPage = ( props ) => {
                     routes: [
                         { 
                             name: 'HomeScreen',
-                            params: { email: emailValue },
+                            params: { email: emailValue, gtUsername: gtUsername },
                         }
                     ],
                 });

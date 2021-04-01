@@ -21,7 +21,7 @@ class NiceButton extends React.Component {
 
 const userDetails = {
   email: "",
-  pass: "",
+  gtUsername: "",
   firstName: "",
   lastName: "",
   middleName: "",
@@ -223,6 +223,7 @@ const interestLibrary = [{
 
 export const BasicDetails = ({ navigation }) => {
 
+  const [gtUsername, onChangeGTUsername] = React.useState(userDetails.gtUsername);
   const [emailValue, onChangeEmail] = React.useState(userDetails.email);
   const [passwordValue, onChangePassword] = React.useState(userDetails.pwd);
   const [firstName, onChangeFirstName] = React.useState(userDetails.firstName);
@@ -241,6 +242,7 @@ export const BasicDetails = ({ navigation }) => {
     userDetails.interests= interests,
     userDetails.skills= skills;
     userDetails.pwd= passwordValue;
+    userDetails.gtUsername= gtUsername;
     // if (emailValue != '' && passwordValue  != ''  
     //     && firstName  != '' && lastName  != '' 
     //     && degree.length != 0 && major.length != 0
@@ -273,6 +275,15 @@ export const BasicDetails = ({ navigation }) => {
             onChangeText = { (text) => onChangeLastName(text)}
           />
 
+          <Text style={styles.label}>GT Username</Text>
+          <TextInput
+              autoCapitalize = "none"
+              onChangeText = { (text) => onChangeGTUsername(text)}
+              value = { gtUsername }
+              placeholder = 'GT Username'
+              style = {styles.inputs}
+          />
+
           <Text style={styles.label}>Email</Text>
           <TextInput
                       autoCapitalize = "none"
@@ -280,37 +291,37 @@ export const BasicDetails = ({ navigation }) => {
                       keyboardType = 'email-address'
                       onChangeText = { (text) => onChangeEmail(text)}
                       value = { emailValue }
-                      placeholder = 'EMAIL'
+                      placeholder = 'Email'
                       style = {styles.inputs}
                   />
 
           <Text style={styles.label}>Password</Text>
           <TextInput
-                      autoCapitalize = "none"
-                      autoCompleteType = 'password'
-                      secureTextEntry = { true }
-                      onChangeText = { (text) => onChangePassword(text)}
-                      value = { passwordValue }
-                      placeholder = 'PASSWORD'
-                      style = {styles.inputs}
-                  />
+            autoCapitalize = "none"
+            autoCompleteType = 'password'
+            secureTextEntry = { true }
+            onChangeText = { (text) => onChangePassword(text)}
+            value = { passwordValue }
+            placeholder = 'Password'
+            style = {styles.inputs}
+          />
 
-                <Text style={styles.label}>Degree</Text>
-                  <SectionedMultiSelect
-                  items={degreeLibrary}
-                  uniqueKey="id"
-                  subKey="children"
-                  selectText="Select your degree..."
-                  IconRenderer={Icon}
-                  showDropDowns={false}
-                  readOnlyHeadings={true}
-                  hideSearch={true}
-                  showChips={true}
-                  single={true}
-                  onSelectedItemsChange={onChangeDegree}
-                  selectedItems={degree}
-                  styles={[styles, localStyle]}
-                />
+          <Text style={styles.label}>Degree</Text>
+            <SectionedMultiSelect
+            items={degreeLibrary}
+            uniqueKey="id"
+            subKey="children"
+            selectText="Select your degree..."
+            IconRenderer={Icon}
+            showDropDowns={false}
+            readOnlyHeadings={true}
+            hideSearch={true}
+            showChips={true}
+            single={true}
+            onSelectedItemsChange={onChangeDegree}
+            selectedItems={degree}
+            styles={[styles, localStyle]}
+          />
 
           <Text style={styles.label}>Major</Text>
             <SectionedMultiSelect
@@ -555,7 +566,7 @@ export const PrevExperience = ({ navigation }) => {
 };
 
 export const ExtSites = ({ navigation }) => {
-  var [links, onChangeLink] = React.useState(links);
+  var [links, onChangeLink] = React.useState(userDetails.links);
   const saveVals = () => {
     userDetails['links'] = links;
     console.log(links);
@@ -593,7 +604,7 @@ export const ExtSites = ({ navigation }) => {
 }]); */
   const login = () => {
     saveVals();
-    console.log(JSON.parse("" || JSON.stringify(userDetails)));
+    console.log(JSON.stringify(userDetails));
     addStudent(userDetails)
     .then((resp) => {
       console.log(resp);
@@ -602,7 +613,7 @@ export const ExtSites = ({ navigation }) => {
         routes: [
             {
                 name: 'HomeScreen',
-                params: {email: userDetails.email }
+                params: {gtUsername: userDetails.gtUsername }
             }
         ],
       });
@@ -611,7 +622,7 @@ export const ExtSites = ({ navigation }) => {
       console.log(err);
       alert("An error occurred in user creation. Please check your inputs and try again.")
     })
-    console.log(JSON.parse(JSON.stringify(userDetails)))
+    // console.log(JSON.parse(JSON.stringify(userDetails)))
   }
 
   return (

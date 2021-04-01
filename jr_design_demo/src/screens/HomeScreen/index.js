@@ -1,5 +1,5 @@
 import  React, { useState } from 'react';
-import { View, StyleSheet, Text, Button, TextInput, TouchableOpacity, Linking } from 'react-native';
+import { View, StyleSheet, Text, FlatList, TextInput, TouchableOpacity, Linking } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { getStudent, getAlumni } from '../../store.js'
@@ -11,6 +11,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 //import MainLogin from './mainLogin.js';
 // import AlumniLogin from './alumniLogin.js';
 // import StudentLogin from './studentLogin.js';
+
+var gtUname= '';
 
 const Tab = new createBottomTabNavigator();
 
@@ -51,7 +53,7 @@ const Profile = ( props ) => {
     const [major, onChangeMajor] = React.useState('');
     const [interests, onChangeInterests] = React.useState('');
     const [degree, onChangeDegree] = React.useState('');
-    const [experiences, onChangeExperience] = React.useState('');
+    const [experiences, onChangeExperience] = React.useState([]);
 
     // console.log(userDetails);
     const logout = () => {
@@ -65,11 +67,8 @@ const Profile = ( props ) => {
         });
     }
 
-    useEffect(() => {
-        console.log(props)
-        var em = (props != 'undefined' && props != null) ? props.route.params.email : null;
-        if (em == null) return;
-        getStudent({email: em})
+    const refresh = () => {
+        getStudent({gtUsername: gtUname})
         .then((resp) => {
             console.log(resp.body);
             onChangeFirstName(resp.body.firstName)
@@ -86,12 +85,35 @@ const Profile = ( props ) => {
         .catch((err) => {
             console.log(err);
         })
-    })
+    }
+
+    useEffect(() => {
+        console.log(props)
+        // var em = (props != 'undefined' && props != null) ? props.route.params.gtUsername : null;
+        if (gtUname == null) return;
+        getStudent({gtUsername: gtUname})
+        .then((resp) => {
+            console.log(resp.body);
+            onChangeFirstName(resp.body.firstName)
+            onChangeLastName(resp.body.lastName);
+            onChangeEmail(resp.body.email);
+            onChangeDegree(resp.body.degree[0].degree)
+            onChangeMajor(resp.body.major[0].major)
+            let skills = resp.body.skills.map( ({skill}) => skill).join(', ');
+            let interests = resp.body.interests.map( ({interest}) => interest).join(', ');
+            onChangeSkills(skills);
+            onChangeInterests(interests);
+            onChangeExperience(resp.body.experiences);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }, [gtUname])
 
     return (
         <View style = { styles.container }>
-            <ScrollView>
             <Text style = {styles.title}>Profile Details</Text>
+            <ScrollView>
             <View style = { styles.info }>
                 <Text style = {styles.label}>Name</Text>
                 <Text>{ firstName || "" } {lastName || ""}</Text>
@@ -111,10 +133,35 @@ const Profile = ( props ) => {
                 <Text style = {styles.label}>Interests</Text>
                 <Text>{ interests || "" }</Text>
                 <Text style = {styles.label}>Experiences</Text>
+                {experiences.map((element, index) => {
+                    return (<View key = {index}>
+                        <Text style={[styles.label, {fontSize: 18, fontStyle: 'italic'}]}>Company</Text>
+                        <Text style={{color: 'black'}}>{element.companyName || "not found"}</Text>
+                        <Text style={[styles.label, {fontSize: 18, fontStyle: 'italic'}]}>Position</Text>
+                        <Text style={{color: 'black'}}>{element.position || "not found"}</Text>
+                        <View style={ {textAlign: 'stretch', flexDirection: "row",alignItems: 'stretch',justifyContent: 'center'}}>
+                            <Text style={[styles.label, 
+                                {marginHorizontal: 20, width: '45%'}, 
+                                {fontSize: 18, fontStyle: 'italic'}]}>Start Date</Text>
+                            <Text style={[styles.label, 
+                                {marginHorizontal: 20, width: '45%'},
+                                {fontSize: 18, fontStyle: 'italic'}]}>End Date</Text>
+                        </View>
+                        <View style={ {textAlign: 'center', flexDirection: "row",alignItems: 'stretch',justifyContent: 'center' }}>
+                            {<Text style={{marginHorizontal: 20, width: '45%'}}>{element.start_date.split('T')[0]}</Text>}
+                            {<Text style={{marginHorizontal: 20, width: '45%'}}>{element.end_date.split('T')[0]}</Text> }
+                        </View>
+                        <Text style={styles.label}>Description</Text>
+                        <Text style={{color: 'black'}}>{element.expDescription}</Text>
+                    </View>
+                )})}
             </View>
             </ScrollView>
             <TouchableOpacity style = { styles.button } onPress = { logout }>
                 <Text style = { styles.buttonText }>Log Out</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style = { styles.button } onPress = { refresh }>
+                <Text style = { styles.buttonText }>Refresh</Text>
             </TouchableOpacity>
         </View>
     )
@@ -122,13 +169,15 @@ const Profile = ( props ) => {
 
 
 export default function HomeScreen( props ) {
-    const { email } = props.route.params ;
+    const { email, gtUsername } = props.route.params ;
+    gtUname = gtUsername;
     // getProf({email: email});
 
     return (
         <Tab.Navigator>
             <Tab.Screen name = "Home" component = { Home } />
-            <Tab.Screen name = "Profile" component = { Profile } initialParams = {{email: email}}/>
+            <Tab.Screen name = "Profile" component = { Profile } initialParams = 
+             {{email: email, gtUsername: gtUsername}}/>
         </Tab.Navigator>
     )
 };

@@ -61,7 +61,7 @@ export async function userLogin( params ) {
 
 
 export function addStudent( params ) {
-    superagent.post(URI + '/student')
+    return superagent.post(URI + '/student')
     .send( params )
 };
 
@@ -69,24 +69,21 @@ export function updateStudent( params ) {
     const { email } = params;
     var gtUsername = email.split('@')[0];
     console.log(gtUsername);
-    superagent.put(URI + '/student')
+    return superagent.put(URI + '/student')
     .send( params )
 } 
 
 
 export function getStudent( params ) {
-    const { email }  = ( params != null ) ? params : {};
-    if (email != 'undefined' && email != null) {
-        var gtUsername = email.split('@')[0];
-        console.log(gtUsername);
-
+    const { gtUsername }  = ( params != null ) ? params : {};
+    if (gtUsername != 'undefined' && gtUsername != null) {
         return superagent.get(URI + `/student/${gtUsername}`)
         .send()
     }
 } 
 
 export function getAllStudents ( query ) {
-    superagent.get(URI + '/student')
+    return superagent.get(URI + '/student')
     .query( query )
     .send()
 }
@@ -130,12 +127,12 @@ export function getAllStudents ( query ) {
 
 
 export function addAlumni( params ) {
-    superagent.post(URI + '/alumni')
+   return  superagent.post(URI + '/alumni')
     .send( params )
 };
 
 export function updateAlumni( params ) {
-    superagent.put(URI + '/alumni')
+   return  superagent.put(URI + '/alumni')
     .send( params )
 } 
 
@@ -150,7 +147,7 @@ export function getAlumni( params ) {
 } 
 
 export function getAllAlumni ( ) {
-    superagent.get(URI + '/alumni')
+   return  superagent.get(URI + '/alumni')
     .send()
 }
 
@@ -210,7 +207,7 @@ export function addInterests ( params ) {
 
     // TBD in backend
 export function getAllInterests ( params ) {
-    superagent.get(URI + '/skills')
+    return superagent.get(URI + '/skills')
 }
 
 // Experiences
@@ -239,7 +236,7 @@ export function addExperiences ( params ) {
 
     // TBD in backend
 export function getAllExperiences ( params ) {
-    superagent.get(URI + '/experiences')
+    return superagent.get(URI + '/experiences')
 }
 
 
