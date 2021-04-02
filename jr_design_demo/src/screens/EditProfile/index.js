@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { addStudent, updateExperiences } from '../../store'
+import { getStudent, getAlumni } from '../../store.js'
 import styles from '../../globalStyles';
 import DatePicker from 'react-native-datepicker';
 
@@ -19,7 +20,7 @@ class NiceButton extends React.Component {
   }
 }
 
-const userDetails = {
+var userDetails = {
   email: "",
   gtUsername: "",
   firstName: "",
@@ -221,7 +222,27 @@ const interestLibrary = [{
 
 
 
-export const BasicDetails = ({ navigation }) => {
+export const BasicDetails = ({ navigation, route }) => {
+  var { gtUser } = route.params;
+  if (userDetails && Object.keys(userDetails).length === 0 ) {
+    getStudent({gtUsername: gtUser})
+    .then((resp) => {
+        console.log(resp.body);
+        userDetails = resp.body;
+        onChangeGTUsername(resp.body.gtUsername);
+        onChangeEmail(resp.body.email);
+        onChangePassword(resp.body.pwd);
+        onChangeFirstName(resp.body.firstName);
+        onChangeLastName(resp.body.lastName);
+        onChangeDegree(resp.body.degree);
+        onChangeMajor(resp.body.major);
+        onChangeInterests(resp.body.interests);
+        onChangeSkills(resp.body.skills);
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+  }
 
   const [gtUsername, onChangeGTUsername] = React.useState(userDetails.gtUsername);
   const [emailValue, onChangeEmail] = React.useState(userDetails.email);
@@ -524,6 +545,7 @@ export const PrevExperience = ({ navigation }) => {
             multiline={true}
             placeholder="Describe your experience..." 
             style={[styles.inputs, {height: 100, textAlignVertical: 'top'}]}
+            value = {item.expDescription}
             onChangeText = {(text) => {updateExperience(index, 'expDescription', text)}}
           />
           <TouchableOpacity onPress = {() => removeExperience(index)} style = { [styles.button, {alignSelf: 'center', width: '50%'} ] }>
@@ -654,10 +676,21 @@ export const ExtSites = ({ navigation }) => {
 
 const Stack = createStackNavigator();
 
-export default function NewProfile( props ) {
+export default function EditProfile( props ) {
+  var { gtUsername } = props.route.params;
+
+  getStudent({gtUsername: gtUsername})
+  .then((resp) => {
+      console.log(resp.body);
+      userDetails = resp.body;
+  })
+  .catch((err) => {
+      console.log(err);
+  })
+
   return (
     <Stack.Navigator screenOptions = {{headerShown: false}} initialRouteName="Page1">
-      <Stack.Screen name="Page1" component={BasicDetails} />
+      <Stack.Screen name="Page1" component={BasicDetails} initialParams = {{gtUsername: gtUsername}}/>
       <Stack.Screen name="Page2" component={PictureResume} />
       <Stack.Screen name="Page3" component={PrevExperience} />
       <Stack.Screen name="Page4" component={ExtSites} />

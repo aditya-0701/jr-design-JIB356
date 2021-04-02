@@ -1,12 +1,14 @@
 import  React, { useState } from 'react';
 import { View, StyleSheet, Text, FlatList, TextInput, TouchableOpacity, Linking } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { getStudent, getAlumni } from '../../store.js'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
 import styles from '../../globalStyles';
 import { ScrollView } from 'react-native-gesture-handler';
+import EditProfile from '../EditProfile'
 
 //import MainLogin from './mainLogin.js';
 // import AlumniLogin from './alumniLogin.js';
@@ -15,6 +17,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 var gtUname= '';
 
 const Tab = new createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 const Home = ( props ) => {
   const { navigation } = props;
@@ -54,6 +57,7 @@ const Profile = ( props ) => {
     const [interests, onChangeInterests] = React.useState('');
     const [degree, onChangeDegree] = React.useState('');
     const [experiences, onChangeExperience] = React.useState([]);
+    const [links, onChangeLinks] = React.useState([]);
 
     // console.log(userDetails);
     const logout = () => {
@@ -81,9 +85,16 @@ const Profile = ( props ) => {
             onChangeSkills(skills);
             onChangeInterests(interests);
             onChangeExperience(resp.body.experiences);
+            onChangeLinks(resp.body.links);
         })
         .catch((err) => {
             console.log(err);
+        })
+    }
+
+    const editProfile = () => {
+        navigation.navigate("EditProfile", {
+            gtUsername: gtUname 
         })
     }
 
@@ -104,6 +115,7 @@ const Profile = ( props ) => {
             onChangeSkills(skills);
             onChangeInterests(interests);
             onChangeExperience(resp.body.experiences);
+            onChangeLinks(resp.body.links);
         })
         .catch((err) => {
             console.log(err);
@@ -151,8 +163,17 @@ const Profile = ( props ) => {
                             {<Text style={{marginHorizontal: 20, width: '45%'}}>{element.start_date.split('T')[0]}</Text>}
                             {<Text style={{marginHorizontal: 20, width: '45%'}}>{element.end_date.split('T')[0]}</Text> }
                         </View>
-                        <Text style={styles.label}>Description</Text>
+                        <Text style={[styles.label, {fontSize: 18, fontStyle: 'italic'}]}>Description</Text>
                         <Text style={{color: 'black'}}>{element.expDescription}</Text>
+                    </View>
+                )})}
+                <Text style = {styles.label}>External Links</Text>
+                {links.map((element, index) => {
+                    return (<View key = {index}>
+                        <Text style={[styles.label, {fontSize: 18, fontStyle: 'italic'}]}>Link Label</Text>
+                        <Text style={{color: 'black'}}>{element.label || "not found"}</Text>
+                        <Text style={[styles.label, {fontSize: 18, fontStyle: 'italic'}]}>Link Address</Text>
+                        <Text style={{color: 'black'}}>{element.address || "not found"}</Text>
                     </View>
                 )})}
             </View>
@@ -160,10 +181,23 @@ const Profile = ( props ) => {
             <TouchableOpacity style = { styles.button } onPress = { logout }>
                 <Text style = { styles.buttonText }>Log Out</Text>
             </TouchableOpacity>
-            <TouchableOpacity style = { styles.button } onPress = { refresh }>
-                <Text style = { styles.buttonText }>Refresh</Text>
+            <TouchableOpacity style = { styles.button } onPress = { editProfile }>
+                <Text style = { styles.buttonText }>Edit Profile</Text>
             </TouchableOpacity>
         </View>
+    )
+}
+
+
+const ProfileEdit = ( props ) => {
+    const { email, gtUsername } = props.route.params ;
+    return (
+        <Stack.Navigator screenOptions = {{headerShown: false}}>
+            <Stack.Screen name = "Profile" component = { Profile } initialParams = 
+             {{email: email, gtUsername: gtUsername}}/>
+            <Stack.Screen name = "EditProfile" component = { EditProfile } initialParams = 
+             {{gtUsername: gtUsername}}/>
+        </Stack.Navigator>
     )
 }
 
@@ -176,7 +210,7 @@ export default function HomeScreen( props ) {
     return (
         <Tab.Navigator>
             <Tab.Screen name = "Home" component = { Home } />
-            <Tab.Screen name = "Profile" component = { Profile } initialParams = 
+            <Tab.Screen name = "Profile" component = { ProfileEdit } initialParams = 
              {{email: email, gtUsername: gtUsername}}/>
         </Tab.Navigator>
     )
