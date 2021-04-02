@@ -1,6 +1,6 @@
 // import * as React from 'react';
 import React from 'react';
-import { Image, TouchableOpacity, ImageBackground, View, Text, StyleSheet, Dimensions, Animated, PanResponder, Touchable, Button } from 'react-native';
+import { ScrollView, Switch, TextInput, KeyboardAvoidingView, Image, TouchableOpacity, ImageBackground, View, Text, StyleSheet, Dimensions, Animated, PanResponder, Touchable, Button } from 'react-native';
 // import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import shouldUseActivityState, { screensEnabled } from 'react-native-screens'
@@ -27,7 +27,6 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 const CARD_HEIGHT = SCREEN_HEIGHT * 0.86
 
-var likedProjects = [];
 
 const projectDetails = [
   {
@@ -337,9 +336,6 @@ export class Card extends React.Component {
               this.position.setValue({ x: 0, y: 0 })
             })
           })
-          likedProjects.push(this.state.currentIndex);
-          // likedProjects[index] = this.state.currentIndex;
-          // index++;
         }
         else if (gestureState.dx < -120) {
           Animated.spring(this.position, {
@@ -389,11 +385,11 @@ export class Card extends React.Component {
             key={item.id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
             <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
-              <Text style={{ borderWidth: 1, borderColor: 'rgba(179, 163, 105, 1)', color: 'rgba(179, 163, 105, 1)', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
+              <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
             </Animated.View>
 
             <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
-              <Text style={{ borderWidth: 1, borderColor: 'rgba(179, 163, 105, 1)', color: 'rgba(179, 163, 105, 1)', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
+              <Text style={{ borderWidth: 1, borderColor: '#a40000', color: '#a40000', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
             </Animated.View>
 
 
@@ -419,11 +415,11 @@ export class Card extends React.Component {
             key={item.id} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
             <Animated.View style={{ opacity: 0, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
-              <Text style={{ borderWidth: 1, borderColor: 'rgba(179, 163, 105, 1)', color: 'rgba(179, 163, 105, 1)', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
+              <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
             </Animated.View>
 
             <Animated.View style={{ opacity: 0, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
-              <Text style={{ borderWidth: 1, borderColor: 'rgba(179, 163, 105, 1)', color: 'rgba(179, 163, 105, 1)', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
+              <Text style={{ borderWidth: 1, borderColor: '#a40000', color: '#a40000', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
             </Animated.View>
 
 
@@ -539,15 +535,15 @@ class SavedProjects extends React.Component {
 class DetailsScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Project Details</Text>
-        <Text>  {projectDetails[x].name}</Text>
-        <Text>  {projectDetails[x].bio}</Text>
-        <Text>  {projectDetails[x].skills}</Text>
-        <Text>  {projectDetails[x].hoursPerWeek}</Text>
-        <Text>  {projectDetails[x].externalLink}</Text>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <Text style={{ bottom: 230, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>Project Details</Text>
+        <Text style={{ bottom: 210, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}>  {projectDetails[x].name}</Text>
+        <Text style={{ bottom: 150, textAlign: 'left', paddingLeft: 25, fontSize: 18, fontWeight: '500' }}>Biography: {'\n'}{projectDetails[x].bio}{'\n'}</Text>
+        <Text style={{ bottom: 150, textAlign: 'left', paddingLeft: 25, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{projectDetails[x].skills}{'\n'}</Text>
+        <Text style={{ bottom: 150, textAlign: 'left', paddingLeft: 25, fontSize: 18, fontWeight: '500' }}>Hours per Week: {'\n'}{projectDetails[x].hoursPerWeek}{'\n'}</Text>
+        <Text style={{ bottom: 150, textAlign: 'left', paddingLeft: 25, fontSize: 18, fontWeight: '500' }}>Link: {'\n'}{projectDetails[x].externalLink}{'\n'}</Text>
         <TouchableOpacity
-          style={{ top: SCREEN_HEIGHT * .3, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
+          style={{ left: 30, top: SCREEN_HEIGHT * .05, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
           onPress={() => this.props.navigation.goBack()}>
           <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
         </TouchableOpacity>
