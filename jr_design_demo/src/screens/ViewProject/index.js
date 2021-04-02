@@ -78,196 +78,6 @@ const projectDetails = [
   }
 ]
 
-
-// /**
-//  * this function tells the page what to display, it needs to be moved when it's integrated with the back-end stuff but idk where to put it
-//  * @param {Boolean} bool all this does rn is it swaps between two sets of arrays, back-end needs to figure out how to feed it information but this is a placeholder 
-//  * @returns the details for the projects
-//  */
-// function getProjectDetails(bool) {
-//   if (bool) {
-//     return ([
-//       {
-//         id: "1",
-//         name: "Example Project",
-//         description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
-//           + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
-//           + " Is this example long enough?",
-//         skills: "Programming",
-//         hoursPerWeek: "10",
-//         externalLink: "https://www.google.com",
-//         uri: require('../../../assets/1.jpg')
-//       },
-//       {
-//         id: "2",
-//         name: "Example Project 2",
-//         description: "dka;ldksngadgsn;sadgks",
-//         skills: "html, css",
-//         hoursPerWeek: "5",
-//         externalLink: "bing.com",
-//         uri: require('../../../assets/2.jpg')
-//       },
-//       {
-//         id: "3",
-//         name: "Project 3",
-//         description: ";lskdgn;klsgnl;ksagn;laskdg",
-//         hoursPerWeek: "8",
-//         externalLink: "yahoo.com",
-//         uri: require('../../../assets/3.jpg')
-//       },
-//       {
-//         id: "4",
-//         name: "Project 4",
-//         description: "kdsn;gkdsng;lskdgn;lsadg",
-//         hoursPerWeek: "3",
-//         externalLink: "images.google.com",
-//         uri: require('../../../assets/4.jpg')
-//       },
-//       {
-//         id: "5",
-//         name: "Project 5",
-//         description: "lkdgnsd;lkzgnsad;lgnasdg",
-//         hoursPerWeek: "7",
-//         externalLink: "maps.google.com",
-//         uri: require('../../../assets/5.jpg')
-//       },
-//       {
-//         id: "6",
-//         name: "Example Project 6",
-//         description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
-//           + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
-//           + " Is this example long enough?",
-//         skills: "Programming",
-//         hoursPerWeek: "10",
-//         externalLink: "https://www.google.com",
-//         uri: require('../../../assets/6.jpg')
-//       },
-//       {
-//         id: "7",
-//         name: "Example Project 7",
-//         description: "dka;ldksngadgsn;sadgks",
-//         skills: "html, css",
-//         hoursPerWeek: "5",
-//         externalLink: "bing.com",
-//         uri: require('../../../assets/7.jpg')
-//       },
-//       {
-//         id: "8",
-//         name: "Project 8",
-//         description: ";lskdgn;klsgnl;ksagn;laskdg",
-//         hoursPerWeek: "8",
-//         externalLink: "yahoo.com",
-//         uri: require('../../../assets/8.jpg')
-//       },
-//       {
-//         id: "9",
-//         name: "Project 9",
-//         description: "kdsn;gkdsng;lskdgn;lsadg",
-//         hoursPerWeek: "3",
-//         externalLink: "images.google.com",
-//         uri: require('../../../assets/9.jpg')
-//       },
-//       {
-//         id: "10",
-//         name: "Project X",
-//         description: "lkdgnsd;lkzgnsad;lgnasdg",
-//         hoursPerWeek: "7",
-//         externalLink: "maps.google.com",
-//         uri: require('../../../assets/10.jpg')
-//       }
-//     ]);
-//   } else {
-//     return ([
-//       {
-//         id: "6",
-//         name: "Example Project 6",
-//         description: "dfskj  sdjfl kldsf klj sd klsd jklfjkls df! dfskj lkjfsd kjf d!"
-//           + " dsfklj kldjs flkj sdfjks dflkjs fd! kljdsf kljdfs jklf sdjk!"
-//           + " Is this example long enough?",
-//         skills: "Programming",
-//         hoursPerWeek: "10",
-//         externalLink: "https://www.google.com",
-//         uri: require('../../../assets/6.jpg')
-//       },
-//       {
-//         id: "7",
-//         name: "Example Project 7",
-//         description: "dka;ldksngadgsn;sadgks",
-//         skills: "html, css",
-//         hoursPerWeek: "5",
-//         externalLink: "bing.com",
-//         uri: require('../../../assets/7.jpg')
-//       },
-//       {
-//         id: "8",
-//         name: "Project 8",
-//         description: ";lskdgn;klsgnl;ksagn;laskdg",
-//         hoursPerWeek: "8",
-//         externalLink: "yahoo.com",
-//         uri: require('../../../assets/8.jpg')
-//       },
-//       {
-//         id: "9",
-//         name: "Project 9",
-//         description: "kdsn;gkdsng;lskdgn;lsadg",
-//         hoursPerWeek: "3",
-//         externalLink: "images.google.com",
-//         uri: require('../../../assets/9.jpg')
-//       },
-//       {
-//         id: "10",
-//         name: "Project X",
-//         description: "lkdgnsd;lkzgnsad;lgnasdg",
-//         hoursPerWeek: "7",
-//         externalLink: "maps.google.com",
-//         uri: require('../../../assets/10.jpg')
-//       },
-//       {
-//         id: "11",
-//         name: "Project Eleven",
-//         description: "I am a project!",
-//         hoursPerWeek: "30",
-//         externalLink: "twitter.com",
-//         uri: require('../../../assets/11.jpg')
-//       },
-//       {
-//         id: "12",
-//         name: "12th Project",
-//         description: "Project number 12 kjdfs kldsfjkl sdfjklfds jkldsf jklsdf",
-//         hoursPerWeek: "7",
-//         externalLink: "gatech.edu",
-//         uri: require('../../../assets/12.jpg')
-//       },
-//       {
-//         id: "13",
-//         name: "Project Number 13",
-//         description: "It was a bright cold day in April, and the clocks were striking thirteen.",
-//         hoursPerWeek: "6",
-//         externalLink: "goodreads.com",
-//         uri: require('../../../assets/13.jpg')
-//       },
-//       {
-//         id: "14",
-//         name: "Fourteenth Project",
-//         description: "There are 14 days in two weeks!",
-//         hoursPerWeek: "12",
-//         externalLink: "canvas.gatech.edu",
-//         uri: require('../../../assets/14.jpg')
-//       },
-//       {
-//         id: "15",
-//         name: "Final Project",
-//         description: "'Cause when you're fifteen, Somebody tells you they love you, You're gonna believe them, And when you're fifteen",
-//         hoursPerWeek: "3",
-//         externalLink: "https://genius.com/Taylor-swift-fifteen-lyrics",
-//         uri: require('../../../assets/15.jpg')
-//       }
-//     ]);
-//   }
-// }
-
-// var bool = true;
-// var projectDetails = getProjectDetails(bool);
 var viewSwitch = false;
 var x = 0;
 var index = 0;
@@ -361,15 +171,6 @@ export class Card extends React.Component {
 
 
   renderUsers = () => {
-    // if (this.state.currentIndex == projectDetails.length) {
-    //   if (bool) {
-    //     bool = false;
-    //   } else {
-    //     bool = true;
-    //   }
-    //   projectDetails = getProjectDetails(bool);
-    //   this.state.currentIndex = 0;
-    // }
     const { navigate } = this.props.navigation;
 
     return projectDetails.map((item, i) => {
@@ -451,9 +252,18 @@ export class Card extends React.Component {
         <View style={{ height: 60 }}>
         </View>
         <View style={{ flex: 1 }}>
+          <View style={{ flex: 1 }}>
+            <NiceButton
+              style={{ right: 20 }}
+              title="Search/Filter"
+              onPress={() => {
+                this.props.navigation.navigate("Page4")
+              }}
+            />
+          </View>
           {this.renderUsers()}
           <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', top: SCREEN_HEIGHT * .73 }}>
-            <TouchableOpacity style={styles.leftButton} >
+            <TouchableOpacity style={styles.leftButton} onPress={() => { NavigateLeft }}>
               <Text style={styles.leftRightNav}> &#171; </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.heartButton} onPress={() => {
@@ -461,7 +271,7 @@ export class Card extends React.Component {
             }}>
               <Text style={styles.heart}> &#9829;</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.rightButton}>
+            <TouchableOpacity style={styles.rightButton} onPress={() => { NavigateRight }}>
               <Text style={styles.leftRightNav}> &#187; </Text>
             </TouchableOpacity>
           </View>
@@ -477,41 +287,79 @@ export class Card extends React.Component {
   }
 }
 
-// class NavigatePages extends React.Component {
-//   render() {
-//     return (
+class NavigateLeft extends React.Component {
+  render() {
+    x--;
+    return (
+      <Animated.View
+        {...this.PanResponder.panHandlers}
+        key={projectDetails[x].id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
-//     );
-//   }
+        <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
+          <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
+        </Animated.View>
 
-// }
+        <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
+          <Text style={{ borderWidth: 1, borderColor: '#a40000', color: '#a40000', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
+        </Animated.View>
+
+
+        <ImageBackground
+          style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
+          imageStyle={{ borderRadius: 17 }}
+          source={projectDetails[x].uri} >
+          <Text style={styles.textAbstract}>
+            <Text style={styles.textTitle}>{projectDetails[x].name}{'\n'}</Text>
+            <Text style={styles.textMain}>{'\n'}{projectDetails[x].shortDescription}{'\n'}</Text>
+            <NiceButton
+              title="View Project Details"
+              onPress={() => this.props.navigation.navigate("Page2")}
+            />
+          </Text>
+        </ImageBackground>
+      </Animated.View>
+    )
+  }
+}
+
+class NavigateRight extends React.Component {
+  render() {
+    x++;
+    return (
+      <Animated.View
+        {...this.PanResponder.panHandlers}
+        key={projectDetails[x].id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+
+        <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
+          <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
+        </Animated.View>
+
+        <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
+          <Text style={{ borderWidth: 1, borderColor: '#a40000', color: '#a40000', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
+        </Animated.View>
+
+
+        <ImageBackground
+          style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
+          imageStyle={{ borderRadius: 17 }}
+          source={projectDetails[x].uri} >
+          <Text style={styles.textAbstract}>
+            <Text style={styles.textTitle}>{projectDetails[x].name}{'\n'}</Text>
+            <Text style={styles.textMain}>{'\n'}{projectDetails[x].shortDescription}{'\n'}</Text>
+            <NiceButton
+              title="View Project Details"
+              onPress={() => this.props.navigation.navigate("Page2")}
+            />
+          </Text>
+        </ImageBackground>
+      </Animated.View>
+    )
+  }
+}
 
 
 class SavedProjects extends React.Component {
   render() {
-    // for (var i = 0; i < likedProjects.length - 1; i++) {
-    //   index = i;
-    //   this.displayProjects(index);
-    // }
-    // return (
-
-    // )
-    // displayProjects() {
-    //   <View style={styles.favoritedPage}>
-    //     <Text style={{ color: 'rgba(179, 163, 105, 1)', bottom: SCREEN_HEIGHT * .34, fontSize: 27, fontWeight: '600' }}>Favorited Projects</Text>
-    //     <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', }}>
-    //       <ImageBackground style={styles.favoritedImages} source={projectDetails[index].uri}>
-    //         <Text style={styles.favoritedTitle}> hello </Text>
-    //       </ImageBackground>
-    //     </View>
-    //     <TouchableOpacity
-    //       style={{ top: SCREEN_HEIGHT * .3, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
-    //       onPress={() => this.props.navigation.goBack()}>
-    //       <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
-    //     </TouchableOpacity>
-    //   </View>
-    // }
-
     return (
       <View style={styles.favoritedPage}>
         <Text style={{ color: 'rgba(179, 163, 105, 1)', bottom: SCREEN_HEIGHT * .34, fontSize: 27, fontWeight: '600' }}>Favorited Projects</Text>
@@ -553,6 +401,347 @@ class DetailsScreen extends React.Component {
 }
 
 
+export const ProjectFilterPage = ({ navigation }) => {
+  const [search, onChangeSearch] = React.useState('');
+
+  const [skill1, onChangeSkill1] = React.useState(false);
+  const [skill2, onChangeSkill2] = React.useState(false);
+  const [skill3, onChangeSkill3] = React.useState(false);
+  const [skill4, onChangeSkill4] = React.useState(false);
+  const [skill5, onChangeSkill5] = React.useState(false);
+  const [skill6, onChangeSkill6] = React.useState(false);
+  const [skill7, onChangeSkill7] = React.useState(false);
+  const [skill8, onChangeSkill8] = React.useState(false);
+  const [skill9, onChangeSkill9] = React.useState(false);
+  const [skill10, onChangeSkill10] = React.useState(false);
+  const [skill11, onChangeSkill11] = React.useState(false);
+  const [skill12, onChangeSkill12] = React.useState(false);
+  const [skill13, onChangeSkill13] = React.useState(false);
+  const [skill14, onChangeSkill14] = React.useState(false);
+
+  const toggleSkill1 = () => onChangeSkill1(previousState => !previousState);
+  const toggleSkill2 = () => onChangeSkill2(previousState => !previousState);
+  const toggleSkill3 = () => onChangeSkill3(previousState => !previousState);
+  const toggleSkill4 = () => onChangeSkill4(previousState => !previousState);
+  const toggleSkill5 = () => onChangeSkill5(previousState => !previousState);
+  const toggleSkill6 = () => onChangeSkill6(previousState => !previousState);
+  const toggleSkill7 = () => onChangeSkill7(previousState => !previousState);
+  const toggleSkill8 = () => onChangeSkill8(previousState => !previousState);
+  const toggleSkill9 = () => onChangeSkill9(previousState => !previousState);
+  const toggleSkill10 = () => onChangeSkill10(previousState => !previousState);
+  const toggleSkill11 = () => onChangeSkill11(previousState => !previousState);
+  const toggleSkill12 = () => onChangeSkill12(previousState => !previousState);
+  const toggleSkill13 = () => onChangeSkill13(previousState => !previousState);
+  const toggleSkill14 = () => onChangeSkill14(previousState => !previousState);
+
+  const [hours, onChangeHours] = React.useState('');
+  const [minStart, onChangeMinStart] = React.useState('');
+  const [maxStart, onChangeMaxStart] = React.useState('');
+  const [minEnd, onChangeMinEnd] = React.useState('');
+  const [maxEnd, onChangeMaxEnd] = React.useState('');
+
+  const [interest1, onChangeInterest1] = React.useState(false);
+  const [interest2, onChangeInterest2] = React.useState(false);
+  const [interest3, onChangeInterest3] = React.useState(false);
+  const [interest4, onChangeInterest4] = React.useState(false);
+  const [interest5, onChangeInterest5] = React.useState(false);
+  const [interest6, onChangeInterest6] = React.useState(false);
+  const [interest7, onChangeInterest7] = React.useState(false);
+  const [interest8, onChangeInterest8] = React.useState(false);
+  const [interest9, onChangeInterest9] = React.useState(false);
+  const [interest10, onChangeInterest10] = React.useState(false);
+  const [interest11, onChangeInterest11] = React.useState(false);
+  const [interest12, onChangeInterest12] = React.useState(false);
+  const [interest13, onChangeInterest13] = React.useState(false);
+
+  const toggleInterest1 = () => onChangeInterest1(previousState => !previousState);
+  const toggleInterest2 = () => onChangeInterest2(previousState => !previousState);
+  const toggleInterest3 = () => onChangeInterest3(previousState => !previousState);
+  const toggleInterest4 = () => onChangeInterest4(previousState => !previousState);
+  const toggleInterest5 = () => onChangeInterest5(previousState => !previousState);
+  const toggleInterest6 = () => onChangeInterest6(previousState => !previousState);
+  const toggleInterest7 = () => onChangeInterest7(previousState => !previousState);
+  const toggleInterest8 = () => onChangeInterest8(previousState => !previousState);
+  const toggleInterest9 = () => onChangeInterest9(previousState => !previousState);
+  const toggleInterest10 = () => onChangeInterest10(previousState => !previousState);
+  const toggleInterest11 = () => onChangeInterest11(previousState => !previousState);
+  const toggleInterest12 = () => onChangeInterest12(previousState => !previousState);
+  const toggleInterest13 = () => onChangeInterest13(previousState => !previousState);
+
+  return (
+    <View style={style.container} >
+      <ScrollView>
+        <KeyboardAvoidingView>
+          <View style={{ padding: 5 }}></View>
+          <TextInput
+            placeholder="Search"
+            style={style.inputs}
+            value={search}
+            onChangeText={(text) => onChangeSearch(text)}
+          />
+          <Text style={style.label}>Hours/Week Required</Text>
+          <TextInput
+            placeholder="Hours/Week"
+            style={style.inputs}
+            value={hours}
+            onChangeText={(text) => onChangeHours(text)}
+          />
+          <Text style={style.label}>Start Date (DD/MM/YY)</Text>
+          <TextInput
+            placeholder="Min Start Date"
+            style={style.inputs}
+            value={minStart}
+            onChangeText={(text) => onChangeMinStart(text)}
+          />
+          <TextInput
+            placeholder="Max Start Date"
+            style={style.inputs}
+            value={maxStart}
+            onChangeText={(text) => onChangeMaxStart(text)}
+          />
+          <Text style={style.label}>End Date (DD/MM/YY)</Text>
+          <TextInput
+            placeholder="Min End Date"
+            style={style.inputs}
+            value={minEnd}
+            onChangeText={(text) => onChangeMinEnd(text)}
+          />
+          <TextInput
+            placeholder="Max End Date"
+            style={style.inputs}
+            value={maxEnd}
+            onChangeText={(text) => onChangeMaxEnd(text)}
+          />
+          <Text style={style.label}>Skills Required</Text>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleSkill1}
+              value={skill1}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Java</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleSkill2}
+              value={skill2}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Python</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleSkill3}
+              value={skill3}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Git</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleSkill4}
+              value={skill4}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Angular</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleSkill5}
+              value={skill5}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>C</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleSkill6}
+              value={skill6}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>MySQL</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleSkill7}
+              value={skill7}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>NoSQL</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleSkill8}
+              value={skill8}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>PHP</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleSkill9}
+              value={skill9}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>HTML</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleSkill10}
+              value={skill10}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>CSS</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleSkill11}
+              value={skill11}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Swift</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleSkill12}
+              value={skill12}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Objective-C</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleSkill13}
+              value={skill13}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Ruby</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleSkill14}
+              value={skill14}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>CAD Design</Text>
+          </View>
+          <Text style={style.label}>Project Interests</Text>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleInterest1}
+              value={interest1}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Machine Learning</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleInterest2}
+              value={interest2}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Artificial Intelligence</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleInterest3}
+              value={interest3}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Blockchain</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleInterest4}
+              value={interest4}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Computer Vision</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleInterest5}
+              value={interest5}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Web Development</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleInterest6}
+              value={interest6}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Mobile Development</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleInterest7}
+              value={interest7}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Design</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleInterest8}
+              value={interest8}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Hardware</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleInterest9}
+              value={interest9}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Low Level Programming</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleInterest10}
+              value={interest10}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Software</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleInterest11}
+              value={interest11}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Functional Programming</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleInterest12}
+              value={interest12}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Parallel Computing</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: 'center' }}>
+            <Switch
+              onValueChange={toggleInterest13}
+              value={interest13}
+            />
+            <View style={{ padding: 5 }}></View>
+            <Text style={style.label2}>Object-Oriented Programming</Text>
+          </View>
+          <View style={{ padding: 40 }}></View>
+        </KeyboardAvoidingView>
+      </ScrollView>
+      <View style={style.buttonContainer}>
+        <NiceButton title="Back" onPress={() => navigation.goBack()} />
+        <NiceButton title="Submit" onPress={() => console.log("The submit button has been pressed!")} />
+      </View>
+    </View>
+  );
+}
+
+
 
 const Stack = createStackNavigator();
 
@@ -562,6 +751,7 @@ export default function ViewProject(props) {
       <Stack.Screen name="Page1" component={Card} />
       <Stack.Screen name="Page2" component={DetailsScreen} />
       <Stack.Screen name="Page3" component={SavedProjects} />
+      <Stack.Screen name="Page4" component={ProjectFilterPage} />
     </Stack.Navigator>
   );
 };
