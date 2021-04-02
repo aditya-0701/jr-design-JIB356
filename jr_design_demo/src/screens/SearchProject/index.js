@@ -19,13 +19,21 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 
 export const ProjectFilterPage = ({ navigation }) => {
   const [search, onChangeSearch] = React.useState('');
-
+  
   const [skill1, onChangeSkill1] = React.useState(false);
   const [skill2, onChangeSkill2] = React.useState(false);
   const [skill3, onChangeSkill3] = React.useState(false);
   const [skill4, onChangeSkill4] = React.useState(false);
   const [skill5, onChangeSkill5] = React.useState(false);
   const [skill6, onChangeSkill6] = React.useState(false);
+  const [skill7, onChangeSkill7] = React.useState(false);
+  const [skill8, onChangeSkill8] = React.useState(false);
+  const [skill9, onChangeSkill9] = React.useState(false);
+  const [skill10, onChangeSkill10] = React.useState(false);
+  const [skill11, onChangeSkill11] = React.useState(false);
+  const [skill12, onChangeSkill12] = React.useState(false);
+  const [skill13, onChangeSkill13] = React.useState(false);
+  const [skill14, onChangeSkill14] = React.useState(false);
 
   const toggleSkill1 = () => onChangeSkill1(previousState => !previousState);
   const toggleSkill2 = () => onChangeSkill2(previousState => !previousState);
@@ -33,20 +41,34 @@ export const ProjectFilterPage = ({ navigation }) => {
   const toggleSkill4 = () => onChangeSkill4(previousState => !previousState);
   const toggleSkill5 = () => onChangeSkill5(previousState => !previousState);
   const toggleSkill6 = () => onChangeSkill6(previousState => !previousState);
+  const toggleSkill7 = () => onChangeSkill7(previousState => !previousState);
+  const toggleSkill8 = () => onChangeSkill8(previousState => !previousState);
+  const toggleSkill9 = () => onChangeSkill9(previousState => !previousState);
+  const toggleSkill10 = () => onChangeSkill10(previousState => !previousState);
+  const toggleSkill11 = () => onChangeSkill11(previousState => !previousState);
+  const toggleSkill12 = () => onChangeSkill12(previousState => !previousState);
+  const toggleSkill13 = () => onChangeSkill13(previousState => !previousState);
+  const toggleSkill14 = () => onChangeSkill14(previousState => !previousState);
 
-  const [minHours, onChangeMinHours] = React.useState('');
-  const [maxHours, onChangeMaxHours] = React.useState('');
+  const [hours, onChangeHours] = React.useState('');
   const [minStart, onChangeMinStart] = React.useState('');
   const [maxStart, onChangeMaxStart] = React.useState('');
   const [minEnd, onChangeMinEnd] = React.useState('');
   const [maxEnd, onChangeMaxEnd] = React.useState('');
-
+  
   const [interest1, onChangeInterest1] = React.useState(false);
   const [interest2, onChangeInterest2] = React.useState(false);
   const [interest3, onChangeInterest3] = React.useState(false);
   const [interest4, onChangeInterest4] = React.useState(false);
   const [interest5, onChangeInterest5] = React.useState(false);
   const [interest6, onChangeInterest6] = React.useState(false);
+  const [interest7, onChangeInterest7] = React.useState(false);
+  const [interest8, onChangeInterest8] = React.useState(false);
+  const [interest9, onChangeInterest9] = React.useState(false);
+  const [interest10, onChangeInterest10] = React.useState(false);
+  const [interest11, onChangeInterest11] = React.useState(false);
+  const [interest12, onChangeInterest12] = React.useState(false);
+  const [interest13, onChangeInterest13] = React.useState(false);
 
   const toggleInterest1 = () => onChangeInterest1(previousState => !previousState);
   const toggleInterest2 = () => onChangeInterest2(previousState => !previousState);
@@ -54,6 +76,13 @@ export const ProjectFilterPage = ({ navigation }) => {
   const toggleInterest4 = () => onChangeInterest4(previousState => !previousState);
   const toggleInterest5 = () => onChangeInterest5(previousState => !previousState);
   const toggleInterest6 = () => onChangeInterest6(previousState => !previousState);
+  const toggleInterest7 = () => onChangeInterest7(previousState => !previousState);
+  const toggleInterest8 = () => onChangeInterest8(previousState => !previousState);
+  const toggleInterest9 = () => onChangeInterest9(previousState => !previousState);
+  const toggleInterest10 = () => onChangeInterest10(previousState => !previousState);
+  const toggleInterest11 = () => onChangeInterest11(previousState => !previousState);
+  const toggleInterest12 = () => onChangeInterest12(previousState => !previousState);
+  const toggleInterest13 = () => onChangeInterest13(previousState => !previousState);
 
   return(
     <View style={style.container} >
@@ -66,67 +95,12 @@ export const ProjectFilterPage = ({ navigation }) => {
             value = { search }
             onChangeText = { (text) => onChangeSearch(text)}
           />
-          <Text style={style.label}>Skills Required</Text>
-          <View style={{flexDirection: "row", alignItems: 'center'}}>
-            <Switch
-              onValueChange={toggleSkill1}
-              value={skill1}
-            />
-            <View style={{padding: 5}}></View>
-            <Text style={style.label2}>Skill 1</Text>
-          </View>
-          <View style={{flexDirection: "row", alignItems: 'center'}}>
-            <Switch
-              onValueChange={toggleSkill2}
-              value={skill2}
-            />
-            <View style={{padding: 5}}></View>
-            <Text style={style.label2}>Skill 2</Text>
-          </View>
-          <View style={{flexDirection: "row", alignItems: 'center'}}>
-            <Switch
-              onValueChange={toggleSkill3}
-              value={skill3}
-            />
-            <View style={{padding: 5}}></View>
-            <Text style={style.label2}>Skill 3</Text>
-          </View>
-          <View style={{flexDirection: "row", alignItems: 'center'}}>
-            <Switch
-              onValueChange={toggleSkill4}
-              value={skill4}
-            />
-            <View style={{padding: 5}}></View>
-            <Text style={style.label2}>Skill 4</Text>
-          </View>
-          <View style={{flexDirection: "row", alignItems: 'center'}}>
-            <Switch
-              onValueChange={toggleSkill5}
-              value={skill5}
-            />
-            <View style={{padding: 5}}></View>
-            <Text style={style.label2}>Skill 5</Text>
-          </View>
-          <View style={{flexDirection: "row", alignItems: 'center'}}>
-            <Switch
-              onValueChange={toggleSkill6}
-              value={skill6}
-            />
-            <View style={{padding: 5}}></View>
-            <Text style={style.label2}>Skill 6</Text>
-          </View>
           <Text style={style.label}>Hours/Week Required</Text>
           <TextInput
-            placeholder="Min Hours/Week"
+            placeholder="Hours/Week"
             style={style.inputs}
-            value = { minHours }
-            onChangeText = { (text) => onChangeMinHours(text)}
-          />
-          <TextInput
-            placeholder="Max Hours/Week"
-            style={style.inputs}
-            value = { maxHours }
-            onChangeText = { (text) => onChangeMaxHours(text)}
+            value = { hours }
+            onChangeText = { (text) => onChangeHours(text)}
           />
           <Text style={style.label}>Start Date (DD/MM/YY)</Text>
           <TextInput
@@ -154,6 +128,119 @@ export const ProjectFilterPage = ({ navigation }) => {
             value = { maxEnd }
             onChangeText = { (text) => onChangeMaxEnd(text)}
           />
+          <Text style={style.label}>Skills Required</Text>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleSkill1}
+              value={skill1}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>Java</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleSkill2}
+              value={skill2}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>Python</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleSkill3}
+              value={skill3}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>Git</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleSkill4}
+              value={skill4}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>Angular</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleSkill5}
+              value={skill5}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>C</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleSkill6}
+              value={skill6}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>MySQL</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleSkill7}
+              value={skill7}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>NoSQL</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleSkill8}
+              value={skill8}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>PHP</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleSkill9}
+              value={skill9}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>HTML</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleSkill10}
+              value={skill10}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>CSS</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleSkill11}
+              value={skill11}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>Swift</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleSkill12}
+              value={skill12}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>Objective-C</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleSkill13}
+              value={skill13}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>Ruby</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleSkill14}
+              value={skill14}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>CAD Design</Text>
+          </View>
           <Text style={style.label}>Project Interests</Text>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -161,7 +248,7 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={interest1}
             />
             <View style={{padding: 5}}></View>
-            <Text style={style.label2}>Interest 1</Text>
+            <Text style={style.label2}>Machine Learning</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -169,7 +256,7 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={interest2}
             />
             <View style={{padding: 5}}></View>
-            <Text style={style.label2}>Interest 2</Text>
+            <Text style={style.label2}>Artificial Intelligence</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -177,7 +264,7 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={interest3}
             />
             <View style={{padding: 5}}></View>
-            <Text style={style.label2}>Interest 3</Text>
+            <Text style={style.label2}>Blockchain</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -185,7 +272,7 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={interest4}
             />
             <View style={{padding: 5}}></View>
-            <Text style={style.label2}>Interest 4</Text>
+            <Text style={style.label2}>Computer Vision</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -193,7 +280,7 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={interest5}
             />
             <View style={{padding: 5}}></View>
-            <Text style={style.label2}>Interest 5</Text>
+            <Text style={style.label2}>Web Development</Text>
           </View>
           <View style={{flexDirection: "row", alignItems: 'center'}}>
             <Switch
@@ -201,7 +288,63 @@ export const ProjectFilterPage = ({ navigation }) => {
               value={interest6}
             />
             <View style={{padding: 5}}></View>
-            <Text style={style.label2}>Interest 6</Text>
+            <Text style={style.label2}>Mobile Development</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleInterest7}
+              value={interest7}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>Design</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleInterest8}
+              value={interest8}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>Hardware</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleInterest9}
+              value={interest9}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>Low Level Programming</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleInterest10}
+              value={interest10}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>Software</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleInterest11}
+              value={interest11}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>Functional Programming</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleInterest12}
+              value={interest12}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>Parallel Computing</Text>
+          </View>
+          <View style={{flexDirection: "row", alignItems: 'center'}}>
+            <Switch
+              onValueChange={toggleInterest13}
+              value={interest13}
+            />
+            <View style={{padding: 5}}></View>
+            <Text style={style.label2}>Object-Oriented Programming</Text>
           </View>
           <View style={{padding:40}}></View>
         </KeyboardAvoidingView>
