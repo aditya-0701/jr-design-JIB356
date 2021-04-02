@@ -96,30 +96,9 @@ const ViewProjects = (props) => {
                 <Text style={styles.buttonText}>View Projects</Text>
             </TouchableOpacity>
         </View>
-        // <Button
-        //     title="Go somewhere"
-        //     onPress={() => {
-        //         // Navigate using the `navigation` prop that you received
-        //         navigation.navigate(viewProjects);
-        //     }}
-        // />
     )
 };
 
-{/* <Tab.Screen
-name="Add"
-component={View}
-listeners={({ navigation }) => ({
-  tabPress: (e) => {
-    // Prevent default action
-    e.preventDefault();
-
-    // Do something with the `navigation` object
-    navigation.navigate("PhotoNavigation"); // Here!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  },
-})}
-/>
-<Tab.Screen name="Notifications" component={Notifications} /> */}
 
 export default function HomeScreen(props) {
     const { email } = props.route.params;
@@ -133,9 +112,8 @@ export default function HomeScreen(props) {
                 tabPress: (e) => {
                     // Prevent default action
                     e.preventDefault();
-
                     // Do something with the `navigation` object
-                    navigation.navigate("ViewProject"); // Here!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    navigation.navigate("ViewProject");
                 },
             })} />
         </Tab.Navigator>
