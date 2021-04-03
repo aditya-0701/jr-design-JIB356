@@ -144,7 +144,7 @@ export class Card extends React.Component {
             toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy }
             , useNativeDriver: true
           }).start(() => {
-            this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+            this.setState({ currentIndex: ((this.state.currentIndex + 1) <  projectDetails.length) ? this.state.currentIndex + 1: 0 }, () => {
               this.position.setValue({ x: 0, y: 0 })
             })
           })
@@ -154,7 +154,7 @@ export class Card extends React.Component {
             toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy },
             useNativeDriver: true
           }).start(() => {
-            this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+            this.setState({ currentIndex: ((this.state.currentIndex + 1) <  projectDetails.length) ? this.state.currentIndex + 1: 0 }, () => {
               this.position.setValue({ x: 0, y: 0 })
             })
           })
@@ -261,7 +261,9 @@ export class Card extends React.Component {
         <View style={{ flex: 1 }}>
           {this.renderUsers()}
           <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', top: SCREEN_HEIGHT * .71 }}>
-            <TouchableOpacity style={styles.leftButton} onPress={() => { NavigateLeft }}>
+            <TouchableOpacity style={styles.leftButton} onPress={() => { this.setState({ currentIndex: ((this.state.currentIndex - 1) >= 0) ? this.state.currentIndex - 1: projectDetails.length - 1 }, () => {
+              this.position.setValue({ x: 0, y: 0 })
+            }) }}>
               <Text style={styles.leftRightNav}> &#171; </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.heartButton} onPress={() => {
@@ -269,7 +271,9 @@ export class Card extends React.Component {
             }}>
               <Text style={styles.heart}> &#9829;</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.rightButton} onPress={() => { NavigateRight }}>
+            <TouchableOpacity style={styles.rightButton} onPress={() => { this.setState({ currentIndex: ((this.state.currentIndex + 1) <  projectDetails.length) ? this.state.currentIndex + 1: 0 }, () => {
+              this.position.setValue({ x: 0, y: 0 })
+            }) }}>
               <Text style={styles.leftRightNav}> &#187; </Text>
             </TouchableOpacity>
           </View>
