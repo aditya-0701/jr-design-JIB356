@@ -36,7 +36,14 @@ class SavedItem extends React.Component {
 }
 
 //get the relevant info from the database return
-function extractDetails(storedData) {
+function getProfileDetails(storedData) {
+  let result = {type: "profile", entries: []};
+  for (let i = 0; i < storedData.length; i++) {
+    result.entries.push({name: (storedData[i].firstName + " " + storedData[i].lastName), detail1: storedData[i].email, detail2: ""});
+  }
+  
+  return result;
+  /*var objectType = "profile";
   if (objectType == "profile") {
     return {
       type: "profile",
@@ -61,40 +68,40 @@ function extractDetails(storedData) {
         {name: "projectQ", detail1: "detail1", detail2: "detail2"},
       ]
     };
-  }
-
-  //store.getSaved().then(function lambda).catch(log);
+  }*/
 }
 
 export const SaveContainer = ({ navigation, route }) => {
   //const saved = getSaved("profile");
   const [projectDetails, setProjectDetails] = React.useState(loadingSaved);
-  if (needToLoad) {
-    needToLoad = false;
-    Store.getAllStudents().then(
-      (data) => {
-        setProjectDetails(extractDetails(data));
-      }
-    ).catch(
-      (err) => {console.log(err);}
-    );
-  }
+  
+  React.useEffect(() => {
+    if (needToLoad) {
+      needToLoad = false;
+      Store.getAllStudents().then(
+        (data) => {
+          console.log(data);
+          setProjectDetails(getProfileDetails(data.body));
+        }
+      ).catch(
+        (err) => {console.log(err);}
+      );
+    }
+  }, [needToLoad]);
   let i = 0;
-  let elements = (
-    <KeyboardAvoidingView>
-      {projectDetails.entries.map((item)=>(
-        <SavedItem item={item} key={i++}/>
-      ))}
-    </KeyboardAvoidingView>
-  );
 
   return (
     <View style={styles.container} >
     <ScrollView /* contentContainerStyle={ styles.container } */>
-      {elements}
+      {projectDetails.entries.map((item)=>(
+        <SavedItem item={item} key={i++}/>
+      ))}
     </ScrollView>
       <View style={ localStyle.navButtonContainer }>
-        <NiceButton title="Exit" onPress={() => navigation.goBack()}/>
+        <NiceButton title="Exit" onPress={() => {
+          needToLoad = true;
+          navigation.goBack();
+        }}/>
       </View>
     </View>
   );
