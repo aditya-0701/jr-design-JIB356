@@ -260,6 +260,16 @@ export const BasicDetails = ({ navigation }) => {
       <ScrollView /* contentContainerStyle={ styles.container } */>
         <KeyboardAvoidingView>
           <Text style={styles.title}>Initial Profile Setup</Text>
+
+          <Text style={styles.label}>GT Username</Text>
+          <TextInput
+              autoCapitalize = "none"
+              onChangeText = { (text) => onChangeGTUsername(text)}
+              value = { gtUsername }
+              placeholder = 'GT Username'
+              style = {styles.inputs}
+          />
+
           <Text style={styles.label}>First Name</Text>
           <TextInput 
             placeholder="First Name"
@@ -273,15 +283,6 @@ export const BasicDetails = ({ navigation }) => {
             style={styles.inputs}
             value = { lastName } 
             onChangeText = { (text) => onChangeLastName(text)}
-          />
-
-          <Text style={styles.label}>GT Username</Text>
-          <TextInput
-              autoCapitalize = "none"
-              onChangeText = { (text) => onChangeGTUsername(text)}
-              value = { gtUsername }
-              placeholder = 'GT Username'
-              style = {styles.inputs}
           />
 
           <Text style={styles.label}>Email</Text>
@@ -547,9 +548,20 @@ export const PrevExperience = ({ navigation }) => {
 
 export const ExtSites = ({ navigation }) => {
   var [links, onChangeLink] = React.useState(userDetails.links);
+  var [linkedin, onChangeLink] = React.useState('');
+  var [github, onChangeLink] = React.useState('');
   const saveVals = () => {
     userDetails['links'] = links;
     console.log(links);
+    userDetails['links'].push({
+      "label": 'LinkedIn',
+      "address": linkedin
+    })
+
+    userDetails['links'].push({
+      "label": 'GitHub',
+      "address": github
+    })
     // navigation.navigate("Page4")
   }
 

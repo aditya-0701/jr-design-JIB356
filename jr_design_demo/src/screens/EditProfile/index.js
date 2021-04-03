@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { addStudent, updateExperiences } from '../../store'
+import { addStudent, updateStudent } from '../../store'
 import { getStudent, getAlumni } from '../../store.js'
 import styles from '../../globalStyles';
 import DatePicker from 'react-native-datepicker';
@@ -224,6 +224,19 @@ const interestLibrary = [{
 
 export const BasicDetails = ({ navigation, route }) => {
   var { gtUser } = route.params;
+  // console.log(userDetails.skills);
+  const [gtUsername, onChangeGTUsername] = React.useState(userDetails.gtUsername);
+  const [emailValue, onChangeEmail] = React.useState(userDetails.email);
+  const [passwordValue, onChangePassword] = React.useState(userDetails.pwd);
+  const [firstName, onChangeFirstName] = React.useState(userDetails.firstName);
+  const [lastName, onChangeLastName] = React.useState(userDetails.lastName);
+  const [degree, onChangeDegree] = React.useState(userDetails.degree.map(({ id }) => id));
+  const [major, onChangeMajor] = React.useState(userDetails.major.map(({ id }) => id));
+  const [interests, onChangeInterests] = 
+    React.useState(userDetails.interests.map(({ id }) => id));
+  const [skills, onChangeSkills] = 
+    React.useState(userDetails.skills.map(({ id }) => id));
+
   if (userDetails && Object.keys(userDetails).length === 0 ) {
     getStudent({gtUsername: gtUser})
     .then((resp) => {
@@ -234,27 +247,19 @@ export const BasicDetails = ({ navigation, route }) => {
         onChangePassword(resp.body.pwd);
         onChangeFirstName(resp.body.firstName);
         onChangeLastName(resp.body.lastName);
-        onChangeDegree(resp.body.degree);
-        onChangeMajor(resp.body.major);
-        onChangeInterests(resp.body.interests);
-        onChangeSkills(resp.body.skills);
+        onChangeDegree([resp.body.degree[0].id]);
+        onChangeMajor([resp.body.major[0].id]);
+        onChangeInterests(resp.body.interests.map(({ id }) => id));
+        onChangeSkills(resp.body.skills.map(({ id }) => id));
+        console.log(resp.body.skills.map(({ id }) => id))
     })
     .catch((err) => {
         console.log(err);
     })
   }
 
-  const [gtUsername, onChangeGTUsername] = React.useState(userDetails.gtUsername);
-  const [emailValue, onChangeEmail] = React.useState(userDetails.email);
-  const [passwordValue, onChangePassword] = React.useState(userDetails.pwd);
-  const [firstName, onChangeFirstName] = React.useState(userDetails.firstName);
-  const [lastName, onChangeLastName] = React.useState(userDetails.lastName);
-  const [degree, onChangeDegree] = React.useState(userDetails.degree);
-  const [major, onChangeMajor] = React.useState(userDetails.major);
-  const [interests, onChangeInterests] = React.useState(userDetails.interests);
-  const [skills, onChangeSkills] = React.useState(userDetails.skills);
-
   const saveVals = () => {
+    console.log(skills);
     userDetails.email= emailValue;
     userDetails.firstName= firstName;
     userDetails.lastName= lastName;
@@ -281,6 +286,10 @@ export const BasicDetails = ({ navigation, route }) => {
       <ScrollView /* contentContainerStyle={ styles.container } */>
         <KeyboardAvoidingView>
           <Text style={styles.title}>Initial Profile Setup</Text>
+
+          <Text style={styles.label}>GT Username</Text>
+          <Text style={styles.inputs}>{ gtUsername }</Text>
+
           <Text style={styles.label}>First Name</Text>
           <TextInput 
             placeholder="First Name"
@@ -296,39 +305,21 @@ export const BasicDetails = ({ navigation, route }) => {
             onChangeText = { (text) => onChangeLastName(text)}
           />
 
-          <Text style={styles.label}>GT Username</Text>
-          <TextInput
-              autoCapitalize = "none"
-              onChangeText = { (text) => onChangeGTUsername(text)}
-              value = { gtUsername }
-              placeholder = 'GT Username'
-              style = {styles.inputs}
-          />
+          
 
           <Text style={styles.label}>Email</Text>
           <TextInput
-                      autoCapitalize = "none"
-                      autoCompleteType = 'email'
-                      keyboardType = 'email-address'
-                      onChangeText = { (text) => onChangeEmail(text)}
-                      value = { emailValue }
-                      placeholder = 'Email'
-                      style = {styles.inputs}
-                  />
-
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            autoCapitalize = "none"
-            autoCompleteType = 'password'
-            secureTextEntry = { true }
-            onChangeText = { (text) => onChangePassword(text)}
-            value = { passwordValue }
-            placeholder = 'Password'
-            style = {styles.inputs}
+              autoCapitalize = "none"
+              autoCompleteType = 'email'
+              keyboardType = 'email-address'
+              onChangeText = { (text) => onChangeEmail(text)}
+              value = { emailValue }
+              placeholder = 'Email'
+              style = {styles.inputs}
           />
 
           <Text style={styles.label}>Degree</Text>
-            <SectionedMultiSelect
+          <SectionedMultiSelect
             items={degreeLibrary}
             uniqueKey="id"
             subKey="children"
@@ -345,7 +336,7 @@ export const BasicDetails = ({ navigation, route }) => {
           />
 
           <Text style={styles.label}>Major</Text>
-            <SectionedMultiSelect
+          <SectionedMultiSelect
             items={majorLibrary}
             uniqueKey="id"
             subKey="children"
@@ -607,35 +598,29 @@ export const ExtSites = ({ navigation }) => {
   const login = () => {
     saveVals();
     console.log(JSON.stringify(userDetails));
-    addStudent(userDetails)
+    updateStudent(userDetails)
     .then((resp) => {
       console.log(resp);
-      navigation.reset({
-        index: 0,
-        routes: [
-            {
-                name: 'HomeScreen',
-                params: {gtUsername: userDetails.gtUsername }
-            }
-        ],
+      navigation.navigate("Profile", {
+        gtUsername: userDetails.gtUsername 
       });
     })
     .catch((err) => {
       console.log(err);
       alert("An error occurred in user creation. Please check your inputs and try again.")
     })
-    // console.log(JSON.parse(JSON.stringify(userDetails)))
+    console.log(JSON.parse(JSON.stringify(userDetails)))
   }
 
   return (
     <View style={localStyle.container}>
       <Text style={[styles.title, {marginTop: "6%"}]}>Links to External Services</Text>
-
+{/* 
         <Text style={styles.label}>LinkedIn</Text>
         <TextInput placeholder="LinkedIn Link" style={styles.inputs}/>
         <Text style={styles.label}>Github</Text>
         <TextInput placeholder="Github Link" style={styles.inputs}/>
-        <Text style={styles.label}>Add other Links</Text>
+        <Text style={styles.label}>Add other Links</Text> */}
         <FlatList
           style = {{marginBottom: 50}}
           data = {links}
@@ -679,15 +664,17 @@ const Stack = createStackNavigator();
 export default function EditProfile( props ) {
   var { gtUsername } = props.route.params;
 
-  getStudent({gtUsername: gtUsername})
-  .then((resp) => {
-      console.log(resp.body);
-      userDetails = resp.body;
-  })
-  .catch((err) => {
-      console.log(err);
-  })
-
+  if (userDetails.gtUsername == "" || userDetails.gtUsername.length == 0) {
+    getStudent({gtUsername: gtUsername})
+    .then((resp) => {
+        console.log(resp.body);
+        userDetails = resp.body;
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+  }
+  
   return (
     <Stack.Navigator screenOptions = {{headerShown: false}} initialRouteName="Page1">
       <Stack.Screen name="Page1" component={BasicDetails} initialParams = {{gtUsername: gtUsername}}/>
