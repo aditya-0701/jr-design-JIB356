@@ -1,7 +1,6 @@
 const student = require('./src/controllers/studentController.js');
 const alumni = require('./src/controllers/alumniController.js');
 const login = require('./src/login.js');
-const dbinit = require('./src/dbInit.js');
 
 const four03 = () => {
     return {
@@ -24,7 +23,8 @@ const four03 = () => {
  */
 exports.handler = async (event) => {
     const { rawPath, routeKey, rawQueryString=null, body } = event;
-    let mainPath = rawPath.split('/')[1];
+    let pathArr = rawPath.split('/');
+    let mainPath = pathArr[1];
     let parsedBody = (body) ? JSON.parse(body) : null;
     let query = (rawQueryString != null && rawQueryString != '') ? parseQuery(rawQueryString) : null;
     let method = event.requestContext.http.method;
@@ -126,12 +126,43 @@ exports.handler = async (event) => {
                 case 'GET':
                     // return student.getStudentProjectInterests(query);
                 case 'PUT':
-                    // return student.updateProjectInterests(parsedBody);
+                    return alumni.updateProject(parsedBody);
                 case 'POST':
                     return alumni.addProject( parsedBody );
                 case 'DELETE':
-                    // return student.deleteAllStudentProjectInterests(query);
+                    return alumni.deleteProject(query);
             }
+        case 'studentMajor': 
+            switch(method) {
+                case 'GET':
+                    return student.getStudentMajor(query);
+                case 'PUT':
+                    return student.updateStudentMajor(parsedBody);
+                case 'POST':
+                case 'DELETE':    
+                    return student.deleteStudentMajor(query);
+            }
+        case 'studentDegree': 
+            switch(method) {
+                case 'GET':
+                    return student.getStudentDegree(query);
+                case 'PUT':
+                    return student.updateStudentDegree(parsedBody);
+                case 'POST':
+                case 'DELETE':    
+                    return student.deleteStudentDegree(query);
+            }
+        case 'studentLinks': 
+            switch(method) {
+                case 'GET':
+                    return student.getStudentLinks(query);
+                case 'PUT':
+                    return student.updateStudentLinks(parsedBody);
+                case 'POST':
+                case 'DELETE':    
+                    return student.deleteStudentLinks(query);
+            }
+
         default: 
             return four03();
     }
@@ -142,7 +173,11 @@ function parseQuery(queryString) {
     var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
     for (var i = 0; i < pairs.length; i++) {
         var pair = pairs[i].split('=');
-        query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+        var decodedValue = decodeURIComponent(pair[1] || '');
+        if (decodedValue.includes('[')) {
+            decodedValue = JSON.parse(decodedValue);
+        }
+        query[decodeURIComponent(pair[0])] = decodedValue;
     }
     return query;
 }
