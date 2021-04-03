@@ -20,6 +20,8 @@ class NiceButton extends React.Component {
   }
 }
 
+var gtUname = "";
+
 var userDetails = {
   email: "",
   gtUsername: "",
@@ -237,8 +239,8 @@ export const BasicDetails = ({ navigation, route }) => {
   const [skills, onChangeSkills] = 
     React.useState(userDetails.skills.map(({ id }) => id));
 
-  if (userDetails && Object.keys(userDetails).length === 0 ) {
-    getStudent({gtUsername: gtUser})
+  if (!userDetails.gtUsername || userDetails.gtUsername == "" || userDetails.gtUsername.length == 0) {
+    getStudent({'gtUsername': gtUname})
     .then((resp) => {
         console.log(resp.body);
         userDetails = resp.body;
@@ -663,8 +665,10 @@ const Stack = createStackNavigator();
 
 export default function EditProfile( props ) {
   var { gtUsername } = props.route.params;
+  gtUname = gtUsername;
 
-  if (userDetails.gtUsername == "" || userDetails.gtUsername.length == 0) {
+  if (!userDetails.gtUsername || userDetails.gtUsername == "" || userDetails.gtUsername.length == 0) {
+    console.log("GT Username not found");
     getStudent({gtUsername: gtUsername})
     .then((resp) => {
         console.log(resp.body);
