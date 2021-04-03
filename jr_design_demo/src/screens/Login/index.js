@@ -12,6 +12,7 @@ import styles from '../../globalStyles';
 
 const Stack = createStackNavigator();
 
+var userRole = 'S';
 
 export const MainLogin = ( props ) => {
 
@@ -56,8 +57,9 @@ const LoginPage = ( props ) => {
         userLogin( { email: emailValue, pass: passwordValue } )
         .then(async (resp) => {
             console.log("Response: " + JSON.stringify(resp.body))
+            console.log(resp.body.gtUsername);
             const gtUsername = emailValue.split('@')[0];
-            if (resp.body != null && resp.body.gtUsername == gtUsername && resp.status == 200) {
+            if (resp.body != null && resp.status == 200) {
                 try {
                     await AsyncStorage.setItem('sessionId', resp.body.sessionId)
                     
@@ -69,7 +71,7 @@ const LoginPage = ( props ) => {
                     routes: [
                         { 
                             name: 'HomeScreen',
-                            params: { email: emailValue },
+                            params: { email: emailValue, gtUsername: gtUsername },
                         }
                     ],
                 });
@@ -123,6 +125,7 @@ const LoginPage = ( props ) => {
 }
 
 export const StudentLogin = ( props ) => {
+    userRole = 'S';
     return (
         <ScrollView contentContainerStyle={ styles.container }>
             <Text style = {styles.title} >
@@ -134,6 +137,7 @@ export const StudentLogin = ( props ) => {
 };
 
 export const AlumniLogin = ( props ) => {
+    userRole = 'A';
     return (
         <ScrollView contentContainerStyle={ styles.container }>
             <Text style = {styles.title} >

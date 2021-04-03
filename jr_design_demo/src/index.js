@@ -12,7 +12,11 @@ import ViewProject from './screens/ViewProject'
 const Stack = createStackNavigator();
 
 export default function App ( props ) {
+    // state variable: const [loggedIn, setLoggedIn] = React.useState(0);
+    // call API through store.js: validateSession().then((resp) => {AsyncStorage(newToken); setLoggedIn(1)}).catch((err) => {})
+    //
     return (
+        // {if (loggedIn) {} else {}}
         <NavigationContainer>
             <Stack.Navigator screenOptions = {{headerShown: false}} >
                 <Stack.Screen name = "Login" component = { Login } />

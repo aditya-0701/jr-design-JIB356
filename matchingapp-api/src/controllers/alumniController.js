@@ -95,4 +95,59 @@ exports.delete = (req) => {
     }
 };
 
+exports.addProject = async ( req ) => {
+    try {
+        var result = await Alumni.addProject( req );
+        if (result === null) {
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
+        }
+    
+        return result;
+      } catch (e) {
+        return four00(e);
+      }
+        
+};
 
+exports.deleteProject = async ( req ) => {
+    try {
+        var result = await Alumni.deleteAlumniProject( req );
+        if (result === null) {
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
+        }
+    
+        return result;
+      } catch (e) {
+        return four00(e);
+      }
+        
+};
+
+exports.updateProject = async ( req ) => {
+    try {
+        var result = await Alumni.updateProject( req );
+        if (result === null) {
+            rtr.body = JSON.stringify({
+                message: 'Record not found with the given input parameters.',
+                status: 404
+            });
+            rtr.statusCode = 404;
+            return rtr;
+        }
+    
+        return result;
+      } catch (e) {
+        return four00(e);
+      }
+        
+};
