@@ -183,7 +183,7 @@ export class Card extends React.Component {
         return (
           <Animated.View
             {...this.PanResponder.panHandlers}
-            key={item.id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+            key={item.id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 150, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
             <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
               <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
@@ -213,7 +213,7 @@ export class Card extends React.Component {
         return (
 
           <Animated.View
-            key={item.id} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+            key={item.id} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: CARD_HEIGHT - 150, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
             <Animated.View style={{ opacity: 0, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
               <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
@@ -249,20 +249,16 @@ export class Card extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ height: 60 }}>
+        <View style={{ height: 100 }}>
+          <TouchableOpacity
+            style={{ alignContent: 'center', top: SCREEN_HEIGHT * .07, left: SCREEN_WIDTH * .73, height: 40, width: 100, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 10 }}
+            onPress={() => { this.props.navigation.navigate("Page4") }} >
+            <Text style={{ top: 10, textAlign: 'center', color: 'white', fontWeight: 'bold', alignContent: 'center' }}>Search/Filter</Text>
+          </TouchableOpacity>
         </View>
         <View style={{ flex: 1 }}>
-          <View style={{ flex: 1 }}>
-            <NiceButton
-              style={{ right: 20 }}
-              title="Search/Filter"
-              onPress={() => {
-                this.props.navigation.navigate("Page4")
-              }}
-            />
-          </View>
           {this.renderUsers()}
-          <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', top: SCREEN_HEIGHT * .73 }}>
+          <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', top: SCREEN_HEIGHT * .71 }}>
             <TouchableOpacity style={styles.leftButton} onPress={() => { NavigateLeft }}>
               <Text style={styles.leftRightNav}> &#171; </Text>
             </TouchableOpacity>
@@ -469,7 +465,7 @@ export const ProjectFilterPage = ({ navigation }) => {
   const toggleInterest13 = () => onChangeInterest13(previousState => !previousState);
 
   return (
-    <View style={style.container} >
+    <View style={style.container2} >
       <ScrollView>
         <KeyboardAvoidingView>
           <View style={{ padding: 5 }}></View>
@@ -860,5 +856,49 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(179, 163, 105, 1)',
     borderWidth: 3,
     borderRadius: 15
+  },
+  inputs: {
+    marginBottom: 15,
+    borderRadius: 15,
+    backgroundColor: '#B3A36975',
+    padding: 10,
+    paddingLeft: 20,
+    height: 40
+  },
+  label: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#B3A369',
+    paddingVertical: 10
+  },
+  label2: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#B3A369',
+    paddingVertical: 10
+  },
+  buttonContainer: {
+    position: "absolute",
+    bottom: 0,
+    alignSelf: 'center',
+    //width: "100%",
+    backgroundColor: '#F5F5F5',
+    flexDirection: "row",
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    margin: 5,
+    marginTop: 5,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  container2: {
+    backgroundColor: '#F5F5F5',
+    color: '#F5F5F5',
+    opacity: 100,
+    alignItems: 'stretch',
+    padding: 15,
+    marginTop: 30,
+    justifyContent: 'center',
+    flex: 1
   }
 })
