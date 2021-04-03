@@ -22,17 +22,6 @@ class NiceButton extends React.Component {
   }
 }
 
-const userDetails = {
-  email: "aditya.sudarshan@gatech.edu",
-  pass: "password",
-  name: 'Aditya Sudarshan',
-  major: 'Computer Science',
-  skills: 'Porgamming',
-  degree: 'B.S',
-  interests: 'Sports, Gaming, Programming'
-};
-
-
 const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 const CARD_HEIGHT = SCREEN_HEIGHT * 0.86
