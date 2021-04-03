@@ -12,6 +12,15 @@ const users = [
         interests: 'Sports, Gaming, Programming' 
     },
     {
+        email: "asudarshan30@gatech.edu",
+        pass: "password",
+        name: 'Aditya Sudarshan',
+        major: 'Computer Science',
+        skills: 'Porgamming',
+        degree: 'B.S',
+        interests: 'Sports, Gaming, Programming' 
+    },
+    {
         email: "sam.sanders@gatech.edu",
         pass: "password",
         name: 'Sam Sanders',
