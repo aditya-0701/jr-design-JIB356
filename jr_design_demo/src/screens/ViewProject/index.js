@@ -10,6 +10,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { fromLeft } from 'react-navigation-transitions';
 import { render } from 'react-dom';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 class NiceButton extends React.Component {
@@ -462,39 +464,129 @@ class DetailsScreen extends React.Component {
   }
 }
 
+const skillLibrary = [{
+  name: "Skills",
+  id: 0,
+  children: [
+    {
+      id: 1,
+      name: "Java"
+    },
+    {
+      id: 2,
+      name: "Python"
+    },
+    {
+      id: 3,
+      name: "Git"
+    },
+    {
+      id: 4,
+      name: "Angular"
+    },
+    {
+      id: 5,
+      name: "C"
+    },
+    {
+      id: 6,
+      name: "MySQL"
+    },
+    {
+      id: 7,
+      name: "NoSQL"
+    },
+    {
+      id: 8,
+      name: "PHP"
+    },
+    {
+      id: 9,
+      name: "HTML"
+    },
+    {
+      id: 10,
+      name: "CSS"
+    },
+    {
+      id: 11,
+      name: "Swift"
+    },
+    {
+      id: 12,
+      name: "Objective-C"
+    },
+    {
+      id: 13,
+      name: "Ruby"
+    },
+    {
+      id: 14,
+      name: "CAD Design"
+    }
+  ]
+}];
+const interestLibrary = [{
+  name: 'Interests',
+  id: 0,
+  children: [
+    {
+      id: 1,
+      name: "Machine Learning"
+    },
+    {
+      id: 2,
+      name: "Artificial Intelligence"
+    },
+    {
+      id: 3,
+      name: "Blockchain"
+    },
+    {
+      id: 4,
+      name: "Computer Vision"
+    },
+    {
+      id: 5,
+      name: "Web Development"
+    },
+    {
+      id: 6,
+      name: "Mobile Development"
+    },
+    {
+      id: 7,
+      name: "Design"
+    },
+    {
+      id: 8,
+      name: "Hardware"
+    },
+    {
+      id: 9,
+      name: "Low Level Programming"
+    },
+    {
+      id: 10,
+      name: "Software"
+    },
+    {
+      id: 11,
+      name: "Functional Programming"
+    },
+    {
+      id: 12,
+      name: "Parallel Computing"
+    },
+    {
+      id: 13,
+      name: "Object Oriented Programming"
+    }
+  ]
+}];
 
 export const ProjectFilterPage = ({ navigation }) => {
   const [search, onChangeSearch] = React.useState('');
-
-  const [skill1, onChangeSkill1] = React.useState(false);
-  const [skill2, onChangeSkill2] = React.useState(false);
-  const [skill3, onChangeSkill3] = React.useState(false);
-  const [skill4, onChangeSkill4] = React.useState(false);
-  const [skill5, onChangeSkill5] = React.useState(false);
-  const [skill6, onChangeSkill6] = React.useState(false);
-  const [skill7, onChangeSkill7] = React.useState(false);
-  const [skill8, onChangeSkill8] = React.useState(false);
-  const [skill9, onChangeSkill9] = React.useState(false);
-  const [skill10, onChangeSkill10] = React.useState(false);
-  const [skill11, onChangeSkill11] = React.useState(false);
-  const [skill12, onChangeSkill12] = React.useState(false);
-  const [skill13, onChangeSkill13] = React.useState(false);
-  const [skill14, onChangeSkill14] = React.useState(false);
-
-  const toggleSkill1 = () => onChangeSkill1(previousState => !previousState);
-  const toggleSkill2 = () => onChangeSkill2(previousState => !previousState);
-  const toggleSkill3 = () => onChangeSkill3(previousState => !previousState);
-  const toggleSkill4 = () => onChangeSkill4(previousState => !previousState);
-  const toggleSkill5 = () => onChangeSkill5(previousState => !previousState);
-  const toggleSkill6 = () => onChangeSkill6(previousState => !previousState);
-  const toggleSkill7 = () => onChangeSkill7(previousState => !previousState);
-  const toggleSkill8 = () => onChangeSkill8(previousState => !previousState);
-  const toggleSkill9 = () => onChangeSkill9(previousState => !previousState);
-  const toggleSkill10 = () => onChangeSkill10(previousState => !previousState);
-  const toggleSkill11 = () => onChangeSkill11(previousState => !previousState);
-  const toggleSkill12 = () => onChangeSkill12(previousState => !previousState);
-  const toggleSkill13 = () => onChangeSkill13(previousState => !previousState);
-  const toggleSkill14 = () => onChangeSkill14(previousState => !previousState);
 
   const [hours, onChangeHours] = React.useState('');
   const [minStart, onChangeMinStart] = React.useState('');
@@ -502,33 +594,8 @@ export const ProjectFilterPage = ({ navigation }) => {
   const [minEnd, onChangeMinEnd] = React.useState('');
   const [maxEnd, onChangeMaxEnd] = React.useState('');
 
-  const [interest1, onChangeInterest1] = React.useState(false);
-  const [interest2, onChangeInterest2] = React.useState(false);
-  const [interest3, onChangeInterest3] = React.useState(false);
-  const [interest4, onChangeInterest4] = React.useState(false);
-  const [interest5, onChangeInterest5] = React.useState(false);
-  const [interest6, onChangeInterest6] = React.useState(false);
-  const [interest7, onChangeInterest7] = React.useState(false);
-  const [interest8, onChangeInterest8] = React.useState(false);
-  const [interest9, onChangeInterest9] = React.useState(false);
-  const [interest10, onChangeInterest10] = React.useState(false);
-  const [interest11, onChangeInterest11] = React.useState(false);
-  const [interest12, onChangeInterest12] = React.useState(false);
-  const [interest13, onChangeInterest13] = React.useState(false);
-
-  const toggleInterest1 = () => onChangeInterest1(previousState => !previousState);
-  const toggleInterest2 = () => onChangeInterest2(previousState => !previousState);
-  const toggleInterest3 = () => onChangeInterest3(previousState => !previousState);
-  const toggleInterest4 = () => onChangeInterest4(previousState => !previousState);
-  const toggleInterest5 = () => onChangeInterest5(previousState => !previousState);
-  const toggleInterest6 = () => onChangeInterest6(previousState => !previousState);
-  const toggleInterest7 = () => onChangeInterest7(previousState => !previousState);
-  const toggleInterest8 = () => onChangeInterest8(previousState => !previousState);
-  const toggleInterest9 = () => onChangeInterest9(previousState => !previousState);
-  const toggleInterest10 = () => onChangeInterest10(previousState => !previousState);
-  const toggleInterest11 = () => onChangeInterest11(previousState => !previousState);
-  const toggleInterest12 = () => onChangeInterest12(previousState => !previousState);
-  const toggleInterest13 = () => onChangeInterest13(previousState => !previousState);
+  const [interests, onChangeInterests] = React.useState(projectDetails.interests);
+  const [skills, onChangeSkills] = React.useState(projectDetails.skills);
 
   return (
     <View style={style.container} >
@@ -575,223 +642,35 @@ export const ProjectFilterPage = ({ navigation }) => {
             onChangeText={(text) => onChangeMaxEnd(text)}
           />
           <Text style={style.label}>Skills Required</Text>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill1}
-              value={skill1}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Java</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill2}
-              value={skill2}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Python</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill3}
-              value={skill3}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Git</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill4}
-              value={skill4}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Angular</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill5}
-              value={skill5}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>C</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill6}
-              value={skill6}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>MySQL</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill7}
-              value={skill7}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>NoSQL</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill8}
-              value={skill8}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>PHP</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill9}
-              value={skill9}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>HTML</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill10}
-              value={skill10}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>CSS</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill11}
-              value={skill11}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Swift</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill12}
-              value={skill12}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Objective-C</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill13}
-              value={skill13}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Ruby</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill14}
-              value={skill14}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>CAD Design</Text>
-          </View>
+          <SectionedMultiSelect
+            items={skillLibrary}
+            uniqueKey="id"
+            subKey="children"
+            selectText="Select your skills..."
+            IconRenderer={Icon}
+            showDropDowns={false}
+            readOnlyHeadings={true}
+            hideSearch={true}
+            showChips={false}
+            onSelectedItemsChange={onChangeSkills}
+            selectedItems={skills}
+            styles={[styles, localStyle]}
+          />
           <Text style={style.label}>Project Interests</Text>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest1}
-              value={interest1}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Machine Learning</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest2}
-              value={interest2}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Artificial Intelligence</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest3}
-              value={interest3}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Blockchain</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest4}
-              value={interest4}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Computer Vision</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest5}
-              value={interest5}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Web Development</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest6}
-              value={interest6}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Mobile Development</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest7}
-              value={interest7}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Design</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest8}
-              value={interest8}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Hardware</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest9}
-              value={interest9}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Low Level Programming</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest10}
-              value={interest10}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Software</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest11}
-              value={interest11}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Functional Programming</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest12}
-              value={interest12}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Parallel Computing</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest13}
-              value={interest13}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Object-Oriented Programming</Text>
-          </View>
+          <SectionedMultiSelect
+            items={interestLibrary}
+            uniqueKey="id"
+            subKey="children"
+            selectText="Select some interests..."
+            IconRenderer={Icon}
+            showDropDowns={false}
+            readOnlyHeadings={true}
+            hideSearch={true}
+            showChips={false}
+            onSelectedItemsChange={onChangeInterests}
+            selectedItems={interests}
+            styles={[styles, localStyle]}
+          />
           <View style={{ padding: 40 }}></View>
         </KeyboardAvoidingView>
       </ScrollView>
@@ -977,5 +856,41 @@ const style = StyleSheet.create({
     marginVertical: 10,
     paddingHorizontal: 10,
     textAlign: 'center'
+  },
+});
+const localStyle = StyleSheet.create({//File-specific
+  navButtonContainer: {
+    position: "absolute",
+    bottom: 0,
+    alignSelf: 'center',
+    //width: "100%",
+    backgroundColor: '#F5F5F5',
+    flexDirection: "row",
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    margin: 5,
+    marginTop: 5,
+    borderRadius: 15,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderWidth: 2,
+    borderBottomWidth: 0,
+    borderColor: "black"
+  },
+  container: {
+    backgroundColor: '#F5F5F5',
+    color: '#F5F5F5',
+    //opacity: 100,
+    padding: 15,
+    marginTop: 30,
+    flex: 1
+  },
+  selectToggle: {
+    marginBottom: 15,
+    borderRadius: 15,
+    backgroundColor: '#B3A36975',
+    padding: 10,
+    paddingLeft: 20,
+    height: 40
   },
 });
