@@ -8,7 +8,7 @@ class NiceButton extends React.Component {
   constructor(props) {super(props);}
   render() {
     return (
-      <TouchableOpacity style={style.button} onPress={this.props.onPress}>
+      <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
         <Text style={styles.buttonText}>{this.props.title}</Text>
       </TouchableOpacity>
     );
