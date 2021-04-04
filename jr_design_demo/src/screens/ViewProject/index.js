@@ -1,6 +1,6 @@
 // import * as React from 'react';
 import React from 'react';
-import { ScrollView, Switch, TextInput, KeyboardAvoidingView, Image, TouchableOpacity, ImageBackground, View, Text, StyleSheet, Dimensions, Animated, PanResponder, Touchable, Button } from 'react-native';
+import { SafeAreaView, ScrollView, Switch, TextInput, KeyboardAvoidingView, Image, TouchableOpacity, ImageBackground, View, Text, StyleSheet, Dimensions, Animated, PanResponder, Touchable, Button } from 'react-native';
 // import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import shouldUseActivityState, { screensEnabled } from 'react-native-screens'
@@ -204,10 +204,9 @@ export class Card extends React.Component {
               <Text style={styles.textAbstract}>
                 <Text style={styles.textTitle}>{item.name}{'\n'}</Text>
                 <Text style={styles.textMain}>{'\n'}{item.shortDescription}{'\n'}</Text>
-                <NiceButton
-                  title="View Project Details"
-                  onPress={() => this.props.navigation.navigate("Page2")}
-                />
+                <TouchableOpacity style={{ alignCenter: 'center' }} onPress={() => this.props.navigation.navigate("Page2")}>
+                  <Text style={{ left: 130, top: 50, color: 'white', fontSize: 15, fontWeight: 'bold' }}>View Project Details</Text>
+                </TouchableOpacity>
               </Text>
             </ImageBackground>
           </Animated.View>
@@ -234,12 +233,9 @@ export class Card extends React.Component {
               <Text style={styles.textAbstract}>
                 <Text style={styles.textTitle}>{item.name}{'\n'}</Text>
                 <Text style={styles.textMain}>{'\n'}{item.shortDescription}{'\n'}</Text>
-                <NiceButton
-                  title="View Project Details"
-                  onPress={() => {
-                    this.props.navigation.navigate("Page2")
-                  }}
-                />
+                <TouchableOpacity style={{ alignCenter: 'center' }} onPress={() => this.props.navigation.navigate("Page2")}>
+                  <Text style={{ left: 130, top: 50, color: 'white', fontSize: 15, fontWeight: 'bold' }}>View Project Details</Text>
+                </TouchableOpacity>
               </Text>
             </ImageBackground>
           </Animated.View>
@@ -296,74 +292,6 @@ export class Card extends React.Component {
   }
 }
 
-export const NavigateLeft = ({ navigation }) => {
-  const title = React.useState("Navigate Left");
-  x--;
-  return (
-    <Animated.View
-      {...this.PanResponder.panHandlers}
-      key={projectDetails[x].id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
-
-      <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
-        <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
-      </Animated.View>
-
-      <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
-        <Text style={{ borderWidth: 1, borderColor: '#a40000', color: '#a40000', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
-      </Animated.View>
-
-
-      <ImageBackground
-        style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
-        imageStyle={{ borderRadius: 17 }}
-        source={projectDetails[x].uri} >
-        <Text style={styles.textAbstract}>
-          <Text style={styles.textTitle}>{projectDetails[x].name}{'\n'}</Text>
-          <Text style={styles.textMain}>{'\n'}{projectDetails[x].shortDescription}{'\n'}</Text>
-          <NiceButton
-            title="View Project Details"
-            onPress={() => this.props.navigation.navigate("Page2")}
-          />
-        </Text>
-      </ImageBackground>
-    </Animated.View>
-  );
-};
-
-export const NavigateRight = ({ navigation }) => {
-  const title = React.useState("Navigate Right");
-  x++;
-  return (
-    <Animated.View
-      {...this.PanResponder.panHandlers}
-      key={projectDetails[x].id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
-
-      <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
-        <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
-      </Animated.View>
-
-      <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
-        <Text style={{ borderWidth: 1, borderColor: '#a40000', color: '#a40000', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
-      </Animated.View>
-
-
-      <ImageBackground
-        style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
-        imageStyle={{ borderRadius: 17 }}
-        source={projectDetails[x].uri} >
-        <Text style={styles.textAbstract}>
-          <Text style={styles.textTitle}>{projectDetails[x].name}{'\n'}</Text>
-          <Text style={styles.textMain}>{'\n'}{projectDetails[x].shortDescription}{'\n'}</Text>
-          <NiceButton
-            title="View Project Details"
-            onPress={() => this.props.navigation.navigate("Page2")}
-          />
-        </Text>
-      </ImageBackground>
-    </Animated.View>
-  );
-};
-
 
 class SavedProjects extends React.Component {
   render() {
@@ -383,27 +311,51 @@ class SavedProjects extends React.Component {
       </View>
     );
   }
-
-
 }
+
+// render() {
+//   return (
+//     <SafeAreaView style={styles.container}>
+//       <ScrollView style={styles.detailsPage}>
+//         <Text style={{ top: 20, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>User Details</Text>
+//         <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}> {userDetails[x].firstName} {userDetails[x].middleName} {userDetails[x].lastName}</Text>
+//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Email: {'\n'}{userDetails[x].email}{'\n'}</Text>
+//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>GT Username: {'\n'}{userDetails[x].gtUsername}{'\n'}</Text>
+//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Bio: {'\n'}{userDetails[x].bio}{'\n'}</Text>
+//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Major: {'\n'}{userDetails[x].major}{'\n'}</Text>
+//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Degree: {'\n'}{userDetails[x].degree}{'\n'}</Text>
+//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{userDetails[x].skills}{'\n'}</Text>
+//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Start Date: {'\n'}{userDetails[x].start_date}{'\n'}</Text>
+//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>End Date: {'\n'}{userDetails[x].end_date}{'\n'}</Text>
+//         <TouchableOpacity
+//           style={{ left: SCREEN_WIDTH * .38, top: SCREEN_HEIGHT * .1, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
+//           onPress={() => this.props.navigation.goBack()}>
+//           <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
+//         </TouchableOpacity>
+//       </ScrollView>
+//     </SafeAreaView>
+//   );
+// }
+
 
 class DetailsScreen extends React.Component {
   render() {
     return (
-      // <View style={{ flex: 1, justifyContent: 'center'}}>
-      <View style={styles.detailsPage}>
-        <Text style={{ bottom: 200, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>Project Details</Text>
-        <Text style={{ bottom: 190, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}>  {projectDetails[x].name}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .3, fontSize: 18, fontWeight: '500' }}>Biography: {'\n'}{projectDetails[x].bio}{'\n'}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .28, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{projectDetails[x].skills}{'\n'}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .25, fontSize: 18, fontWeight: '500' }}>Hours per Week: {'\n'}{projectDetails[x].hoursPerWeek}{'\n'}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .175, fontSize: 18, fontWeight: '500' }}>Link: {'\n'}{projectDetails[x].externalLink}{'\n'}</Text>
-        <TouchableOpacity
-          style={{ left: SCREEN_WIDTH * .005, top: SCREEN_HEIGHT * .1, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
-          onPress={() => this.props.navigation.goBack()}>
-          <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
-        </TouchableOpacity>
-      </View>
+      <SafeAreaView style={styles.container}>
+        <ScrollView style={styles.detailsPage}>
+          <Text style={{ top: 20, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>Project Details</Text>
+          <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}>  {projectDetails[x].name}</Text>
+          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Biography: {'\n'}{projectDetails[x].bio}{'\n'}</Text>
+          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{projectDetails[x].skills}{'\n'}</Text>
+          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Hours per Week: {'\n'}{projectDetails[x].hoursPerWeek}{'\n'}</Text>
+          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Link: {'\n'}{projectDetails[x].externalLink}{'\n'}</Text>
+          <TouchableOpacity
+            style={{ left: SCREEN_WIDTH * .38, top: SCREEN_HEIGHT * .1, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
+            onPress={() => this.props.navigation.goBack()}>
+            <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 }
@@ -750,8 +702,8 @@ const styles = StyleSheet.create({
   detailsPage: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
     height: SCREEN_HEIGHT * .87,
     width: SCREEN_WIDTH * .95,
     position: 'absolute',
