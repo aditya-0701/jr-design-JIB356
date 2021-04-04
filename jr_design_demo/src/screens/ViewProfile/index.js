@@ -172,17 +172,17 @@ export class Card extends React.Component {
   renderUsers = () => {
     const { navigate } = this.props.navigation;
 
-    return userDetails.map((item, i) => {
+    return projectDetails.map((item, i) => {
 
       if (i < this.state.currentIndex) {
         return null
       } else if (i == this.state.currentIndex) {
-        x = userDetails.indexOf(item);
+        x = projectDetails.indexOf(item);
 
         return (
           <Animated.View
             {...this.PanResponder.panHandlers}
-            key={item.id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+            key={item.id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 150, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
             <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
               <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
@@ -201,7 +201,7 @@ export class Card extends React.Component {
                 <Text style={styles.textTitle}>{item.name}{'\n'}</Text>
                 <Text style={styles.textMain}>{'\n'}{item.shortDescription}{'\n'}</Text>
                 <NiceButton
-                  title="View User Details"
+                  title="View Project Details"
                   onPress={() => this.props.navigation.navigate("Page2")}
                 />
               </Text>
@@ -212,7 +212,7 @@ export class Card extends React.Component {
         return (
 
           <Animated.View
-            key={item.id} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+            key={item.id} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: CARD_HEIGHT - 150, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
             <Animated.View style={{ opacity: 0, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
               <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
@@ -231,7 +231,7 @@ export class Card extends React.Component {
                 <Text style={styles.textTitle}>{item.name}{'\n'}</Text>
                 <Text style={styles.textMain}>{'\n'}{item.shortDescription}{'\n'}</Text>
                 <NiceButton
-                  title="View User Details"
+                  title="View Project Details"
                   onPress={() => {
                     this.props.navigation.navigate("Page2")
                   }}
@@ -245,24 +245,26 @@ export class Card extends React.Component {
   }
 
 
+
+
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ height: 60 }}>
+        <View style={{ height: 100 }}>
+          <TouchableOpacity
+            style={{ alignContent: 'center', top: SCREEN_HEIGHT * .07, left: SCREEN_WIDTH * .73, height: 40, width: 100, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 10 }}
+            onPress={() => { this.props.navigation.navigate("Page4") }} >
+            <Text style={{ top: 10, textAlign: 'center', color: 'white', fontWeight: 'bold', alignContent: 'center' }}>Search/Filter</Text>
+          </TouchableOpacity>
         </View>
         <View style={{ flex: 1 }}>
-          <View style={{ flex: 1 }}>
-            <NiceButton
-              style={{ right: 20 }}
-              title="Search/Filter"
-              onPress={() => {
-                this.props.navigation.navigate("Page4")
-              }}
-            />
-          </View>
           {this.renderUsers()}
-          <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', top: SCREEN_HEIGHT * .73 }}>
-            <TouchableOpacity style={styles.leftButton} onPress={() => { NavigateLeft }}>
+          <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', top: SCREEN_HEIGHT * .71 }}>
+            <TouchableOpacity style={styles.leftButton} onPress={() => {
+              this.setState({ currentIndex: this.state.currentIndex - 1 }, () => {
+                this.position.setValue({ x: 0, y: 0 })
+              })
+            }}>
               <Text style={styles.leftRightNav}> &#171; </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.heartButton} onPress={() => {
@@ -270,7 +272,11 @@ export class Card extends React.Component {
             }}>
               <Text style={styles.heart}> &#9829;</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.rightButton} onPress={() => { NavigateRight }}>
+            <TouchableOpacity style={styles.rightButton} onPress={() => {
+              this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+                this.position.setValue({ x: 0, y: 0 })
+              })
+            }}>
               <Text style={styles.leftRightNav}> &#187; </Text>
             </TouchableOpacity>
           </View>
@@ -286,82 +292,80 @@ export class Card extends React.Component {
   }
 }
 
-class NavigateLeft extends React.Component {
-  render() {
-    x--;
-    return (
-      <Animated.View
-        {...this.PanResponder.panHandlers}
-        key={userDetails[x].id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+export const NavigateLeft = ({ navigation }) => {
+  const title = React.useState("Navigate Left");
+  x--;
+  return (
+    <Animated.View
+      {...this.PanResponder.panHandlers}
+      key={projectDetails[x].id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
-        <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
-          <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
-        </Animated.View>
-
-        <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
-          <Text style={{ borderWidth: 1, borderColor: '#a40000', color: '#a40000', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
-        </Animated.View>
-
-
-        <ImageBackground
-          style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
-          imageStyle={{ borderRadius: 17 }}
-          source={userDetails[x].uri} >
-          <Text style={styles.textAbstract}>
-            <Text style={styles.textTitle}>{userDetails[x].name}{'\n'}</Text>
-            <Text style={styles.textMain}>{'\n'}{userDetails[x].shortDescription}{'\n'}</Text>
-            <NiceButton
-              title="View User Details"
-              onPress={() => this.props.navigation.navigate("Page2")}
-            />
-          </Text>
-        </ImageBackground>
+      <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
+        <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
       </Animated.View>
-    )
-  }
-}
 
-class NavigateRight extends React.Component {
-  render() {
-    x++;
-    return (
-      <Animated.View
-        {...this.PanResponder.panHandlers}
-        key={userDetails[x].id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
-
-        <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
-          <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
-        </Animated.View>
-
-        <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
-          <Text style={{ borderWidth: 1, borderColor: '#a40000', color: '#a40000', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
-        </Animated.View>
-
-
-        <ImageBackground
-          style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
-          imageStyle={{ borderRadius: 17 }}
-          source={userDetails[x].uri} >
-          <Text style={styles.textAbstract}>
-            <Text style={styles.textTitle}>{userDetails[x].name}{'\n'}</Text>
-            <Text style={styles.textMain}>{'\n'}{userDetails[x].shortDescription}{'\n'}</Text>
-            <NiceButton
-              title="View User Details"
-              onPress={() => this.props.navigation.navigate("Page2")}
-            />
-          </Text>
-        </ImageBackground>
+      <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
+        <Text style={{ borderWidth: 1, borderColor: '#a40000', color: '#a40000', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
       </Animated.View>
-    )
-  }
-}
 
 
-class SavedUsers extends React.Component {
+      <ImageBackground
+        style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
+        imageStyle={{ borderRadius: 17 }}
+        source={projectDetails[x].uri} >
+        <Text style={styles.textAbstract}>
+          <Text style={styles.textTitle}>{projectDetails[x].name}{'\n'}</Text>
+          <Text style={styles.textMain}>{'\n'}{projectDetails[x].shortDescription}{'\n'}</Text>
+          <NiceButton
+            title="View Project Details"
+            onPress={() => this.props.navigation.navigate("Page2")}
+          />
+        </Text>
+      </ImageBackground>
+    </Animated.View>
+  );
+};
+
+export const NavigateRight = ({ navigation }) => {
+  const title = React.useState("Navigate Right");
+  x++;
+  return (
+    <Animated.View
+      {...this.PanResponder.panHandlers}
+      key={projectDetails[x].id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+
+      <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
+        <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
+      </Animated.View>
+
+      <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
+        <Text style={{ borderWidth: 1, borderColor: '#a40000', color: '#a40000', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
+      </Animated.View>
+
+
+      <ImageBackground
+        style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
+        imageStyle={{ borderRadius: 17 }}
+        source={projectDetails[x].uri} >
+        <Text style={styles.textAbstract}>
+          <Text style={styles.textTitle}>{projectDetails[x].name}{'\n'}</Text>
+          <Text style={styles.textMain}>{'\n'}{projectDetails[x].shortDescription}{'\n'}</Text>
+          <NiceButton
+            title="View Project Details"
+            onPress={() => this.props.navigation.navigate("Page2")}
+          />
+        </Text>
+      </ImageBackground>
+    </Animated.View>
+  );
+};
+
+
+class SavedProjects extends React.Component {
   render() {
     return (
       <View style={styles.favoritedPage}>
-        <Text style={{ color: 'rgba(179, 163, 105, 1)', bottom: SCREEN_HEIGHT * .34, fontSize: 27, fontWeight: '600' }}>Favorited Users</Text>
+        <Text style={{ color: 'rgba(179, 163, 105, 1)', bottom: SCREEN_HEIGHT * .34, fontSize: 27, fontWeight: '600' }}>Favorited Projects</Text>
         <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', }}>
           <ImageBackground style={styles.favoritedImages} >
             <Text style={styles.favoritedTitle}> hello </Text>
@@ -382,15 +386,16 @@ class SavedUsers extends React.Component {
 class DetailsScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <Text style={{ bottom: 230, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>User Details</Text>
-        <Text style={{ bottom: 210, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}>  {userDetails[x].name}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', paddingLeft: 25, fontSize: 18, fontWeight: '500' }}>Biography: {'\n'}{userDetails[x].bio}{'\n'}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', paddingLeft: 25, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{userDetails[x].skills}{'\n'}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', paddingLeft: 25, fontSize: 18, fontWeight: '500' }}>Hours per Week: {'\n'}{userDetails[x].hoursPerWeek}{'\n'}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', paddingLeft: 25, fontSize: 18, fontWeight: '500' }}>Link: {'\n'}{userDetails[x].externalLink}{'\n'}</Text>
+      // <View style={{ flex: 1, justifyContent: 'center'}}>
+      <View style={styles.detailsPage}>
+        <Text style={{ bottom: 200, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>Project Details</Text>
+        <Text style={{ bottom: 190, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}>  {projectDetails[x].name}</Text>
+        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .3, fontSize: 18, fontWeight: '500' }}>Biography: {'\n'}{projectDetails[x].bio}{'\n'}</Text>
+        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .28, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{projectDetails[x].skills}{'\n'}</Text>
+        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .25, fontSize: 18, fontWeight: '500' }}>Hours per Week: {'\n'}{projectDetails[x].hoursPerWeek}{'\n'}</Text>
+        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .175, fontSize: 18, fontWeight: '500' }}>Link: {'\n'}{projectDetails[x].externalLink}{'\n'}</Text>
         <TouchableOpacity
-          style={{ left: 30, top: SCREEN_HEIGHT * .05, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
+          style={{ left: SCREEN_WIDTH * .005, top: SCREEN_HEIGHT * .1, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
           onPress={() => this.props.navigation.goBack()}>
           <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
         </TouchableOpacity>
@@ -398,7 +403,6 @@ class DetailsScreen extends React.Component {
     );
   }
 }
-
 
 export const ProfileFilterPage = ({ navigation }) => {
   const [search, onChangeSearch] = React.useState('');
