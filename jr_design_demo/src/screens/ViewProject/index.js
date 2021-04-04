@@ -82,6 +82,7 @@ const projectDetails = [
 
 var viewSwitch = false;
 var x = 0;
+var y = 0;
 var index = 0;
 
 export class Card extends React.Component {
@@ -144,7 +145,7 @@ export class Card extends React.Component {
             toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy }
             , useNativeDriver: true
           }).start(() => {
-            this.setState({ currentIndex: ((this.state.currentIndex + 1) <  projectDetails.length) ? this.state.currentIndex + 1: 0 }, () => {
+            this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 })
             })
           })
@@ -154,7 +155,7 @@ export class Card extends React.Component {
             toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy },
             useNativeDriver: true
           }).start(() => {
-            this.setState({ currentIndex: ((this.state.currentIndex + 1) <  projectDetails.length) ? this.state.currentIndex + 1: 0 }, () => {
+            this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 })
             })
           })
@@ -248,6 +249,8 @@ export class Card extends React.Component {
   }
 
 
+
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -261,9 +264,11 @@ export class Card extends React.Component {
         <View style={{ flex: 1 }}>
           {this.renderUsers()}
           <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', top: SCREEN_HEIGHT * .71 }}>
-            <TouchableOpacity style={styles.leftButton} onPress={() => { this.setState({ currentIndex: ((this.state.currentIndex - 1) >= 0) ? this.state.currentIndex - 1: projectDetails.length - 1 }, () => {
-              this.position.setValue({ x: 0, y: 0 })
-            }) }}>
+            <TouchableOpacity style={styles.leftButton} onPress={() => {
+              this.setState({ currentIndex: this.state.currentIndex - 1 }, () => {
+                this.position.setValue({ x: 0, y: 0 })
+              })
+            }}>
               <Text style={styles.leftRightNav}> &#171; </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.heartButton} onPress={() => {
@@ -271,9 +276,11 @@ export class Card extends React.Component {
             }}>
               <Text style={styles.heart}> &#9829;</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.rightButton} onPress={() => { this.setState({ currentIndex: ((this.state.currentIndex + 1) <  projectDetails.length) ? this.state.currentIndex + 1: 0 }, () => {
-              this.position.setValue({ x: 0, y: 0 })
-            }) }}>
+            <TouchableOpacity style={styles.rightButton} onPress={() => {
+              this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+                this.position.setValue({ x: 0, y: 0 })
+              })
+            }}>
               <Text style={styles.leftRightNav}> &#187; </Text>
             </TouchableOpacity>
           </View>
@@ -322,40 +329,6 @@ export const NavigateLeft = ({ navigation }) => {
     </Animated.View>
   );
 };
-// class NavigateLeft extends React.Component {
-//   render() {
-//     x--;
-//     return (
-//       <Animated.View
-//         {...this.PanResponder.panHandlers}
-//         key={projectDetails[x].id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
-
-//         <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
-//           <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
-//         </Animated.View>
-
-//         <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
-//           <Text style={{ borderWidth: 1, borderColor: '#a40000', color: '#a40000', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
-//         </Animated.View>
-
-
-//         <ImageBackground
-//           style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
-//           imageStyle={{ borderRadius: 17 }}
-//           source={projectDetails[x].uri} >
-//           <Text style={styles.textAbstract}>
-//             <Text style={styles.textTitle}>{projectDetails[x].name}{'\n'}</Text>
-//             <Text style={styles.textMain}>{'\n'}{projectDetails[x].shortDescription}{'\n'}</Text>
-//             <NiceButton
-//               title="View Project Details"
-//               onPress={() => this.props.navigation.navigate("Page2")}
-//             />
-//           </Text>
-//         </ImageBackground>
-//       </Animated.View>
-//     )
-//   }
-// }
 
 export const NavigateRight = ({ navigation }) => {
   const title = React.useState("Navigate Right");
@@ -390,40 +363,6 @@ export const NavigateRight = ({ navigation }) => {
     </Animated.View>
   );
 };
-// class NavigateRight extends React.Component {
-// render() {
-//   x++;
-//   return (
-//     <Animated.View
-//       {...this.PanResponder.panHandlers}
-//       key={projectDetails[x].id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
-
-//       <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
-//         <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
-//       </Animated.View>
-
-//       <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
-//         <Text style={{ borderWidth: 1, borderColor: '#a40000', color: '#a40000', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
-//       </Animated.View>
-
-
-//       <ImageBackground
-//         style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
-//         imageStyle={{ borderRadius: 17 }}
-//         source={projectDetails[x].uri} >
-//         <Text style={styles.textAbstract}>
-//           <Text style={styles.textTitle}>{projectDetails[x].name}{'\n'}</Text>
-//           <Text style={styles.textMain}>{'\n'}{projectDetails[x].shortDescription}{'\n'}</Text>
-//           <NiceButton
-//             title="View Project Details"
-//             onPress={() => this.props.navigation.navigate("Page2")}
-//           />
-//         </Text>
-//       </ImageBackground>
-//     </Animated.View>
-//   )
-// }
-// }
 
 
 class SavedProjects extends React.Component {
@@ -451,15 +390,16 @@ class SavedProjects extends React.Component {
 class DetailsScreen extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <Text style={{ bottom: 230, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>Project Details</Text>
-        <Text style={{ bottom: 210, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}>  {projectDetails[x].name}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', paddingLeft: 25, fontSize: 18, fontWeight: '500' }}>Biography: {'\n'}{projectDetails[x].bio}{'\n'}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', paddingLeft: 25, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{projectDetails[x].skills}{'\n'}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', paddingLeft: 25, fontSize: 18, fontWeight: '500' }}>Hours per Week: {'\n'}{projectDetails[x].hoursPerWeek}{'\n'}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', paddingLeft: 25, fontSize: 18, fontWeight: '500' }}>Link: {'\n'}{projectDetails[x].externalLink}{'\n'}</Text>
+      // <View style={{ flex: 1, justifyContent: 'center'}}>
+      <View style={styles.detailsPage}>
+        <Text style={{ bottom: 200, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>Project Details</Text>
+        <Text style={{ bottom: 190, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}>  {projectDetails[x].name}</Text>
+        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .3, fontSize: 18, fontWeight: '500' }}>Biography: {'\n'}{projectDetails[x].bio}{'\n'}</Text>
+        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .28, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{projectDetails[x].skills}{'\n'}</Text>
+        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .25, fontSize: 18, fontWeight: '500' }}>Hours per Week: {'\n'}{projectDetails[x].hoursPerWeek}{'\n'}</Text>
+        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .175, fontSize: 18, fontWeight: '500' }}>Link: {'\n'}{projectDetails[x].externalLink}{'\n'}</Text>
         <TouchableOpacity
-          style={{ left: 30, top: SCREEN_HEIGHT * .05, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
+          style={{ left: SCREEN_WIDTH * .005, top: SCREEN_HEIGHT * .1, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
           onPress={() => this.props.navigation.goBack()}>
           <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
         </TouchableOpacity>
@@ -679,8 +619,12 @@ export const ProjectFilterPage = ({ navigation }) => {
         </KeyboardAvoidingView>
       </ScrollView>
       <View style={style.buttonContainer}>
-        <NiceButton title="Back" onPress={() => navigation.goBack()} />
-        <NiceButton title="Submit" onPress={() => console.log("The submit button has been pressed!")} />
+        <TouchableOpacity style={{ right: 70, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 70 }} onPress={() => navigation.goBack()}>
+          <Text style={{ color: 'white', textAlign: 'center', top: 5, fontSize: 15, fontWeight: 'bold' }}>Back</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ left: 70, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 70 }} onPress={() => console.log("The submit button has been pressed!")}>
+          <Text style={{ color: 'white', textAlign: 'center', top: 5, fontSize: 15, fontWeight: 'bold' }}>Submit</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -802,6 +746,20 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(179, 163, 105, 1)',
     borderWidth: 3,
     borderRadius: 15
+  },
+  detailsPage: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: SCREEN_HEIGHT * .87,
+    width: SCREEN_WIDTH * .95,
+    position: 'absolute',
+    top: CARD_HEIGHT * .1,
+    left: SCREEN_WIDTH * .027,
+    borderColor: 'rgba(179, 163, 105, 1)',
+    borderWidth: 3,
+    borderRadius: 15
   }
 })
 const style = StyleSheet.create({
@@ -814,7 +772,7 @@ const style = StyleSheet.create({
     flexDirection: "row",
     alignItems: 'stretch',
     justifyContent: 'center',
-    margin: 5,
+    margin: 50,
     marginTop: 5,
     flexDirection: 'row',
     alignItems: 'center'
