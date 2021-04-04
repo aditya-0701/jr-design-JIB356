@@ -261,7 +261,8 @@ export class Card extends React.Component {
           {this.renderUsers()}
           <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', top: SCREEN_HEIGHT * .71 }}>
             <TouchableOpacity style={styles.leftButton} onPress={() => {
-              this.setState({ currentIndex: this.state.currentIndex - 1 }, () => {
+              this.setState({ currentIndex: (this.state.currentIndex - 1) >= 0 ? 
+                (this.state.currentIndex - 1) : projectDetails.length}, () => {
                 this.position.setValue({ x: 0, y: 0 })
               })
             }}>
@@ -273,7 +274,8 @@ export class Card extends React.Component {
               <Text style={styles.heart}> &#9829;</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.rightButton} onPress={() => {
-              this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+              this.setState({ currentIndex: (this.state.currentIndex + 1) >= 0 ? 
+                (this.state.currentIndex + 1) : 0 }, () => {
                 this.position.setValue({ x: 0, y: 0 })
               })
             }}>
