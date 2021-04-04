@@ -274,7 +274,7 @@ export class Card extends React.Component {
               <Text style={styles.heart}> &#9829;</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.rightButton} onPress={() => {
-              this.setState({ currentIndex: (this.state.currentIndex + 1) >= 0 ? 
+              this.setState({ currentIndex: (this.state.currentIndex + 1) < projectDetails.length ? 
                 (this.state.currentIndex + 1) : 0 }, () => {
                 this.position.setValue({ x: 0, y: 0 })
               })
