@@ -571,11 +571,11 @@ export const ProjectFilterPage = ({ navigation }) => {
         </KeyboardAvoidingView>
       </ScrollView>
       <View style={style.buttonContainer}>
-        <TouchableOpacity style={{ right: 70, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 70 }} onPress={() => navigation.goBack()}>
-          <Text style={{ color: 'white', textAlign: 'center', top: 5, fontSize: 15, fontWeight: 'bold' }}>Back</Text>
+        <TouchableOpacity style={{ right: 40, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 15, height: 40, width: 150 }} onPress={() => navigation.goBack()}>
+          <Text style={{ color: 'white', textAlign: 'center', top: 10, fontSize: 15, fontWeight: 'bold' }}>Back</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ left: 70, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 70 }} onPress={() => console.log("The submit button has been pressed!")}>
-          <Text style={{ color: 'white', textAlign: 'center', top: 5, fontSize: 15, fontWeight: 'bold' }}>Submit</Text>
+        <TouchableOpacity style={{ left: 40, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 15, height: 40, width: 150 }} onPress={() => console.log("The submit button has been pressed!")}>
+          <Text style={{ color: 'white', textAlign: 'center', top: 10, fontSize: 15, fontWeight: 'bold' }}>Submit</Text>
         </TouchableOpacity>
       </View>
     </View>
