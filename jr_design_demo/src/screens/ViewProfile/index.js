@@ -410,12 +410,12 @@ class DetailsScreen extends React.Component {
           <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{userDetails[x].skills}{'\n'}</Text>
           <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Start Date: {'\n'}{userDetails[x].start_date}{'\n'}</Text>
           <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>End Date: {'\n'}{userDetails[x].end_date}{'\n'}</Text>
-          <TouchableOpacity
-            style={{ left: SCREEN_WIDTH * .38, top: SCREEN_HEIGHT * .1, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
-            onPress={() => this.props.navigation.goBack()}>
-            <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
-          </TouchableOpacity>
         </ScrollView>
+        <TouchableOpacity
+          style={{ left: SCREEN_WIDTH * .005, top: SCREEN_HEIGHT * .4, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
+          onPress={() => this.props.navigation.goBack()}>
+          <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
+        </TouchableOpacity>
       </SafeAreaView>
     );
   }
