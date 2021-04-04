@@ -12,6 +12,7 @@ import styles from '../../globalStyles';
 
 const Stack = createStackNavigator();
 
+var userRole = 'S';
 
 export const MainLogin = (props) => {
 
@@ -52,35 +53,32 @@ const LoginPage = (props) => {
 
         const sessionId = await AsyncStorage.getItem('sessionId');
         console.log(sessionId + " Session ID")
+        onChangeError('Logging in...');
         //var value = false;
-        userLogin({ email: emailValue, pass: passwordValue })
-            .then(async (resp) => {
-                console.log("Response: " + JSON.stringify(resp.body))
-                const gtUsername = emailValue.split('@')[0];
-                if (resp.body != null && resp.status == 200) {
-                    try {
-                        await AsyncStorage.setItem('sessionId', resp.body.sessionId)
-
-                    } catch (e) {
-                        console.log("Error Storing the token: " + e);
-                    }
-                    navigation.reset({
-                        index: 0,
-                        routes: [
-                            {
-                                name: 'HomeScreen',
-                                params: { email: emailValue },
-                            }
-                        ],
-                    });
-                } else {
-                    onChangeError('Incorrect email or password');
+        userLogin( { email: emailValue, pass: passwordValue } )
+        .then(async (resp) => {
+            console.log("Response: " + JSON.stringify(resp.body))
+            console.log(resp.body.gtUsername);
+            const gtUsername = emailValue.split('@')[0];
+            if (resp.body != null && resp.status == 200) {
+                try {
+                    await AsyncStorage.setItem('sessionId', resp.body.sessionId)
+                    
+                } catch (e) {
+                    console.log("Error Storing the token: " + e);
                 }
-            }).catch((err) => {
-                console.log("Error: ");
-                console.log(err);
+                navigation.reset({
+                    index: 0,
+                    routes: [
+                        { 
+                            name: 'HomeScreen',
+                            params: { email: emailValue, gtUsername: gtUsername },
+                        }
+                    ],
+                });
+            }  else {
                 onChangeError('Incorrect email or password');
-            });
+            }});
     }
 
     const setupProfile = () => {
@@ -122,7 +120,8 @@ const LoginPage = (props) => {
     )
 }
 
-export const StudentLogin = (props) => {
+export const StudentLogin = ( props ) => {
+    userRole = 'S';
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.title} >
@@ -133,7 +132,8 @@ export const StudentLogin = (props) => {
     )
 };
 
-export const AlumniLogin = (props) => {
+export const AlumniLogin = ( props ) => {
+    userRole = 'A';
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.title} >

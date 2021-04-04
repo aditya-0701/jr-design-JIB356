@@ -7,11 +7,11 @@ import shouldUseActivityState, { screensEnabled } from 'react-native-screens'
 import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigator } from 'react-navigation';
 import { createStackNavigator } from '@react-navigation/stack';
-import { fromLeft } from 'react-navigation-transitions';
-import { render } from 'react-dom';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { getAllProjects, getProject } from '../../store'; 
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import DatePicker from 'react-native-datepicker';
+import {styles as global} from '../../globalStyles'
 
 
 class NiceButton extends React.Component {
@@ -30,52 +30,61 @@ const SCREEN_WIDTH = Dimensions.get('window').width
 const CARD_HEIGHT = SCREEN_HEIGHT * 0.86
 
 
-const projectDetails = [
+var projectDetails = [
+  // {
+  //   id: "1",
+  //   name: "Example Project",
+  //   projectDescription: "hdsalkgdsgsdgadsfadfasdadggsd",
+  //   bio: "dfskj?",
+  //   skills: "Programming",
+  //   hoursPerWeek: "10",
+  //   externalLink: "https://www.google.com",
+  //   uri: require('../../../assets/1.jpg')
+  // },
+  // {
+  //   id: "2",
+  //   projectTitle: "Example Project 2",
+  //   projectDescription: "hdsalkgdsgsdg",
+  //   bio: "dka;ldksngadgsn;sadgks",
+  //   skills: "html, css",
+  //   hoursPerWeek: "5",
+  //   externalLink: "bing.com",
+  //   uri: require('../../../assets/2.jpg')
+  // },
+  // {
+  //   id: "3",
+  //   projectTitle: "Project 3",
+  //   projectDescription: "hdsalkgdsgsdg",
+  //   bio: ";lskdgn;klsgnl;ksagn;laskdg",
+  //   hoursPerWeek: "8",
+  //   externalLink: "yahoo.com",
+  //   uri: require('../../../assets/3.jpg')
+  // },
+  // {
+  //   id: "4",
+  //   projectTitle: "Project 4",
+  //   projectDescription: "hdsalkgdsgsdg",
+  //   bio: "kdsn;gkdsng;lskdgn;lsadg",
+  //   hoursPerWeek: "3",
+  //   externalLink: "images.google.com",
+  //   uri: require('../../../assets/4.jpg')
+  // },
+  // {
+  //   id: "5",
+  //   projectTitle: "Project 5",
+  //   projectDescription: "hdsalkgdsgsdg",
+  //   bio: "lkdgnsd;lkzgnsad;lgnasdg",
+  //   hoursPerWeek: "7",
+  //   externalLink: "maps.google.com",
+  //   uri: require('../../../assets/5.jpg')
+  // }
   {
-    id: "1",
-    name: "Example Project",
-    shortDescription: "hdsalkgdsgsdgadsfadfasdadggsd",
-    bio: "dfskj?",
-    skills: "Programming",
-    hoursPerWeek: "10",
-    externalLink: "https://www.google.com",
-    uri: require('../../../assets/1.jpg')
-  },
-  {
-    id: "2",
-    name: "Example Project 2",
-    shortDescription: "hdsalkgdsgsdg",
-    bio: "dka;ldksngadgsn;sadgks",
-    skills: "html, css",
-    hoursPerWeek: "5",
-    externalLink: "bing.com",
-    uri: require('../../../assets/2.jpg')
-  },
-  {
-    id: "3",
-    name: "Project 3",
-    shortDescription: "hdsalkgdsgsdg",
-    bio: ";lskdgn;klsgnl;ksagn;laskdg",
-    hoursPerWeek: "8",
-    externalLink: "yahoo.com",
-    uri: require('../../../assets/3.jpg')
-  },
-  {
-    id: "4",
-    name: "Project 4",
-    shortDescription: "hdsalkgdsgsdg",
-    bio: "kdsn;gkdsng;lskdgn;lsadg",
-    hoursPerWeek: "3",
-    externalLink: "images.google.com",
-    uri: require('../../../assets/4.jpg')
-  },
-  {
-    id: "5",
-    name: "Project 5",
-    shortDescription: "hdsalkgdsgsdg",
-    bio: "lkdgnsd;lkzgnsad;lgnasdg",
-    hoursPerWeek: "7",
-    externalLink: "maps.google.com",
+    id: "-1",
+    projectTitle: "No Projects Found",
+    projectDescription: "No projects found with the given search parameters",
+    // bio: "lkdgnsd;lkzgnsad;lgnasdg",
+    // hoursPerWeek: "7",
+    // externalLink: "maps.google.com",
     uri: require('../../../assets/5.jpg')
   }
 ]
@@ -89,6 +98,17 @@ export class Card extends React.Component {
 
   constructor() {
     super()
+
+    getAllProjects()
+    .then((resp) => {
+      let body = resp.body;
+      console.log(body);
+      projectDetails = body;
+      this.forceUpdate();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 
     this.position = new Animated.ValueXY()
     this.state = {
@@ -129,9 +149,7 @@ export class Card extends React.Component {
       outputRange: [1, 0.8, 1],
       extrapolate: 'clamp'
     })
-  }
 
-  UNSAFE_componentWillMount() {
     this.PanResponder = PanResponder.create({
 
       onStartShouldSetPanResponder: (evt, gestureState) => true,
@@ -201,13 +219,13 @@ export class Card extends React.Component {
               style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
               imageStyle={{ borderRadius: 17 }}
               source={item.uri} >
-              <Text style={styles.textAbstract}>
-                <Text style={styles.textTitle}>{item.name}{'\n'}</Text>
-                <Text style={styles.textMain}>{'\n'}{item.shortDescription}{'\n'}</Text>
-                <TouchableOpacity style={{ alignCenter: 'center' }} onPress={() => this.props.navigation.navigate("Page2")}>
-                  <Text style={{ left: 130, top: 50, color: 'white', fontSize: 15, fontWeight: 'bold' }}>View Project Details</Text>
+              <View style={styles.textAbstract}>
+                <Text numberOfLines={1} style={styles.textTitle}>{item.projectTitle}</Text>
+                <Text numberOfLines={3} style={[styles.textMain]}>{item.projectDescription}</Text>
+                <TouchableOpacity style={{marginVertical: 20,  position: 'absolute', top: CARD_HEIGHT * 0.3 - 120}} onPress={() => this.props.navigation.navigate("Page2")}>
+                  <Text style={[styles.buttonText]}>View Project Details</Text>
                 </TouchableOpacity>
-              </Text>
+              </View>
             </ImageBackground>
           </Animated.View>
         )
@@ -230,13 +248,13 @@ export class Card extends React.Component {
               style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
               imageStyle={{ borderRadius: 17 }}
               source={item.uri}>
-              <Text style={styles.textAbstract}>
-                <Text style={styles.textTitle}>{item.name}{'\n'}</Text>
-                <Text style={styles.textMain}>{'\n'}{item.shortDescription}{'\n'}</Text>
-                <TouchableOpacity style={{ alignCenter: 'center' }} onPress={() => this.props.navigation.navigate("Page2")}>
-                  <Text style={{ left: 130, top: 50, color: 'white', fontSize: 15, fontWeight: 'bold' }}>View Project Details</Text>
+              <View style={styles.textAbstract}>
+                <Text numberOfLines={1} style={styles.textTitle}>{item.projectTitle}</Text>
+                <Text numberOfLines={3} style={[styles.textMain]}>{item.projectDescription}</Text>
+                <TouchableOpacity style={{marginVertical: 20}} onPress={() => this.props.navigation.navigate("Page2")}>
+                  <Text style={[styles.buttonText]}>View Project Details</Text>
                 </TouchableOpacity>
-              </Text>
+              </View>
             </ImageBackground>
           </Animated.View>
         )
@@ -244,6 +262,10 @@ export class Card extends React.Component {
     }).reverse()
   }
 
+
+  reRender() {
+    this.setState({});
+  }
 
 
 
@@ -341,13 +363,32 @@ class SavedProjects extends React.Component {
 
 
 class DetailsScreen extends React.Component {
+
+  constructor () {
+    this.state = {
+      project: {}
+    }
+  }
+
+  getProj() {
+    var proj = projectDetails[x];
+    var projId = proj.id;
+    getProject( projId )
+    .then((resp) => {
+      let body = resp.body;
+      console.log(body);
+      this.setState({project: body})
+    })
+
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.detailsPage}>
           <Text style={{ top: 20, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>Project Details</Text>
-          <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}>  {projectDetails[x].name}</Text>
-          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Biography: {'\n'}{projectDetails[x].bio}{'\n'}</Text>
+          <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}>  {projectDetails[x].projectTitle}</Text>
+          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Description: {'\n'}{projectDetails[x].projectDescription}{'\n'}</Text>
           <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{projectDetails[x].skills}{'\n'}</Text>
           <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Hours per Week: {'\n'}{projectDetails[x].hoursPerWeek}{'\n'}</Text>
           <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Link: {'\n'}{projectDetails[x].externalLink}{'\n'}</Text>
@@ -487,19 +528,50 @@ export const ProjectFilterPage = ({ navigation }) => {
   const [search, onChangeSearch] = React.useState('');
 
   const [hours, onChangeHours] = React.useState('');
-  const [minStart, onChangeMinStart] = React.useState('');
-  const [maxStart, onChangeMaxStart] = React.useState('');
-  const [minEnd, onChangeMinEnd] = React.useState('');
-  const [maxEnd, onChangeMaxEnd] = React.useState('');
+  const [startDate, onChangeStart] = React.useState(null);
+  const [endDate, onChangeEnd] = React.useState(null);
+  // const [minEnd, onChangeMinEnd] = React.useState('');
+  // const [maxEnd, onChangeMaxEnd] = React.useState('');
 
-  const [interests, onChangeInterests] = React.useState(projectDetails.interests);
-  const [skills, onChangeSkills] = React.useState(projectDetails.skills);
+  const [interests, onChangeInterests] = React.useState([]);
+  const [skills, onChangeSkills] = React.useState([]);
+
+  const submit = () => {
+    let query = {
+      'search': search,
+      // 'skills': JSON.stringify(skills),
+      // 'interests': JSON.stringify(interests),
+      // 'weekHours': hours,
+      'startDate': startDate,
+      'endDate': endDate
+    }
+
+    console.log(query);
+    
+    getAllProjects( query )
+    .then((resp) => {
+      let body = resp.body;
+      console.log(body);
+      if (body.length != 0) {
+        projectDetails = body;
+        new Card().reRender;
+        navigation.navigate("Page1");
+      } else {
+        alert("No Projects Found with the given parameters");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
 
   return (
     <View style={style.container} >
+      <Text style={[style.label, {fontSize: 20}]}>Search and Filters</Text>
       <ScrollView>
         <KeyboardAvoidingView>
           <View style={{ padding: 5 }}></View>
+          <Text style={style.label}>Keyword Search</Text>
           <TextInput
             placeholder="Search"
             style={style.inputs}
@@ -513,32 +585,52 @@ export const ProjectFilterPage = ({ navigation }) => {
             value={hours}
             onChangeText={(text) => onChangeHours(text)}
           />
-          <Text style={style.label}>Start Date (DD/MM/YY)</Text>
-          <TextInput
-            placeholder="Min Start Date"
-            style={style.inputs}
-            value={minStart}
-            onChangeText={(text) => onChangeMinStart(text)}
-          />
-          <TextInput
-            placeholder="Max Start Date"
-            style={style.inputs}
-            value={maxStart}
-            onChangeText={(text) => onChangeMaxStart(text)}
-          />
-          <Text style={style.label}>End Date (DD/MM/YY)</Text>
-          <TextInput
-            placeholder="Min End Date"
-            style={style.inputs}
-            value={minEnd}
-            onChangeText={(text) => onChangeMinEnd(text)}
-          />
-          <TextInput
-            placeholder="Max End Date"
-            style={style.inputs}
-            value={maxEnd}
-            onChangeText={(text) => onChangeMaxEnd(text)}
-          />
+          <Text style={style.label}>Start Date</Text>
+          <DatePicker
+            placeholder="Select a date..."
+            date={startDate}
+            onDateChange={(date) => {onChangeStart(date)}}
+            mode='date'
+            showIcon ={false}
+            customStyles={{
+              dateInput: {
+                borderWidth: 0,
+                marginBottom: 15,
+                borderRadius: 15,
+                backgroundColor: '#B3A36975',
+                padding: 10,
+                paddingLeft: 20,
+                height: 40
+              }, 
+              placeholderText: {
+                color: 'black'
+              }
+              // ... You can check the source to find the other keys.
+            }}
+            />
+          <Text style={style.label}>End Date</Text>
+          <DatePicker
+            placeholder="Select a date..."
+            date={endDate}
+            onDateChange={(date) => {onChangeEnd(date)}}
+            mode='date'
+            showIcon ={false}
+            customStyles={{
+              dateInput: {
+                borderWidth: 0,
+                marginBottom: 15,
+                borderRadius: 15,
+                backgroundColor: '#B3A36975',
+                padding: 10,
+                paddingLeft: 20,
+                height: 40
+              },
+              placeholderText: {
+                color: 'black'
+              }
+              // ... You can check the source to find the other keys.
+            }}
+            />
           <Text style={style.label}>Skills Required</Text>
           <SectionedMultiSelect
             items={skillLibrary}
@@ -552,7 +644,7 @@ export const ProjectFilterPage = ({ navigation }) => {
             showChips={false}
             onSelectedItemsChange={onChangeSkills}
             selectedItems={skills}
-            styles={[styles, localStyle]}
+            styles={[global, localStyle]}
           />
           <Text style={style.label}>Project Interests</Text>
           <SectionedMultiSelect
@@ -567,7 +659,7 @@ export const ProjectFilterPage = ({ navigation }) => {
             showChips={false}
             onSelectedItemsChange={onChangeInterests}
             selectedItems={interests}
-            styles={[styles, localStyle]}
+            styles={[global, localStyle]}
           />
           <View style={{ padding: 40 }}></View>
         </KeyboardAvoidingView>
@@ -576,7 +668,7 @@ export const ProjectFilterPage = ({ navigation }) => {
         <TouchableOpacity style={{ right: 40, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 15, height: 40, width: 150 }} onPress={() => navigation.goBack()}>
           <Text style={{ color: 'white', textAlign: 'center', top: 10, fontSize: 15, fontWeight: 'bold' }}>Back</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ left: 40, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 15, height: 40, width: 150 }} onPress={() => console.log("The submit button has been pressed!")}>
+        <TouchableOpacity style={{ left: 40, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 15, height: 40, width: 150 }} onPress={() => submit()}>
           <Text style={{ color: 'white', textAlign: 'center', top: 10, fontSize: 15, fontWeight: 'bold' }}>Submit</Text>
         </TouchableOpacity>
       </View>
@@ -607,9 +699,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textAbstract: {
+    flex: 1,
     color: 'white',
-    padding: 20,
-    textAlign: 'center',
+    // padding: 20,
+    alignItems: 'center',
     height: CARD_HEIGHT * 0.3,
     top: CARD_HEIGHT * 0.55,
     backgroundColor: 'rgba(179, 163, 105, .7)',
@@ -618,7 +711,10 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontSize: 25,
-    fontWeight: '400'
+    fontWeight: '400',
+    color: 'white',
+    textAlign: 'center',
+    width: '85%'
   },
   textHours: {
     fontSize: 17,
@@ -628,7 +724,9 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '300',
     textAlign: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    color: 'white',
+    width: '85%'
   },
   textSpace: {
     fontSize: 2,
@@ -648,7 +746,8 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     fontWeight: 'bold',
     paddingTop: CARD_HEIGHT * .1,
-    paddingLeft: SCREEN_WIDTH * .28
+    paddingLeft: SCREEN_WIDTH * .28,
+    top: CARD_HEIGHT
   },
   buttonText: {
     color: 'white',

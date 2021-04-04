@@ -10,6 +10,6 @@ npm-debug.*
 web-build/
 yarn.lock
 config.js
-
+package-lock.json
 # macOS
 .DS_Store

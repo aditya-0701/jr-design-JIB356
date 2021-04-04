@@ -20,10 +20,14 @@ const Login = {};
 Login.loginUser = async ( params ) => {
     const { gtUsername, password, role } = params;
     // Need to implement for Alumni
-    if (role == "Students" /*|| role == "Alumni"*/) {
-        let query = `SELECT gtUsername, pwd
+    let query = `SELECT gtUsername, pwd
         FROM Students
         WHERE gtUsername = "${gtUsername}"`;
+    // if (role == "" || role == "Students" /*|| role == "Alumni"*/) {
+    //     let query = `SELECT username, pwd
+    //     FROM Alumni
+    //     WHERE id = "${gtUsername}"`;
+    // } 
         try {
             let user = (await connection.query(query))[0];
             if (!user) return failure('User not found');
@@ -33,7 +37,7 @@ Login.loginUser = async ( params ) => {
                 let uid = uuid();
                 //Expiry set to 1 hour from current time
                 let expiry = ((new Date()).getTime() + 3600000) / 1000; 
-                let insert = `insert INTO StudentSessions SET ?`
+                let insert = `REPLACE INTO StudentSessions SET ?`
                 let session = await connection.query(insert, {
                     'sessionId': uid,
                     'gtUsername': user.gtUsername,
@@ -51,13 +55,13 @@ Login.loginUser = async ( params ) => {
                         'Content-Type': 'appliction/json'
                     }
                 };
-            }
+            } else return failure()
         } catch (e) {
             return failure(e);
         }
-    } else { 
-        return failure();
-    }
+    // } else { 
+    //     return failure();
+    // }
 };
 
 Login.validateSession = async ( params ) => {
