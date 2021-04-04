@@ -1,6 +1,6 @@
 // import * as React from 'react';
 import React from 'react';
-import { ScrollView, Switch, TextInput, KeyboardAvoidingView, Image, TouchableOpacity, ImageBackground, View, Text, StyleSheet, Dimensions, Animated, PanResponder, Touchable, Button } from 'react-native';
+import { SafeAreaView, ScrollView, Switch, TextInput, KeyboardAvoidingView, Image, TouchableOpacity, ImageBackground, View, Text, StyleSheet, Dimensions, Animated, PanResponder, Touchable, Button } from 'react-native';
 // import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import shouldUseActivityState, { screensEnabled } from 'react-native-screens'
@@ -10,6 +10,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { fromLeft } from 'react-navigation-transitions';
 import { render } from 'react-dom';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 class NiceButton extends React.Component {
   constructor(props) { super(props); }
@@ -26,54 +28,139 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 const CARD_HEIGHT = SCREEN_HEIGHT * 0.86
 
+// const userDetails = {
+//   email: "",
+//   gtUsername: "",
+//   firstName: "",
+//   lastName: "",
+//   middleName: "",
+//   pwd: "",
+//   degree: [],
+//   major: [],
+//   interests: [],
+//   skills: [],
+//   start_date: [],
+//   end_date: [],
+//   experiences: [{
+//     'companyName': '',
+//     'position': '',
+//     'expDescription': '',
+//     'start_date': new Date(),
+//     'end_date': new Date()
+//   }],
+//   links: []
+// };
 
 const userDetails = [
   {
     id: "1",
-    name: "Aditya Sudarshan",
-    shortDescription: "3rd yr, computer science",
-    bio: "I am a 3rd year computer science major ...",
+    email: "asudarshan30@gatech.edu",
+    gtUsername: "asudarshan30",
+    firstName: "Aditya",
+    lastName: "Sudarshan",
+    middleName: "",
+    bio: "I am a 3rd yr cs major",
+    degree: "B.S.",
+    major: "Computer Science",
     skills: "Programming",
-    hoursPerWeek: "10",
-    externalLink: "github.com/aditya-sudarshan",
+    start_date: "May 10, 2021",
+    end_date: "August 1, 2021",
+    experiences: [{
+      'companyName': 'Microsoft',
+      'position': 'Software Engineer',
+      'expDescription': 'sdklgna;klgnd',
+      'start_date': new Date(),
+      'end_date': new Date()
+    }],
     uri: require('../../../assets/defaultskin.png')
   },
   {
     id: "2",
-    name: "Andrew Harris",
-    shortDescription: "2nd yr, computer science",
-    bio: "I am a 2nd yr computer science major",
-    skills: "html, css",
-    hoursPerWeek: "5",
-    externalLink: "github.com/andrew-harris",
+    email: "aharris322@gatech.edu",
+    gtUsername: "aharris322",
+    firstName: "Andrew",
+    lastName: "Harris",
+    middleName: "",
+    bio: "I am a 2nd yr cs major",
+    degree: "B.S.",
+    major: "Computer Science",
+    skills: "Programming",
+    start_date: "May 5, 2021",
+    end_date: "August 10, 2021",
+    experiences: [{
+      'companyName': 'Google',
+      'position': 'Software Engineer',
+      'expDescription': 'sdklgna;klgnd',
+      'start_date': new Date(),
+      'end_date': new Date()
+    }],
     uri: require('../../../assets/defaultskin.png')
   },
   {
     id: "3",
-    name: "Hannah Kim",
-    shortDescription: "3rd yr cs",
+    email: "hkim946@gatech.edu",
+    gtUsername: "hkim946",
+    firstName: "Hannah",
+    lastName: "Kim",
+    middleName: "",
     bio: "I am a 3rd yr cs major",
-    hoursPerWeek: "8",
-    externalLink: "github.com/hannah-kim",
+    degree: "B.S.",
+    major: "Computer Science",
+    skills: "Programming",
+    start_date: "June 7, 2021",
+    end_date: "August 13, 2021",
+    experiences: [{
+      'companyName': 'Apple',
+      'position': 'Software Engineer',
+      'expDescription': 'sdklgna;klgnd',
+      'start_date': new Date(),
+      'end_date': new Date()
+    }],
     uri: require('../../../assets/defaultskin.png')
   },
   {
     id: "4",
-    name: "Saket Shirsath",
-    shortDescription: "3rd yr cs",
+    email: "shirsath.saket@gatech.edu",
+    gtUsername: "shirsath.saket",
+    firstName: "Saket",
+    lastName: "Shirsath",
+    middleName: "",
     bio: "I am a 3rd yr cs major",
-    hoursPerWeek: "3",
-    externalLink: "github.com/saket-shirsath",
+    degree: "B.S.",
+    major: "Computer Science",
+    skills: "Programming",
+    start_date: "May 20, 2021",
+    end_date: "August 10, 2021",
+    experiences: [{
+      'companyName': 'Facebook',
+      'position': 'Software Engineer',
+      'expDescription': 'sdklgna;klgnd',
+      'start_date': new Date(),
+      'end_date': new Date()
+    }],
     uri: require('../../../assets/defaultskin.png')
   },
   {
     id: "5",
-    name: "Sam Sanders",
-    shortDescription: "3rd yr cs",
+    email: "unicycler@gatech.edu",
+    gtUsername: "unicycler",
+    firstName: "Sam",
+    lastName: "Sanders",
+    middleName: "",
     bio: "I am a 3rd yr cs major",
-    hoursPerWeek: "7",
-    externalLink: "github.com/sam-sanders",
-    uri: require('../../../assets/5.jpg')
+    degree: "B.S.",
+    major: "Computer Science",
+    skills: "Programming",
+    start_date: "June 10, 2021",
+    end_date: "August 20, 2021",
+    experiences: [{
+      'companyName': 'Instagram',
+      'position': 'Software Engineer',
+      'expDescription': 'sdklgna;klgnd',
+      'start_date': new Date(),
+      'end_date': new Date()
+    }],
+    uri: require('../../../assets/defaultskin.png')
   }
 ]
 
@@ -167,17 +254,15 @@ export class Card extends React.Component {
     })
   }
 
-
-
   renderUsers = () => {
     const { navigate } = this.props.navigation;
 
-    return projectDetails.map((item, i) => {
+    return userDetails.map((item, i) => {
 
       if (i < this.state.currentIndex) {
         return null
       } else if (i == this.state.currentIndex) {
-        x = projectDetails.indexOf(item);
+        x = userDetails.indexOf(item);
 
         return (
           <Animated.View
@@ -198,12 +283,12 @@ export class Card extends React.Component {
               imageStyle={{ borderRadius: 17 }}
               source={item.uri} >
               <Text style={styles.textAbstract}>
-                <Text style={styles.textTitle}>{item.name}{'\n'}</Text>
-                <Text style={styles.textMain}>{'\n'}{item.shortDescription}{'\n'}</Text>
-                <NiceButton
-                  title="View Project Details"
-                  onPress={() => this.props.navigation.navigate("Page2")}
-                />
+                <Text style={styles.textTitle}>{item.firstName} {item.middleName} {item.lastName}{'\n'}</Text>
+                <Text style={styles.textMain}>{'\n'}{item.degree}</Text>
+                <Text style={styles.textMain}>{'\n'}{item.major}{'\n'}</Text>
+                <TouchableOpacity style={{ alignCenter: 'center' }} onPress={() => this.props.navigation.navigate("Page2")}>
+                  <Text style={{ left: 135, top: 40, color: 'white', fontSize: 15, fontWeight: 'bold' }}>View User Details</Text>
+                </TouchableOpacity>
               </Text>
             </ImageBackground>
           </Animated.View>
@@ -228,14 +313,12 @@ export class Card extends React.Component {
               imageStyle={{ borderRadius: 17 }}
               source={item.uri}>
               <Text style={styles.textAbstract}>
-                <Text style={styles.textTitle}>{item.name}{'\n'}</Text>
-                <Text style={styles.textMain}>{'\n'}{item.shortDescription}{'\n'}</Text>
-                <NiceButton
-                  title="View Project Details"
-                  onPress={() => {
-                    this.props.navigation.navigate("Page2")
-                  }}
-                />
+                <Text style={styles.textTitle}>{item.firstName} {item.middleName} {item.lastName}{'\n'}</Text>
+                <Text style={styles.textMain}>{'\n'}{item.degree}</Text>
+                <Text style={styles.textMain}>{'\n'}{item.major}{'\n'}</Text>
+                <TouchableOpacity style={{ alignCenter: 'center' }} onPress={() => this.props.navigation.navigate("Page2")}>
+                  <Text style={{ left: 135, top: 40, color: 'white', fontSize: 15, fontWeight: 'bold' }}>View User Details</Text>
+                </TouchableOpacity>
               </Text>
             </ImageBackground>
           </Animated.View>
@@ -243,9 +326,6 @@ export class Card extends React.Component {
       }
     }).reverse()
   }
-
-
-
 
   render() {
     return (
@@ -292,80 +372,12 @@ export class Card extends React.Component {
   }
 }
 
-export const NavigateLeft = ({ navigation }) => {
-  const title = React.useState("Navigate Left");
-  x--;
-  return (
-    <Animated.View
-      {...this.PanResponder.panHandlers}
-      key={projectDetails[x].id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
-      <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
-        <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
-      </Animated.View>
-
-      <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
-        <Text style={{ borderWidth: 1, borderColor: '#a40000', color: '#a40000', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
-      </Animated.View>
-
-
-      <ImageBackground
-        style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
-        imageStyle={{ borderRadius: 17 }}
-        source={projectDetails[x].uri} >
-        <Text style={styles.textAbstract}>
-          <Text style={styles.textTitle}>{projectDetails[x].name}{'\n'}</Text>
-          <Text style={styles.textMain}>{'\n'}{projectDetails[x].shortDescription}{'\n'}</Text>
-          <NiceButton
-            title="View Project Details"
-            onPress={() => this.props.navigation.navigate("Page2")}
-          />
-        </Text>
-      </ImageBackground>
-    </Animated.View>
-  );
-};
-
-export const NavigateRight = ({ navigation }) => {
-  const title = React.useState("Navigate Right");
-  x++;
-  return (
-    <Animated.View
-      {...this.PanResponder.panHandlers}
-      key={projectDetails[x].id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 100, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
-
-      <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
-        <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
-      </Animated.View>
-
-      <Animated.View style={{ opacity: this.dislikeOpacity, transform: [{ rotate: '30deg' }], position: 'absolute', top: 50, right: 40, zIndex: 1000 }}>
-        <Text style={{ borderWidth: 1, borderColor: '#a40000', color: '#a40000', fontSize: 32, fontWeight: '800', padding: 10 }}>NOPE</Text>
-      </Animated.View>
-
-
-      <ImageBackground
-        style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
-        imageStyle={{ borderRadius: 17 }}
-        source={projectDetails[x].uri} >
-        <Text style={styles.textAbstract}>
-          <Text style={styles.textTitle}>{projectDetails[x].name}{'\n'}</Text>
-          <Text style={styles.textMain}>{'\n'}{projectDetails[x].shortDescription}{'\n'}</Text>
-          <NiceButton
-            title="View Project Details"
-            onPress={() => this.props.navigation.navigate("Page2")}
-          />
-        </Text>
-      </ImageBackground>
-    </Animated.View>
-  );
-};
-
-
-class SavedProjects extends React.Component {
+class SavedUsers extends React.Component {
   render() {
     return (
       <View style={styles.favoritedPage}>
-        <Text style={{ color: 'rgba(179, 163, 105, 1)', bottom: SCREEN_HEIGHT * .34, fontSize: 27, fontWeight: '600' }}>Favorited Projects</Text>
+        <Text style={{ color: 'rgba(179, 163, 105, 1)', bottom: SCREEN_HEIGHT * .34, fontSize: 27, fontWeight: '600' }}>Favorited Users</Text>
         <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', }}>
           <ImageBackground style={styles.favoritedImages} >
             <Text style={styles.favoritedTitle}> hello </Text>
@@ -386,94 +398,220 @@ class SavedProjects extends React.Component {
 class DetailsScreen extends React.Component {
   render() {
     return (
-      // <View style={{ flex: 1, justifyContent: 'center'}}>
-      <View style={styles.detailsPage}>
-        <Text style={{ bottom: 200, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>Project Details</Text>
-        <Text style={{ bottom: 190, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}>  {projectDetails[x].name}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .3, fontSize: 18, fontWeight: '500' }}>Biography: {'\n'}{projectDetails[x].bio}{'\n'}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .28, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{projectDetails[x].skills}{'\n'}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .25, fontSize: 18, fontWeight: '500' }}>Hours per Week: {'\n'}{projectDetails[x].hoursPerWeek}{'\n'}</Text>
-        <Text style={{ bottom: 150, textAlign: 'left', right: SCREEN_WIDTH * .175, fontSize: 18, fontWeight: '500' }}>Link: {'\n'}{projectDetails[x].externalLink}{'\n'}</Text>
-        <TouchableOpacity
-          style={{ left: SCREEN_WIDTH * .005, top: SCREEN_HEIGHT * .1, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
-          onPress={() => this.props.navigation.goBack()}>
-          <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
-        </TouchableOpacity>
-      </View>
+      <SafeAreaView style={styles.container}>
+        <ScrollView style={styles.detailsPage}>
+          <Text style={{ top: 20, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>User Details</Text>
+          <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}> {userDetails[x].firstName} {userDetails[x].middleName} {userDetails[x].lastName}</Text>
+          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Email: {'\n'}{userDetails[x].email}{'\n'}</Text>
+          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>GT Username: {'\n'}{userDetails[x].gtUsername}{'\n'}</Text>
+          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Bio: {'\n'}{userDetails[x].bio}{'\n'}</Text>
+          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Major: {'\n'}{userDetails[x].major}{'\n'}</Text>
+          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Degree: {'\n'}{userDetails[x].degree}{'\n'}</Text>
+          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{userDetails[x].skills}{'\n'}</Text>
+          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Start Date: {'\n'}{userDetails[x].start_date}{'\n'}</Text>
+          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>End Date: {'\n'}{userDetails[x].end_date}{'\n'}</Text>
+          <TouchableOpacity
+            style={{ left: SCREEN_WIDTH * .38, top: SCREEN_HEIGHT * .1, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
+            onPress={() => this.props.navigation.goBack()}>
+            <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 }
 
+const degreeLibrary = [{
+  name: "Degree",
+  id: 0,
+  children: [{
+    name: "Bachelors",
+    id: 1
+  },
+  {
+    name: "Masters",
+    id: 2
+  }
+  ]
+}];
+const majorLibrary = [{
+  name: "Major",
+  id: 0,
+  children: [{
+    id: 1,
+    name: "Computer Science"
+  },
+  {
+    id: 2,
+    name: "Computational Media"
+  },
+  {
+    id: 3,
+    name: "Computer Science (Minor)"
+  },
+  {
+    id: 4,
+    name: "OMCS"
+  },
+  {
+    id: 5,
+    name: "Analytics"
+  },
+  {
+    id: 6,
+    name: "Human-Computer Interaction"
+  },
+  {
+    id: 7,
+    name: "Information Security"
+  },
+  {
+    id: 8,
+    name: "Cybersecurity"
+  },
+  {
+    id: 9,
+    name: "Computational Science & Engineering"
+  },
+  {
+    id: 10,
+    name: "Bioengineering"
+  }]
+}];
+const skillLibrary = [{
+  name: "Skills",
+  id: 0,
+  children: [
+    {
+      id: 1,
+      name: "Java"
+    },
+    {
+      id: 2,
+      name: "Python"
+    },
+    {
+      id: 3,
+      name: "Git"
+    },
+    {
+      id: 4,
+      name: "Angular"
+    },
+    {
+      id: 5,
+      name: "C"
+    },
+    {
+      id: 6,
+      name: "MySQL"
+    },
+    {
+      id: 7,
+      name: "NoSQL"
+    },
+    {
+      id: 8,
+      name: "PHP"
+    },
+    {
+      id: 9,
+      name: "HTML"
+    },
+    {
+      id: 10,
+      name: "CSS"
+    },
+    {
+      id: 11,
+      name: "Swift"
+    },
+    {
+      id: 12,
+      name: "Objective-C"
+    },
+    {
+      id: 13,
+      name: "Ruby"
+    },
+    {
+      id: 14,
+      name: "CAD Design"
+    }
+  ]
+}];
+const interestLibrary = [{
+  name: 'Interests',
+  id: 0,
+  children: [
+    {
+      id: 1,
+      name: "Machine Learning"
+    },
+    {
+      id: 2,
+      name: "Artificial Intelligence"
+    },
+    {
+      id: 3,
+      name: "Blockchain"
+    },
+    {
+      id: 4,
+      name: "Computer Vision"
+    },
+    {
+      id: 5,
+      name: "Web Development"
+    },
+    {
+      id: 6,
+      name: "Mobile Development"
+    },
+    {
+      id: 7,
+      name: "Design"
+    },
+    {
+      id: 8,
+      name: "Hardware"
+    },
+    {
+      id: 9,
+      name: "Low Level Programming"
+    },
+    {
+      id: 10,
+      name: "Software"
+    },
+    {
+      id: 11,
+      name: "Functional Programming"
+    },
+    {
+      id: 12,
+      name: "Parallel Computing"
+    },
+    {
+      id: 13,
+      name: "Object Oriented Programming"
+    }
+  ]
+}];
+
 export const ProfileFilterPage = ({ navigation }) => {
   const [search, onChangeSearch] = React.useState('');
 
-  const [degree, onChangeDegree] = React.useState('');
-
-  const [major, onChangeMajor] = React.useState('');
-
-  const [skill1, onChangeSkill1] = React.useState(false);
-  const [skill2, onChangeSkill2] = React.useState(false);
-  const [skill3, onChangeSkill3] = React.useState(false);
-  const [skill4, onChangeSkill4] = React.useState(false);
-  const [skill5, onChangeSkill5] = React.useState(false);
-  const [skill6, onChangeSkill6] = React.useState(false);
-  const [skill7, onChangeSkill7] = React.useState(false);
-  const [skill8, onChangeSkill8] = React.useState(false);
-  const [skill9, onChangeSkill9] = React.useState(false);
-  const [skill10, onChangeSkill10] = React.useState(false);
-  const [skill11, onChangeSkill11] = React.useState(false);
-  const [skill12, onChangeSkill12] = React.useState(false);
-  const [skill13, onChangeSkill13] = React.useState(false);
-  const [skill14, onChangeSkill14] = React.useState(false);
-
-  const toggleSkill1 = () => onChangeSkill1(previousState => !previousState);
-  const toggleSkill2 = () => onChangeSkill2(previousState => !previousState);
-  const toggleSkill3 = () => onChangeSkill3(previousState => !previousState);
-  const toggleSkill4 = () => onChangeSkill4(previousState => !previousState);
-  const toggleSkill5 = () => onChangeSkill5(previousState => !previousState);
-  const toggleSkill6 = () => onChangeSkill6(previousState => !previousState);
-  const toggleSkill7 = () => onChangeSkill7(previousState => !previousState);
-  const toggleSkill8 = () => onChangeSkill8(previousState => !previousState);
-  const toggleSkill9 = () => onChangeSkill9(previousState => !previousState);
-  const toggleSkill10 = () => onChangeSkill10(previousState => !previousState);
-  const toggleSkill11 = () => onChangeSkill11(previousState => !previousState);
-  const toggleSkill12 = () => onChangeSkill12(previousState => !previousState);
-  const toggleSkill13 = () => onChangeSkill13(previousState => !previousState);
-  const toggleSkill14 = () => onChangeSkill14(previousState => !previousState);
+  const [degree, onChangeDegree] = React.useState(userDetails.degree);
+  const [major, onChangeMajor] = React.useState(userDetails.major);
+  const [interests, onChangeInterests] = React.useState(userDetails.interests);
+  const [skills, onChangeSkills] = React.useState(userDetails.skills);
 
   const [hours, onChangeHours] = React.useState('');
   const [minStart, onChangeMinStart] = React.useState('');
   const [maxStart, onChangeMaxStart] = React.useState('');
   const [minEnd, onChangeMinEnd] = React.useState('');
   const [maxEnd, onChangeMaxEnd] = React.useState('');
-
-  const [interest1, onChangeInterest1] = React.useState(false);
-  const [interest2, onChangeInterest2] = React.useState(false);
-  const [interest3, onChangeInterest3] = React.useState(false);
-  const [interest4, onChangeInterest4] = React.useState(false);
-  const [interest5, onChangeInterest5] = React.useState(false);
-  const [interest6, onChangeInterest6] = React.useState(false);
-  const [interest7, onChangeInterest7] = React.useState(false);
-  const [interest8, onChangeInterest8] = React.useState(false);
-  const [interest9, onChangeInterest9] = React.useState(false);
-  const [interest10, onChangeInterest10] = React.useState(false);
-  const [interest11, onChangeInterest11] = React.useState(false);
-  const [interest12, onChangeInterest12] = React.useState(false);
-  const [interest13, onChangeInterest13] = React.useState(false);
-
-  const toggleInterest1 = () => onChangeInterest1(previousState => !previousState);
-  const toggleInterest2 = () => onChangeInterest2(previousState => !previousState);
-  const toggleInterest3 = () => onChangeInterest3(previousState => !previousState);
-  const toggleInterest4 = () => onChangeInterest4(previousState => !previousState);
-  const toggleInterest5 = () => onChangeInterest5(previousState => !previousState);
-  const toggleInterest6 = () => onChangeInterest6(previousState => !previousState);
-  const toggleInterest7 = () => onChangeInterest7(previousState => !previousState);
-  const toggleInterest8 = () => onChangeInterest8(previousState => !previousState);
-  const toggleInterest9 = () => onChangeInterest9(previousState => !previousState);
-  const toggleInterest10 = () => onChangeInterest10(previousState => !previousState);
-  const toggleInterest11 = () => onChangeInterest11(previousState => !previousState);
-  const toggleInterest12 = () => onChangeInterest12(previousState => !previousState);
-  const toggleInterest13 = () => onChangeInterest13(previousState => !previousState);
 
   return (
     <View style={style.container} >
@@ -487,22 +625,19 @@ export const ProfileFilterPage = ({ navigation }) => {
             onChangeText={(text) => onChangeSearch(text)}
           />
           <Text style={style.label}>Major</Text>
-          <DropDownPicker
-            items={[
-              { label: "Select Major", value: 'default' },
-              { label: "Computer Science", value: 'cs' },
-              { label: "Computational Media", value: 'cm' },
-              { label: "Computer Science (Minor)", value: 'minor' },
-              { label: "OMCS", value: 'omcs' },
-              { label: "Analytics", value: 'analytics' },
-              { label: "Human-Computer Interaction", value: 'hci' },
-              { label: "Information Security", value: 'is' },
-              { label: "Cybersecurity", value: 'cybersecurity' },
-              { label: "Computational Science & Engineering", value: 'cse' },
-              { label: "Bioengineering", value: 'bio' }
-            ]}
-            defaultValue={'default'}
-            onChangeItem={onChangeMajor}
+          <SectionedMultiSelect
+            items={majorLibrary}
+            uniqueKey="id"
+            subKey="children"
+            selectText="Select your major..."
+            IconRenderer={Icon}
+            showDropDowns={false}
+            readOnlyHeadings={true}
+            hideSearch={true}
+            showChips={false}
+            onSelectedItemsChange={onChangeMajor}
+            selectedItems={major}
+            styles={[styles, localStyle]}
           />
           <Text style={style.label}>Hours/Week Requested</Text>
           <TextInput
@@ -511,17 +646,41 @@ export const ProfileFilterPage = ({ navigation }) => {
             value={hours}
             onChangeText={(text) => onChangeHours(text)}
           />
-          <Text style={style.label}>Degree</Text>
-          <DropDownPicker
-            items={[
-              { label: "Select Degree", value: 'default' },
-              { label: "Bachelor's", value: 'Bachelors' },
-              { label: "Master's", value: 'Masters' }
-            ]}
-            defaultValue={'default'}
-            onChangeItem={onChangeDegree}
+          <Text style={styles.label}>Degree</Text>
+          <SectionedMultiSelect
+            items={degreeLibrary}
+            uniqueKey="id"
+            subKey="children"
+            selectText="Select your degree..."
+            IconRenderer={Icon}
+            showDropDowns={false}
+            readOnlyHeadings={true}
+            hideSearch={true}
+            showChips={false}
+            onSelectedItemsChange={onChangeDegree}
+            selectedItems={degree}
+            styles={[styles, localStyle]}
           />
-          <Text style={style.label}>Start Date (DD/MM/YY)</Text>
+          <Text style={style.label}>Start Date MM/DD/YYYY</Text>
+          {/*<DatePicker
+              date={"2020-01-01"}
+              onDateChange={(date) => {userDetails.start_date.setState(date)}}
+              mode='date'
+              showIcon ={false}
+              style={{marginHorizontal: 20, width: '45%'}}
+              customStyles={{
+                dateInput: {
+                  borderWidth: 0,
+                  marginBottom: 15,
+                  borderRadius: 15,
+                  backgroundColor: '#B3A36975',
+                  padding: 10,
+                  paddingLeft: 20,
+                  height: 40
+                }
+                // ... You can check the source to find the other keys.
+              }}
+            />*/}
           <TextInput
             placeholder="Min Start Date"
             style={style.inputs}
@@ -534,7 +693,26 @@ export const ProfileFilterPage = ({ navigation }) => {
             value={maxStart}
             onChangeText={(text) => onChangeMaxStart(text)}
           />
-          <Text style={style.label}>End Date (DD/MM/YY)</Text>
+          <Text style={style.label}>End Date MM/DD/YYYY</Text>
+          {/*<DatePicker
+              date={"2020-01-01"}
+              onDateChange={(date) => {userDetails.end_date.setState(date)}}
+              mode='date'
+              showIcon={false}
+              style={{marginHorizontal: 20, width: '45%'}}
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateInput: {
+                  borderWidth: 0,
+                  marginBottom: 15,
+                  borderRadius: 15,
+                  backgroundColor: '#B3A36975',
+                  padding: 10,
+                  paddingLeft: 20,
+                  height: 40
+                }
+              }}
+            />*/}
           <TextInput
             placeholder="Min End Date"
             style={style.inputs}
@@ -548,229 +726,46 @@ export const ProfileFilterPage = ({ navigation }) => {
             onChangeText={(text) => onChangeMaxEnd(text)}
           />
           <Text style={style.label}>Skills Required</Text>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill1}
-              value={skill1}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Java</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill2}
-              value={skill2}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Python</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill3}
-              value={skill3}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Git</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill4}
-              value={skill4}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Angular</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill5}
-              value={skill5}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>C</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill6}
-              value={skill6}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>MySQL</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill7}
-              value={skill7}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>NoSQL</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill8}
-              value={skill8}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>PHP</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill9}
-              value={skill9}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>HTML</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill10}
-              value={skill10}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>CSS</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill11}
-              value={skill11}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Swift</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill12}
-              value={skill12}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Objective-C</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill13}
-              value={skill13}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Ruby</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleSkill14}
-              value={skill14}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>CAD Design</Text>
-          </View>
+          <Text style={styles.label}>Skills</Text>
+          <SectionedMultiSelect
+            items={skillLibrary}
+            uniqueKey="id"
+            subKey="children"
+            selectText="Select your skills..."
+            IconRenderer={Icon}
+            showDropDowns={false}
+            readOnlyHeadings={true}
+            hideSearch={true}
+            showChips={false}
+            onSelectedItemsChange={onChangeSkills}
+            selectedItems={skills}
+            styles={[styles, localStyle]}
+          />
           <Text style={style.label}>Project Interests</Text>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest1}
-              value={interest1}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Machine Learning</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest2}
-              value={interest2}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Artificial Intelligence</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest3}
-              value={interest3}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Blockchain</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest4}
-              value={interest4}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Computer Vision</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest5}
-              value={interest5}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Web Development</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest6}
-              value={interest6}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Mobile Development</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest7}
-              value={interest7}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Design</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest8}
-              value={interest8}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Hardware</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest9}
-              value={interest9}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Low Level Programming</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest10}
-              value={interest10}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Software</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest11}
-              value={interest11}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Functional Programming</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest12}
-              value={interest12}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Parallel Computing</Text>
-          </View>
-          <View style={{ flexDirection: "row", alignItems: 'center' }}>
-            <Switch
-              onValueChange={toggleInterest13}
-              value={interest13}
-            />
-            <View style={{ padding: 5 }}></View>
-            <Text style={style.label2}>Object-Oriented Programming</Text>
-          </View>
+          <SectionedMultiSelect
+            items={interestLibrary}
+            uniqueKey="id"
+            subKey="children"
+            selectText="Select some interests..."
+            IconRenderer={Icon}
+            showDropDowns={false}
+            readOnlyHeadings={true}
+            hideSearch={true}
+            showChips={false}
+            onSelectedItemsChange={onChangeInterests}
+            selectedItems={interests}
+            styles={[styles, localStyle]}
+          />
           <View style={{ padding: 40 }}></View>
         </KeyboardAvoidingView>
       </ScrollView>
       <View style={style.buttonContainer}>
-        <NiceButton title="Back" onPress={() => navigation.goBack()} />
-        <NiceButton title="Submit" onPress={() => console.log("The submit button has been pressed!")} />
+        <TouchableOpacity style={{ right: 70, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 70 }} onPress={() => navigation.goBack()}>
+          <Text style={{ color: 'white', textAlign: 'center', top: 5, fontSize: 15, fontWeight: 'bold' }}>Back</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ left: 70, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 70 }} onPress={() => console.log("The submit button has been pressed!")}>
+          <Text style={{ color: 'white', textAlign: 'center', top: 5, fontSize: 15, fontWeight: 'bold' }}>Submit</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -892,5 +887,114 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(179, 163, 105, 1)',
     borderWidth: 3,
     borderRadius: 15
+  },
+  detailsPage: {
+    flex: 1,
+    flexDirection: 'column',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    height: SCREEN_HEIGHT * .87,
+    width: SCREEN_WIDTH * .95,
+    position: 'absolute',
+    top: CARD_HEIGHT * .1,
+    left: SCREEN_WIDTH * .027,
+    borderColor: 'rgba(179, 163, 105, 1)',
+    borderWidth: 3,
+    borderRadius: 15
   }
 })
+const localStyle = StyleSheet.create({//File-specific
+  navButtonContainer: {
+    position: "absolute",
+    bottom: 0,
+    alignSelf: 'center',
+    //width: "100%",
+    backgroundColor: '#F5F5F5',
+    flexDirection: "row",
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    margin: 5,
+    marginTop: 5,
+    borderRadius: 15,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderWidth: 2,
+    borderBottomWidth: 0,
+    borderColor: "black"
+  },
+  container: {
+    backgroundColor: '#F5F5F5',
+    color: '#F5F5F5',
+    //opacity: 100,
+    padding: 15,
+    marginTop: 30,
+    flex: 1
+  },
+  selectToggle: {
+    marginBottom: 15,
+    borderRadius: 15,
+    backgroundColor: '#B3A36975',
+    padding: 10,
+    paddingLeft: 20,
+    height: 40
+  },
+});
+
+const style = StyleSheet.create({
+  buttonContainer: {
+    position: "absolute",
+    bottom: 0,
+    alignSelf: 'center',
+    //width: "100%",
+    backgroundColor: '#F5F5F5',
+    flexDirection: "row",
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    margin: 50,
+    marginTop: 5,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  container: {
+    backgroundColor: '#F5F5F5',
+    color: '#F5F5F5',
+    opacity: 100,
+    alignItems: 'stretch',
+    padding: 15,
+    marginTop: 30,
+    justifyContent: 'center',
+    flex: 1
+  },
+  label: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#B3A369',
+    paddingVertical: 10
+  },
+  label2: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#B3A369',
+    paddingVertical: 10
+  },
+  inputs: {
+    marginBottom: 15,
+    borderRadius: 15,
+    backgroundColor: '#B3A36975',
+    padding: 10,
+    paddingLeft: 20,
+    height: 40
+  },
+  button: {
+    alignItems: 'center',
+    borderRadius: 15,
+    backgroundColor: '#B3A369',
+    height: 40,
+    width: SCREEN_WIDTH / 2.5,
+    justifyContent: "center",
+    margin: 20,
+    marginVertical: 10,
+    paddingHorizontal: 10,
+    textAlign: 'center'
+  },
+});
