@@ -262,7 +262,7 @@ export class Card extends React.Component {
           <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', top: SCREEN_HEIGHT * .71 }}>
             <TouchableOpacity style={styles.leftButton} onPress={() => {
               this.setState({ currentIndex: (this.state.currentIndex - 1) >= 0 ? 
-                (this.state.currentIndex - 1) : projectDetails.length}, () => {
+                (this.state.currentIndex - 1) : projectDetails.length - 1}, () => {
                 this.position.setValue({ x: 0, y: 0 })
               })
             }}>
