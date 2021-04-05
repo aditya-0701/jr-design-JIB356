@@ -78,7 +78,11 @@ const LoginPage = (props) => {
                 });
             }  else {
                 onChangeError('Incorrect email or password');
-            }});
+            }})
+            .catch((err) => {
+                console.log(err);
+                onChangeError('Incorrect email or password');
+            })
     }
 
     const setupProfile = () => {

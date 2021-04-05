@@ -2,9 +2,12 @@ import * as React from 'react';
 import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import DatePicker from 'react-native-datepicker'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import styles from '../../globalStyles';
+// import SectionedMultiSelect from 'react-native-sectioned-multi-select'
+// import Icon from 'react-native-vector-icons/MaterialIcons'
 
 class NiceButton extends React.Component {
   constructor(props) {super(props);}
@@ -20,44 +23,203 @@ class NiceButton extends React.Component {
 const projectDetails = {
   name: "",
   description: "",
+  degree: "",
+  major: "",
   skills: "",
+  interests: "",
   hoursPerWeek: "",
   externalLink: ""
 };
 
-const skillLibrary = [
+const degreeLibrary = [{
+  name: "Degree",
+  id: 0,
+  children: [
+    {
+      name: "Bachelors",
+      id: 1
+    },
+    {
+      name: "Masters",
+      id: 2
+    }
+  ]
+}];
+const majorLibrary = [{
+  name: "Major",
+  id: 0,
+  children: [{
+    id: 1,
+    name: "Computer Science"
+  },
   {
-    name: "Skills",
-    id: 0,
-    children: [
-      {
-        name: "SkillA",
-        id: 10
-      }, {
-        name: "SkillB",
-        id: 11
-      }, {
-        name: "SkillC",
-        id: 12
-      }, {
-        name: "SkillD",
-        id: 13
-      }, {
-        name: "SkillE",
-        id: 14
-      }, {
-        name: "SkillF",
-        id: 15
-      }
-    ]
-  }
-];
+    id: 2,
+    name: "Computational Media"
+  },
+  {
+    id: 3,
+    name: "Computer Science (Minor)"
+  },
+  {
+    id: 4,
+    name: "OMCS"
+  },
+  {
+    id: 5,
+    name: "Analytics"
+  },
+  {
+    id: 6,
+    name: "Human-Computer Interaction"
+  },
+  {
+    id: 7,
+    name: "Information Security"
+  },
+  {
+    id: 8,
+    name: "Cybersecurity"
+  },
+  {
+    id: 9,
+    name: "Computational Science & Engineering"
+  },
+  {
+    id: 10,
+    name: "Bioengineering"
+  }]
+}];
+const skillLibrary = [{
+  name: "Skills",
+  id: 0,
+  children: [
+    {
+      id: 1,
+      name: "Java"
+    },
+    {
+      id: 2,
+      name: "Python"
+    },
+    {
+      id: 3,
+      name: "Git"
+    },
+    {
+      id: 4,
+      name: "Angular"
+    },
+    {
+      id: 5,
+      name: "C"
+    },
+    {
+      id: 6,
+      name: "MySQL"
+    },
+    {
+      id: 7,
+      name: "NoSQL"
+    },
+    {
+      id: 8,
+      name: "PHP"
+    },
+    {
+      id: 9,
+      name: "HTML"
+    },
+    {
+      id: 10,
+      name: "CSS"
+    },
+    {
+      id: 11,
+      name: "Swift"
+    },
+    {
+      id: 12,
+      name: "Objective-C"
+    },
+    {
+      id: 13,
+      name: "Ruby"
+    },
+    {
+      id: 14,
+      name: "CAD Design"
+    }
+  ]
+}];
+const interestLibrary = [{
+  name: 'Interests',
+  id: 0,
+  children: [
+    {
+      id: 1,
+      name: "Machine Learning"
+    },
+    {
+      id: 2,
+      name: "Artificial Intelligence"
+    },
+    {
+      id: 3,
+      name: "Blockchain"
+    },
+    {
+      id: 4,
+      name: "Computer Vision"
+    },
+    {
+      id: 5,
+      name: "Web Development"
+    },
+    {
+      id: 6,
+      name: "Mobile Development"
+    },
+    {
+      id: 7,
+      name: "Design"
+    },
+    {
+      id: 8,
+      name: "Hardware"
+    },
+    {
+      id: 9,
+      name: "Low Level Programming"
+    },
+    {
+      id: 10,
+      name: "Software"
+    },
+    {
+      id: 11,
+      name: "Functional Programming"
+    },
+    {
+      id: 12,
+      name: "Parallel Computing"
+    },
+    {
+      id: 13,
+      name: "Object Oriented Programming"
+    }
+  ]
+}];
+
 
 export const BasicDetails = ({ navigation }) => {
 
   const [name, onChangeName] = React.useState('');
   const [description, onChangeDescription] = React.useState('');
+  const [degree, onChangeDegree] = React.useState([]);
+  const [major, onChangeMajor] = React.useState([]);
   const [skills, onChangeSkills] = React.useState([]);
+  const [interests, onChangeInterests] = React.useState([]);
+  // const [skills, onChangeSkills] = React.useState([]);
   const [hoursPerWeek, onChangeHours] = React.useState('');
   const [externalLink, onChangeExternalLink] = React.useState('');
 
@@ -65,13 +227,11 @@ export const BasicDetails = ({ navigation }) => {
     projectDetails.name = name;
     projectDetails.description = description;
     projectDetails.skills = skills;
-    projectDetails.hoursPerWeek = hoursPerWeek;
-    projectDetails.externalLink = externalLink;
     navigation.navigate("Page2");
   }
   return (
     <View style={styles.container} >
-    <ScrollView /* contentContainerStyle={ styles.container } */>
+    <ScrollView>
       <KeyboardAvoidingView>
         <Text style={styles.title}>Basic Project Details</Text>
         <Text style={styles.label}>Project Name</Text>
@@ -89,30 +249,68 @@ export const BasicDetails = ({ navigation }) => {
             placeholder = 'Description of project'
             style = {styles.inputs}
         />
+        <SectionedMultiSelect
+            items={degreeLibrary}
+            uniqueKey="id"
+            subKey="children"
+            selectText="Select your degree..."
+            IconRenderer={Icon}
+            showDropDowns={false}
+            readOnlyHeadings={true}
+            hideSearch={true}
+            showChips={true}
+            single={true}
+            onSelectedItemsChange={onChangeDegree}
+            selectedItems={degree}
+            styles={[styles, localStyle]}/>
+        <Text style={styles.label}>Major</Text>
+            <SectionedMultiSelect
+            items={majorLibrary}
+            uniqueKey="id"
+            subKey="children"
+            selectText="Select your major..."
+            IconRenderer={Icon}
+            showDropDowns={false}
+            readOnlyHeadings={true}
+            hideSearch={true}
+            showChips={true}
+            single={true}
+            onSelectedItemsChange={onChangeMajor}
+            selectedItems={major}
+            styles={[styles, localStyle]}
+          />
         <Text style={styles.label}>What Skills Would Be Useful for Your Project?</Text>
-          <SectionedMultiSelect
-          items={skillLibrary}
-          uniqueKey="name"
-          subKey="children"
-          selectText="Select some skills..."
-          IconRenderer={Icon}
-          showDropDowns={false}
-          readOnlyHeadings={true}
-          hideSearch={true}
-          showChips={false}
-          onSelectedItemsChange={onChangeSkills}
-          selectedItems={skills}
-          styles={[styles, localStyle]}
-        />
-        <Text style={styles.label}>How many Hours per week are expected?</Text>
-        <TextInput
-            placeholder="--"
-            style={styles.inputs}
-            value={hoursPerWeek}
-            onChangeText = { (text) => onChangeHours(text) }
-            keyboardType = "decimal-pad"
-            maxLength= {4}
-        />
+        <Text style={styles.label}>Skills</Text>
+            <SectionedMultiSelect
+            items={skillLibrary}
+            uniqueKey="id"
+            subKey="children"
+            selectText="Select your skills..."
+            IconRenderer={Icon}
+            showDropDowns={false}
+            readOnlyHeadings={true}
+            hideSearch={true}
+            showChips={false}
+            onSelectedItemsChange={onChangeSkills}
+            selectedItems={skills}
+            styles={[styles, localStyle]}
+          />
+        <Text style={styles.label}>What Interests are relevant to your project?</Text>
+        <Text style={styles.label}>Interests</Text>
+            <SectionedMultiSelect
+            items={interestLibrary}
+            uniqueKey="id"
+            subKey="children"
+            selectText="Select some interests..."
+            IconRenderer={Icon}
+            showDropDowns={false}
+            readOnlyHeadings={true}
+            hideSearch={true}
+            showChips={false}
+            onSelectedItemsChange={onChangeInterests}
+            selectedItems={interests}
+            styles={[styles, localStyle]}
+          />
       </KeyboardAvoidingView>
     </ScrollView>
       <View style={ localStyle.navButtonContainer }>
@@ -126,21 +324,55 @@ export const BasicDetails = ({ navigation }) => {
 
 export const PictureLink = ({ navigation }) => {
   const title = React.useState("Project Picture and External Link");
+  
+  const [hoursPerWeek, onChangeHours] = React.useState('');
+  const [externalLink, onChangeExternalLink] = React.useState('');
+  const [startDate, onChangeStartDate] = React.useState(new Date());
+  const [endDate, onChangeEndDate] = React.useState(new Date());
 
   return (
     <View id="page2" style={[localStyle.container, {flex: 1}]}>
 
-      <Text style={styles.title}>Project Picture and External Link</Text>
-      <Text style={styles.label}>Project Picture</Text>
-      <Image source={require("../../../assets/defaultskin.png")} style={{
-          width: "80%",
-          alignSelf: "center",
-          resizeMode: "center",
-          flex:0.75
-        }}/>
-      <TextInput placeholder="File picker placeholder" style={styles.inputs}/>
+      <Text style={styles.title}>Timeframe and External Link</Text>
+      <Text style={styles.label}>Start and end Dates</Text>
+      <View style={{flexDirection: "row"}}>
+        <DatePicker
+          date={startDate}
+          style={{flexGrow: 1}}
+          mode="date"
+          placeholder="select project start date"
+          format="MM-DD-YYYY"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          onDateChange={(date) => {onChangeStartDate(date)}}
+        />
+        <Text style={[styles.label, {flexGrow: 1}]}>to</Text>
+        <DatePicker
+          date={endDate}
+          style={{flexGrow: 1}}
+          mode="date"
+          placeholder="select project end date"
+          format="MM-DD-YYYY"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          onDateChange={(date) => {onChangeEndDate(date)}}
+        />
+      </View>
+      <Text style={styles.label}>How many Hours per week are expected?</Text>
+        <TextInput
+            placeholder="--"
+            style={styles.inputs}
+            value={hoursPerWeek}
+            onChangeText = { (text) => onChangeHours(text) }
+            keyboardType = "decimal-pad"
+            maxLength= {4}
+        />
       <Text style={styles.label}>External Link</Text>
-      <TextInput placeholder="Link to external site (Optional)" style={styles.inputs}/>
+      <TextInput placeholder="Link to external site (Optional)"
+        style={styles.inputs}
+        value={externalLink}
+        onChangeText={(text) => {onChangeExternalLink(text)}}
+      />
 
       <View style={[localStyle.navButtonContainer, {flex: 1}]}>
         <NiceButton title="Basic Info" onPress={() => navigation.navigate("Page1")}/>

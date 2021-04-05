@@ -32,7 +32,7 @@ const Home = (props) => {
         navigation.navigate("ViewProfile");
     }
     const savedProjects = () => {
-        navigation.navigate("SavedProjects");
+        navigation.navigate("ViewSaved", {gtUsername: gtUname});
     }
 
     return (
