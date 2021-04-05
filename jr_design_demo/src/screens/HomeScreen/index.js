@@ -26,7 +26,7 @@ const Home = (props) => {
         navigation.navigate("NewProject");
     }
     const viewProjects = () => {
-        navigation.navigate("ViewProject");
+        navigation.navigate("ViewProject", {gtUsername: gtUname});
     }
     const viewProfiles = () => {
         navigation.navigate("ViewProfile");

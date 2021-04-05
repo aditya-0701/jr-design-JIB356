@@ -22,6 +22,16 @@ const users = [
         degree: 'B.S',
     }
 ]
+
+var gtUname = '';
+
+export function setGTUsername( params ) {
+    gtUname = params.gtUsername;
+}
+
+export function getGTUsername( ) {
+    return gtUname;
+}
 /*
  Function checks whether the student with the given gtUsername
 */
@@ -253,8 +263,16 @@ export function updateProjectInterests ( params ) {
 }
 
 export function addProjectInterests ( params ) {
+    console.log(params);
     return superagent.post(URI + '/projectInterests')
     .send( params )
+}
+
+export function deleteProjectInterest ( params ) {
+    const { gtUsername, projectId } = params;
+    console.log(`/projectInterests/${gtUsername}/${projectId}`);
+    return superagent.delete(URI + `/projectInterests/${gtUsername}/${projectId}`)
+    .send( )
 }
 
 // Projects

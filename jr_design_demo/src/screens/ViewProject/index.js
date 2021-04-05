@@ -1,13 +1,13 @@
 // import * as React from 'react';
 import React from 'react';
-import { SafeAreaView, ScrollView, Switch, TextInput, KeyboardAvoidingView, Image, TouchableOpacity, ImageBackground, View, Text, StyleSheet, Dimensions, Animated, PanResponder, Touchable, Button } from 'react-native';
+import { SafeAreaView, ScrollView, Switch, TextInput, KeyboardAvoidingView, Linking, TouchableOpacity, ImageBackground, View, Text, StyleSheet, Dimensions, Animated, PanResponder, Touchable, Button } from 'react-native';
 // import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import shouldUseActivityState, { screensEnabled } from 'react-native-screens'
 import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigator } from 'react-navigation';
 import { createStackNavigator } from '@react-navigation/stack';
-import { getAllProjects, getProject } from '../../store'; 
+import { getAllProjects, getProject, getGTUsername, addProjectInterests,deleteProjectInterest } from '../../store'; 
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from 'react-native-datepicker';
@@ -29,6 +29,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 const CARD_HEIGHT = SCREEN_HEIGHT * 0.86
 
+var gtUname = '';
 
 var projectDetails = [
   // {
@@ -94,22 +95,28 @@ var x = 0;
 var y = 0;
 var index = 0;
 
+const getProjs = ( callback ) => {
+  getAllProjects()
+    .then((resp) => {
+      let body = resp.body;
+      // console.log(body);
+      projectDetails = body;
+      // this.forceUpdate();
+      callback();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+}
+
 export class Card extends React.Component {
 
   constructor() {
     super()
 
-    getAllProjects()
-    .then((resp) => {
-      let body = resp.body;
-      console.log(body);
-      projectDetails = body;
-      this.forceUpdate();
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-
+    
+    getProjs( this.forceUpdate );
+    // ;
     this.position = new Animated.ValueXY()
     this.state = {
       currentIndex: 0
@@ -166,6 +173,16 @@ export class Card extends React.Component {
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 })
             })
+            // let gtUname = getGTUsername();
+            console.log(gtUname)
+            addProjectInterests({
+              'gtUsername': gtUname,
+              'projectIDs': [projectDetails[x - 1].id]
+            })
+            .then((resp) => {
+              console.log(resp.body)
+            })
+            .catch((err) => {console.log(err)})
           })
         }
         else if (gestureState.dx < -120) {
@@ -173,9 +190,20 @@ export class Card extends React.Component {
             toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy },
             useNativeDriver: true
           }).start(() => {
+            // console.log("left");
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 })
             })
+            // let gtUname = getGTUsername();
+            console.log(gtUname)
+            deleteProjectInterest({
+              'gtUsername': gtUname,
+              'projectId': projectDetails[x - 1].id
+            })
+            .then((resp) => {
+              console.log(resp.body)
+            })
+            .catch((err) => {console.log(err)})
           })
         }
         else {
@@ -189,6 +217,19 @@ export class Card extends React.Component {
     })
   }
 
+  // componentDidUpdate() {
+  //   getAllProjects()
+  //   .then((resp) => {
+  //     let body = resp.body;
+  //     // console.log(body);
+  //     projectDetails = body;
+  //     // this.forceUpdate();
+  //     // callback();
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   })
+  // }
 
 
   renderUsers = () => {
@@ -251,7 +292,7 @@ export class Card extends React.Component {
               <View style={styles.textAbstract}>
                 <Text numberOfLines={1} style={styles.textTitle}>{item.projectTitle}</Text>
                 <Text numberOfLines={3} style={[styles.textMain]}>{item.projectDescription}</Text>
-                <TouchableOpacity style={{marginVertical: 20}} onPress={() => this.props.navigation.navigate("Page2")}>
+                <TouchableOpacity style={{marginVertical: 20}} onPress={() => {x = this.state.currentIndex; this.props.navigation.navigate("Page2")}}>
                   <Text style={[styles.buttonText]}>View Project Details</Text>
                 </TouchableOpacity>
               </View>
@@ -263,8 +304,8 @@ export class Card extends React.Component {
   }
 
 
-  reRender() {
-    this.setState({});
+  static reRender() {
+    // this.forceUpdate();
   }
 
 
@@ -365,40 +406,130 @@ class SavedProjects extends React.Component {
 class DetailsScreen extends React.Component {
 
   constructor () {
+    super()
+
     this.state = {
-      project: {}
+      project: {
+        "id": 21,
+        "projectTitle": "",
+        "projectDescription": "",
+        "startDate": "",
+        "endDate": "",
+        "weekHours": 7,
+        "skills": [],
+        "interests": [],
+        "major": [],
+        "degree": [],
+        "experiences": [],
+        "links": [],
+        "alumni": [{
+          "email": "test@test.com",
+          "name": "",
+        }]
+      }
     }
   }
 
-  getProj() {
+  componentDidMount() {
     var proj = projectDetails[x];
+    console.log("TEST");
+    console.log(proj.id);
     var projId = proj.id;
-    getProject( projId )
+    getProject( {projId: projId} )
     .then((resp) => {
       let body = resp.body;
       console.log(body);
       this.setState({project: body})
     })
+    .catch((err) => console.log(err))
 
   }
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <ScrollView style={styles.detailsPage}>
-          <Text style={{ top: 20, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>Project Details</Text>
-          <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}>  {projectDetails[x].projectTitle}</Text>
-          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Description: {'\n'}{projectDetails[x].projectDescription}{'\n'}</Text>
-          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{projectDetails[x].skills}{'\n'}</Text>
-          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Hours per Week: {'\n'}{projectDetails[x].hoursPerWeek}{'\n'}</Text>
-          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Link: {'\n'}{projectDetails[x].externalLink}{'\n'}</Text>
+          <Text style={{ top: 20, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>{this.state.project.projectTitle}</Text>
+          <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}> Project Details </Text>
+          <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+          }}>{'\n\n'}Description:</Text>
+          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.projectDescription}</Text>
+                <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+          }}>Skills:</Text>
+          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.skills.join(', ')}</Text>
+          <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+          }}>Interests:</Text>
+          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.interests.join(', ')}</Text>
+
+          <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+          }}>Majors:</Text>
+          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.major.join(', ')}</Text>
+
+          <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+          }}>Degrees:</Text>
+          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.degree.join(', ')}</Text>
+          
+          <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+          }}>Hours per Week:</Text>
+          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.weekHours}</Text>
+          <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+          }}>Info Link:</Text>
+          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.links.join(', ')}</Text>
+          <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+          }}>Project Alumni:</Text>
+          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.alumni[0].name}</Text>
+          <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+          }}>Project Alumni Email:</Text>
+          <Text 
+            onPress = {() => Linking.openURL('mailto:'+ this.state.project.alumni[0].email)}
+            style={[{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
+            {color: '#0000EE', fontWeight: 'bold'}]}>
+            {this.state.project.alumni[0].email}
+          </Text>
+          <Text style = {{height: 50}}></Text>
         </ScrollView>
         <TouchableOpacity
           style={{ left: SCREEN_WIDTH * .005, top: SCREEN_HEIGHT * .4, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
           onPress={() => this.props.navigation.goBack()}>
           <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
         </TouchableOpacity>
-      </SafeAreaView>
+      </View>
     );
   }
 }
@@ -524,6 +655,7 @@ const interestLibrary = [{
   ]
 }];
 
+
 export const ProjectFilterPage = ({ navigation }) => {
   const [search, onChangeSearch] = React.useState('');
 
@@ -554,7 +686,7 @@ export const ProjectFilterPage = ({ navigation }) => {
       console.log(body);
       if (body.length != 0) {
         projectDetails = body;
-        new Card().reRender;
+        new Card();
         navigation.navigate("Page1");
       } else {
         alert("No Projects Found with the given parameters");
@@ -681,6 +813,7 @@ export const ProjectFilterPage = ({ navigation }) => {
 const Stack = createStackNavigator();
 
 export default function ViewProject(props) {
+  gtUname = props.route.params.gtUsername;
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, }} initialRouteName="Page1">
       <Stack.Screen name="Page1" component={Card} />
@@ -801,7 +934,6 @@ const styles = StyleSheet.create({
     borderRadius: 15
   },
   detailsPage: {
-    flex: 1,
     flexDirection: 'column',
     // alignItems: 'center',
     // justifyContent: 'center',
