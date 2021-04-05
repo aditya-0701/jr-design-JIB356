@@ -43,32 +43,6 @@ function getProfileDetails(storedData) {
   }
   
   return result;
-  /*var objectType = "profile";
-  if (objectType == "profile") {
-    return {
-      type: "profile",
-      entries: [
-        {name: "Dave Perkins", detail1: "Computer Science", detail2: "Undergrad"},
-        {name: "Stacey Smom", detail1: "Computer Science", detail2: "Undergrad"},
-        {name: "Drew Peacock", detail1: "Computer Science", detail2: "Undergrad"},
-        {name: "Pete Dacat", detail1: "Computer Science", detail2: "Undergrad"},
-        {name: "Phillipe Null", detail1: "Computational Media", detail2: "Graduate"},
-        {name: "Dan Ghost", detail1: "Computational Media", detail2: "Undergrad"},
-        {name: "Josh Netter", detail1: "Computer Science", detail2: "Graduate"}
-      ]
-    };
-  } else {
-    return {
-      type: "project",
-      entries: [
-        {name: "projectA", detail1: "detail1", detail2: "detail2"},
-        {name: "projectC", detail1: "detail1", detail2: "detail2"},
-        {name: "projectB", detail1: "detail1", detail2: "detail2"},
-        {name: "projectD", detail1: "detail1", detail2: "detail2"},
-        {name: "projectQ", detail1: "detail1", detail2: "detail2"},
-      ]
-    };
-  }*/
 }
 
 export const SaveContainer = ({ navigation, route }) => {
