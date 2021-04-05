@@ -600,6 +600,7 @@ export const ExtSites = ({ navigation }) => {
     addStudent(userDetails)
     .then((resp) => {
       console.log(resp);
+      setGTUsername(userDetails.gtUsername);
       navigation.reset({
         index: 0,
         routes: [

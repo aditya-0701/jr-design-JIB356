@@ -1,9 +1,9 @@
-import  React, { useState } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, ScrollView, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { userExists, userLogin, addUser, getUser } from '../../store.js'
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../../globalStyles';
 
 //import MainLogin from './mainLogin.js';
@@ -14,45 +14,46 @@ const Stack = createStackNavigator();
 
 var userRole = 'S';
 
-export const MainLogin = ( props ) => {
+export const MainLogin = (props) => {
 
     const { navigation } = props
-    const alumniLogin = function() {
+    const alumniLogin = function () {
         navigation.navigate('AlumniLogin');
     }
 
-    const studentLogin = function() {
+    const studentLogin = function () {
         navigation.navigate('StudentLogin');
     }
 
     return (
-        <View style = {styles.container} >
+        <View style={styles.container} >
             <View >
-                <Text style = {styles.name} >
+                <Text style={styles.name} >
                     CoC Student Alumni Project Matching Application
                 </Text>
             </View>
-            <View style = {styles.selector} >
-                <TouchableOpacity style = {styles.button} onPress = { studentLogin } >
-                    <Text style = {styles.buttonText} >Student Login</Text>
+            <View style={styles.selector} >
+                <TouchableOpacity style={styles.button} onPress={studentLogin} >
+                    <Text style={styles.buttonText} >Student Login</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style = {styles.button} onPress = { alumniLogin } >
-                    <Text style = {styles.buttonText} >Alumni Login</Text>
+                <TouchableOpacity style={styles.button} onPress={alumniLogin} >
+                    <Text style={styles.buttonText} >Alumni Login</Text>
                 </TouchableOpacity>
             </View>
         </View>
     )
 };
 
-const LoginPage = ( props ) => {
+const LoginPage = (props) => {
     const { navigation } = props;
     const [emailValue, onChangeEmail] = React.useState('');
     const [passwordValue, onChangePassword] = React.useState('');
-    const [errorValue, onChangeError] = React.useState('');    
+    const [errorValue, onChangeError] = React.useState('');
     const login = async () => {
-        
+
         const sessionId = await AsyncStorage.getItem('sessionId');
         console.log(sessionId + " Session ID")
+        onChangeError('Logging in...');
         //var value = false;
         userLogin( { email: emailValue, pass: passwordValue } )
         .then(async (resp) => {
@@ -77,12 +78,7 @@ const LoginPage = ( props ) => {
                 });
             }  else {
                 onChangeError('Incorrect email or password');
-            }
-        }).catch((err) => {
-            console.log("Error: ");
-            console.log(err);
-            onChangeError('Incorrect email or password');
-        });
+            }});
     }
 
     const setupProfile = () => {
@@ -90,34 +86,34 @@ const LoginPage = ( props ) => {
     }
     return (
         <View>
-            <KeyboardAvoidingView style = {styles.login} >
+            <KeyboardAvoidingView style={styles.login} >
                 <TextInput
-                    autoCapitalize = "none"
-                    autoCompleteType = 'email'
-                    keyboardType = 'email-address'
-                    onChangeText = { (text) => onChangeEmail(text)}
-                    value = { emailValue }
-                    placeholder = 'EMAIL'
-                    style = {styles.inputs}
+                    autoCapitalize="none"
+                    autoCompleteType='email'
+                    keyboardType='email-address'
+                    onChangeText={(text) => onChangeEmail(text)}
+                    value={emailValue}
+                    placeholder='EMAIL'
+                    style={styles.inputs}
                 />
                 <TextInput
-                    autoCapitalize = "none"
-                    autoCompleteType = 'password'
-                    secureTextEntry = { true }
-                    onChangeText = { (text) => onChangePassword(text)}
-                    value = { passwordValue }
-                    placeholder = 'PASSWORD'
-                    style = {styles.inputs}
+                    autoCapitalize="none"
+                    autoCompleteType='password'
+                    secureTextEntry={true}
+                    onChangeText={(text) => onChangePassword(text)}
+                    value={passwordValue}
+                    placeholder='PASSWORD'
+                    style={styles.inputs}
                 />
-                <Text style = { styles.error } >{ errorValue }</Text>
-                <TouchableOpacity style = {styles.button} onPress = { () => login() }>
-                    <Text style = {styles.buttonText} >Log In</Text>
+                <Text style={styles.error} >{errorValue}</Text>
+                <TouchableOpacity style={styles.button} onPress={() => login()}>
+                    <Text style={styles.buttonText} >Log In</Text>
                 </TouchableOpacity>
             </KeyboardAvoidingView>
-            <View style = { { justifyContent: 'center', margin: 15, flexDirection: 'row' } }>
+            <View style={{ justifyContent: 'center', margin: 15, flexDirection: 'row' }}>
                 <Text>Not a member? </Text>
-                <TouchableOpacity onPress = { () => { setupProfile() } } >
-                    <Text style = { { color: '#B3A369', fontWeight: 'bold' } }>Sign Up</Text>
+                <TouchableOpacity onPress={() => { setupProfile() }} >
+                    <Text style={{ color: '#B3A369', fontWeight: 'bold' }}>Sign Up</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -127,11 +123,11 @@ const LoginPage = ( props ) => {
 export const StudentLogin = ( props ) => {
     userRole = 'S';
     return (
-        <ScrollView contentContainerStyle={ styles.container }>
-            <Text style = {styles.title} >
+        <ScrollView contentContainerStyle={styles.container}>
+            <Text style={styles.title} >
                 Student Login
             </Text>
-            <LoginPage navigation = { props.navigation }/>
+            <LoginPage navigation={props.navigation} />
         </ScrollView>
     )
 };
@@ -139,21 +135,21 @@ export const StudentLogin = ( props ) => {
 export const AlumniLogin = ( props ) => {
     userRole = 'A';
     return (
-        <ScrollView contentContainerStyle={ styles.container }>
-            <Text style = {styles.title} >
+        <ScrollView contentContainerStyle={styles.container}>
+            <Text style={styles.title} >
                 Alumni Login
             </Text>
-            <LoginPage navigation = { props.navigation }/>
+            <LoginPage navigation={props.navigation} />
         </ScrollView>
     )
 };
 
-export default function Login( props ) {
+export default function Login(props) {
     return (
-        <Stack.Navigator screenOptions = {{headerShown: false}} >
-            <Stack.Screen name = "MainLogin" component = { MainLogin } />
-            <Stack.Screen name = "AlumniLogin" component = { AlumniLogin } />
-            <Stack.Screen name = "StudentLogin" component = { StudentLogin } />
+        <Stack.Navigator screenOptions={{ headerShown: false }} >
+            <Stack.Screen name="MainLogin" component={MainLogin} />
+            <Stack.Screen name="AlumniLogin" component={AlumniLogin} />
+            <Stack.Screen name="StudentLogin" component={StudentLogin} />
         </Stack.Navigator>
     )
 }

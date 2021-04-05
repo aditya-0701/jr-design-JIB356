@@ -1,8 +1,7 @@
 //const superagent = require('superagent');
 import superagent from 'superagent';
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const URI = 'https://i0n5tznua4.execute-api.us-east-2.amazonaws.com';
-
 const users = [
     {
         email: "aditya.sudarshan@gatech.edu",
@@ -11,7 +10,7 @@ const users = [
         major: 'Computer Science',
         skills: 'Programming',
         degree: 'B.S',
-        interests: 'Sports, Gaming, Programming' 
+        interests: 'Sports, Gaming, Programming'
     },
     {
         email: "sam.sanders@gatech.edu",
@@ -24,24 +23,31 @@ const users = [
     }
 ]
 
+var gtUname = '';
+
+export function setGTUsername( params ) {
+    gtUname = params.gtUsername;
+}
+
+export function getGTUsername( ) {
+    return gtUname;
+}
 /*
  Function checks whether the student with the given gtUsername
 */
-export function userExists( params ) {
+export function userExists(params) {
     let exists = false;
     const { email, pass } = params;
     var gtUsername = email.split('@')[0];
     console.log(gtUsername);
-
     superagent.get(URI + '/student')
-    .query({'gtUsername': gtUsername})
-    .send()
+        .query({ 'gtUsername': gtUsername })
+        .send()
 }
-
 /*
     Logs in the user with the given username and password combination
 */
-export async function userLogin( params ) {
+export async function userLogin(params) {
     const { email, pass } = params;
     const gtUsername = email.split('@')[0];
     console.log(gtUsername + " GT Username");
@@ -56,7 +62,7 @@ export async function userLogin( params ) {
     }
     console.log("Session ID NOT Found")
     return superagent.post(URI + '/login')
-    .send({'gtUsername': gtUsername, 'password': pass})
+        .send({ 'gtUsername': gtUsername, 'password': pass })
 }
 
 
@@ -98,12 +104,10 @@ export function getAllStudents ( query ) {
 //     const { email, pass } = params;
 //     var gtUsername = email.split('@')[0];
 //     console.log(gtUsername);
-
 //     superagent.get(URI + '/student')
 //     .query({'gtUsername': gtUsername})
 //     .send()
 // }
-
 /*
     To be implemented on backend, might not be necessary to have a separate function in store.js
 */
@@ -259,8 +263,16 @@ export function updateProjectInterests ( params ) {
 }
 
 export function addProjectInterests ( params ) {
+    console.log(params);
     return superagent.post(URI + '/projectInterests')
     .send( params )
+}
+
+export function deleteProjectInterest ( params ) {
+    const { gtUsername, projectId } = params;
+    console.log(`/projectInterests/${gtUsername}/${projectId}`);
+    return superagent.delete(URI + `/projectInterests/${gtUsername}/${projectId}`)
+    .send( )
 }
 
 // Projects

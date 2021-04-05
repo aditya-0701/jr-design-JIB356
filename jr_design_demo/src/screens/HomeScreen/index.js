@@ -13,41 +13,49 @@ import EditProfile from '../EditProfile'
 //import MainLogin from './mainLogin.js';
 // import AlumniLogin from './alumniLogin.js';
 // import StudentLogin from './studentLogin.js';
+import ViewProject from '../ViewProject/index.js'
 
 var gtUname= '';
 
 const Tab = new createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const Home = ( props ) => {
-  const { navigation } = props;
-  const createNewProject = () => {
-    navigation.navigate("NewProject");
-  }
-  const viewProjects = () => {
-    navigation.navigate("ViewProject");
-  }
-  const viewProfiles = () => {
-    navigation.navigate("ViewProfile");
-  }
+const Home = (props) => {
+    const { navigation } = props;
+    const createNewProject = () => {
+        navigation.navigate("NewProject");
+    }
+    const viewProjects = () => {
+        navigation.navigate("ViewProject", {gtUsername: gtUname});
+    }
+    const viewProfiles = () => {
+        navigation.navigate("ViewProfile");
+    }
+    const savedProjects = () => {
+        navigation.navigate("SavedProjects");
+    }
 
     return (
-        <View style = { [styles.container, {alignItems: 'center'}] }>
-            <Text style = {styles.title} >Welcome!</Text>
-            <TouchableOpacity style={styles.button} onPress={ createNewProject }>
-              <Text style={styles.buttonText}>Create Project</Text>
+        <View style={[styles.container, { alignItems: 'center' }]}>
+            <Text style={styles.title}>Welcome!</Text>
+            <TouchableOpacity style={styles.button} onPress={createNewProject}>
+                <Text style={styles.buttonText}>Create Project</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={ viewProjects }>
-              <Text style={styles.buttonText}>View Projects</Text>
+            <TouchableOpacity style={styles.button} onPress={viewProjects}>
+                <Text style={styles.buttonText}>View Projects</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={ viewProfiles }>
-              <Text style={styles.buttonText}>View Profiles</Text>
+            <TouchableOpacity style={styles.button} onPress={viewProfiles}>
+                <Text style={styles.buttonText}>View Profiles</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={savedProjects}>
+                <Text style={styles.buttonText}>Saved Projects</Text>
             </TouchableOpacity>
         </View>
     )
 };
 
-const Profile = ( props ) => {
+const Profile = (props) => {
+    //alert(JSON.stringify(props));
     const { navigation } = props;
     const [firstName, onChangeFirstName] = React.useState('');
     const [lastName, onChangeLastName] = React.useState('');
@@ -186,8 +194,21 @@ const Profile = ( props ) => {
             </TouchableOpacity>
         </View>
     )
-}
+};
 
+const ViewProjects = (props) => {
+    const { navigation } = props;
+    const viewProjects = () => {
+        navigation.navigate("ViewProject");
+    }
+    return (
+        <View style={[styles.container, { alignItems: 'center' }]}>
+            <TouchableOpacity style={styles.button} onPress={viewProjects}>
+                <Text style={styles.buttonText}>View Projects</Text>
+            </TouchableOpacity>
+        </View>
+    )
+};
 
 const ProfileEdit = ( props ) => {
     const { email, gtUsername } = props.route.params ;
@@ -202,11 +223,16 @@ const ProfileEdit = ( props ) => {
 }
 
 
-export default function HomeScreen( props ) {
+// export default function HomeScreen( props ) {
+//     const { email, gtUsername } = props.route.params ;
+//     gtUname = gtUsername;
+//     // getProf({email: email});
+
+export default function HomeScreen(props) {
     const { email, gtUsername } = props.route.params ;
     gtUname = gtUsername;
-    // getProf({email: email});
-
+    // alert(email);
+    // alert(JSON.stringify(props));
     return (
         <Tab.Navigator>
             <Tab.Screen name = "Home" component = { Home } />
