@@ -246,9 +246,9 @@ export function getAllExperiences ( params ) {
 
 // Student Projects
 export function getStudentProjectInterests ( params ) {
-    const { email }  = ( params != null ) ? params : {};
-    if (email != 'undefined' && email != null) {
-        var gtUsername = email.split('@')[0];
+    const { gtUsername }  = ( params != null ) ? params : {};
+    if (gtUsername != 'undefined' && gtUsername != null) {
+        // var gtUsername = email.split('@')[0];
         console.log(gtUsername);
 
         return superagent.get(URI + '/projectInterests')

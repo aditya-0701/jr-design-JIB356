@@ -7,11 +7,11 @@ import shouldUseActivityState, { screensEnabled } from 'react-native-screens'
 import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigator } from 'react-navigation';
 import { createStackNavigator } from '@react-navigation/stack';
-import { getAllProjects, getProject, getGTUsername, addProjectInterests,deleteProjectInterest } from '../../store'; 
+import { getAllProjects, getProject, getGTUsername, addProjectInterests, deleteProjectInterest } from '../../store';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from 'react-native-datepicker';
-import {styles as global} from '../../globalStyles'
+import { styles as global } from '../../globalStyles'
 
 
 class NiceButton extends React.Component {
@@ -95,7 +95,7 @@ var x = 0;
 var y = 0;
 var index = 0;
 
-const getProjs = ( callback ) => {
+const getProjs = (callback) => {
   getAllProjects()
     .then((resp) => {
       let body = resp.body;
@@ -114,8 +114,18 @@ export class Card extends React.Component {
   constructor() {
     super()
 
-    
-    getProjs( this.forceUpdate );
+
+    getAllProjects()
+      .then((resp) => {
+        let body = resp.body;
+        // console.log(body);
+        projectDetails = body;
+        this.forceUpdate();
+        // callback();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
     // ;
     this.position = new Animated.ValueXY()
     this.state = {
@@ -179,10 +189,10 @@ export class Card extends React.Component {
               'gtUsername': gtUname,
               'projectIDs': [projectDetails[x - 1].id]
             })
-            .then((resp) => {
-              console.log(resp.body)
-            })
-            .catch((err) => {console.log(err)})
+              .then((resp) => {
+                console.log(resp.body)
+              })
+              .catch((err) => { console.log(err) })
           })
         }
         else if (gestureState.dx < -120) {
@@ -200,10 +210,10 @@ export class Card extends React.Component {
               'gtUsername': gtUname,
               'projectId': projectDetails[x - 1].id
             })
-            .then((resp) => {
-              console.log(resp.body)
-            })
-            .catch((err) => {console.log(err)})
+              .then((resp) => {
+                console.log(resp.body)
+              })
+              .catch((err) => { console.log(err) })
           })
         }
         else {
@@ -259,11 +269,11 @@ export class Card extends React.Component {
             <ImageBackground
               style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
               imageStyle={{ borderRadius: 17 }}
-              source={item.uri} >
+              source={require('../../../assets/1.jpg')} >
               <View style={styles.textAbstract}>
                 <Text numberOfLines={1} style={styles.textTitle}>{item.projectTitle}</Text>
                 <Text numberOfLines={3} style={[styles.textMain]}>{item.projectDescription}</Text>
-                <TouchableOpacity style={{marginVertical: 20,  position: 'absolute', top: CARD_HEIGHT * 0.3 - 120}} onPress={() => this.props.navigation.navigate("Page2")}>
+                <TouchableOpacity style={{ marginVertical: 20, position: 'absolute', top: CARD_HEIGHT * 0.3 - 120 }} onPress={() => this.props.navigation.navigate("Page2")}>
                   <Text style={[styles.buttonText]}>View Project Details</Text>
                 </TouchableOpacity>
               </View>
@@ -288,11 +298,11 @@ export class Card extends React.Component {
             <ImageBackground
               style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
               imageStyle={{ borderRadius: 17 }}
-              source={item.uri}>
+              source={require('../../../assets/1.jpg')}>
               <View style={styles.textAbstract}>
                 <Text numberOfLines={1} style={styles.textTitle}>{item.projectTitle}</Text>
                 <Text numberOfLines={3} style={[styles.textMain]}>{item.projectDescription}</Text>
-                <TouchableOpacity style={{marginVertical: 20}} onPress={() => {x = this.state.currentIndex; this.props.navigation.navigate("Page2")}}>
+                <TouchableOpacity style={{ marginVertical: 20, position: 'absolute', top: CARD_HEIGHT * 0.3 - 120 }} onPress={() => { x = this.state.currentIndex; this.props.navigation.navigate("Page2") }}>
                   <Text style={[styles.buttonText]}>View Project Details</Text>
                 </TouchableOpacity>
               </View>
@@ -324,8 +334,10 @@ export class Card extends React.Component {
           {this.renderUsers()}
           <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', top: SCREEN_HEIGHT * .71 }}>
             <TouchableOpacity style={styles.leftButton} onPress={() => {
-              this.setState({ currentIndex: (this.state.currentIndex - 1) >= 0 ? 
-                (this.state.currentIndex - 1) : projectDetails.length - 1}, () => {
+              this.setState({
+                currentIndex: (this.state.currentIndex - 1) >= 0 ?
+                  (this.state.currentIndex - 1) : projectDetails.length - 1
+              }, () => {
                 this.position.setValue({ x: 0, y: 0 })
               })
             }}>
@@ -337,8 +349,10 @@ export class Card extends React.Component {
               <Text style={styles.heart}> &#9829;</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.rightButton} onPress={() => {
-              this.setState({ currentIndex: (this.state.currentIndex + 1) < projectDetails.length ? 
-                (this.state.currentIndex + 1) : 0 }, () => {
+              this.setState({
+                currentIndex: (this.state.currentIndex + 1) < projectDetails.length ?
+                  (this.state.currentIndex + 1) : 0
+              }, () => {
                 this.position.setValue({ x: 0, y: 0 })
               })
             }}>
@@ -405,7 +419,7 @@ class SavedProjects extends React.Component {
 
 class DetailsScreen extends React.Component {
 
-  constructor () {
+  constructor() {
     super()
 
     this.state = {
@@ -435,13 +449,13 @@ class DetailsScreen extends React.Component {
     console.log("TEST");
     console.log(proj.id);
     var projId = proj.id;
-    getProject( {projId: projId} )
-    .then((resp) => {
-      let body = resp.body;
-      console.log(body);
-      this.setState({project: body})
-    })
-    .catch((err) => console.log(err))
+    getProject({ projId: projId })
+      .then((resp) => {
+        let body = resp.body;
+        console.log(body);
+        this.setState({ project: body })
+      })
+      .catch((err) => console.log(err))
 
   }
 
@@ -452,77 +466,77 @@ class DetailsScreen extends React.Component {
           <Text style={{ top: 20, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>{this.state.project.projectTitle}</Text>
           <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}> Project Details </Text>
           <Text style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: '#B3A369',
-              paddingLeft: 15,
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#B3A369',
+            paddingLeft: 15,
           }}>{'\n\n'}Description:</Text>
-          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.projectDescription}</Text>
-                <Text style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: '#B3A369',
-              paddingLeft: 15,
+          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.projectDescription}</Text>
+          <Text style={{
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#B3A369',
+            paddingLeft: 15,
           }}>Skills:</Text>
-          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.skills.join(', ')}</Text>
+          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.skills.map(({ skill }) => skill).join(', ')}</Text>
           <Text style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: '#B3A369',
-              paddingLeft: 15,
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#B3A369',
+            paddingLeft: 15,
           }}>Interests:</Text>
-          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.interests.join(', ')}</Text>
+          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.interests.map(({ interest }) => interest).join(', ')}</Text>
 
           <Text style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: '#B3A369',
-              paddingLeft: 15,
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#B3A369',
+            paddingLeft: 15,
           }}>Majors:</Text>
-          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.major.join(', ')}</Text>
+          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.major.map(({ major }) => major).join(', ')}</Text>
 
           <Text style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: '#B3A369',
-              paddingLeft: 15,
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#B3A369',
+            paddingLeft: 15,
           }}>Degrees:</Text>
-          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.degree.join(', ')}</Text>
-          
+          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.degree.map(({ degree }) => degree).join(', ')}</Text>
+
           <Text style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: '#B3A369',
-              paddingLeft: 15,
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#B3A369',
+            paddingLeft: 15,
           }}>Hours per Week:</Text>
-          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.weekHours}</Text>
+          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.weekHours}</Text>
           <Text style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: '#B3A369',
-              paddingLeft: 15,
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#B3A369',
+            paddingLeft: 15,
           }}>Info Link:</Text>
-          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.links.join(', ')}</Text>
+          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.links.join(', ')}</Text>
           <Text style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: '#B3A369',
-              paddingLeft: 15,
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#B3A369',
+            paddingLeft: 15,
           }}>Project Alumni:</Text>
-          <Text style={{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.alumni[0].name}</Text>
+          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.alumni[0].name}</Text>
           <Text style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              color: '#B3A369',
-              paddingLeft: 15,
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#B3A369',
+            paddingLeft: 15,
           }}>Project Alumni Email:</Text>
-          <Text 
-            onPress = {() => Linking.openURL('mailto:'+ this.state.project.alumni[0].email)}
-            style={[{  textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
-            {color: '#0000EE', fontWeight: 'bold'}]}>
+          <Text
+            onPress={() => Linking.openURL('mailto:' + this.state.project.alumni[0].email)}
+            style={[{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
+            { color: '#0000EE', fontWeight: 'bold' }]}>
             {this.state.project.alumni[0].email}
           </Text>
-          <Text style = {{height: 50}}></Text>
+          <Text style={{ height: 50 }}></Text>
         </ScrollView>
         <TouchableOpacity
           style={{ left: SCREEN_WIDTH * .005, top: SCREEN_HEIGHT * .4, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
@@ -679,27 +693,27 @@ export const ProjectFilterPage = ({ navigation }) => {
     }
 
     console.log(query);
-    
-    getAllProjects( query )
-    .then((resp) => {
-      let body = resp.body;
-      console.log(body);
-      if (body.length != 0) {
-        projectDetails = body;
-        new Card();
-        navigation.navigate("Page1");
-      } else {
-        alert("No Projects Found with the given parameters");
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+
+    getAllProjects(query)
+      .then((resp) => {
+        let body = resp.body;
+        console.log(body);
+        if (body.length != 0) {
+          projectDetails = body;
+          new Card();
+          navigation.navigate("Page1");
+        } else {
+          alert("No Projects Found with the given parameters");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   return (
     <View style={style.container} >
-      <Text style={[style.label, {fontSize: 20}]}>Search and Filters</Text>
+      <Text style={[style.label, { fontSize: 20 }]}>Search and Filters</Text>
       <ScrollView>
         <KeyboardAvoidingView>
           <View style={{ padding: 5 }}></View>
@@ -721,32 +735,9 @@ export const ProjectFilterPage = ({ navigation }) => {
           <DatePicker
             placeholder="Select a date..."
             date={startDate}
-            onDateChange={(date) => {onChangeStart(date)}}
+            onDateChange={(date) => { onChangeStart(date) }}
             mode='date'
-            showIcon ={false}
-            customStyles={{
-              dateInput: {
-                borderWidth: 0,
-                marginBottom: 15,
-                borderRadius: 15,
-                backgroundColor: '#B3A36975',
-                padding: 10,
-                paddingLeft: 20,
-                height: 40
-              }, 
-              placeholderText: {
-                color: 'black'
-              }
-              // ... You can check the source to find the other keys.
-            }}
-            />
-          <Text style={style.label}>End Date</Text>
-          <DatePicker
-            placeholder="Select a date..."
-            date={endDate}
-            onDateChange={(date) => {onChangeEnd(date)}}
-            mode='date'
-            showIcon ={false}
+            showIcon={false}
             customStyles={{
               dateInput: {
                 borderWidth: 0,
@@ -762,7 +753,30 @@ export const ProjectFilterPage = ({ navigation }) => {
               }
               // ... You can check the source to find the other keys.
             }}
-            />
+          />
+          <Text style={style.label}>End Date</Text>
+          <DatePicker
+            placeholder="Select a date..."
+            date={endDate}
+            onDateChange={(date) => { onChangeEnd(date) }}
+            mode='date'
+            showIcon={false}
+            customStyles={{
+              dateInput: {
+                borderWidth: 0,
+                marginBottom: 15,
+                borderRadius: 15,
+                backgroundColor: '#B3A36975',
+                padding: 10,
+                paddingLeft: 20,
+                height: 40
+              },
+              placeholderText: {
+                color: 'black'
+              }
+              // ... You can check the source to find the other keys.
+            }}
+          />
           <Text style={style.label}>Skills Required</Text>
           <SectionedMultiSelect
             items={skillLibrary}
@@ -843,6 +857,7 @@ const styles = StyleSheet.create({
     fontWeight: '300'
   },
   textTitle: {
+    paddingTop: 15,
     fontSize: 25,
     fontWeight: '400',
     color: 'white',
