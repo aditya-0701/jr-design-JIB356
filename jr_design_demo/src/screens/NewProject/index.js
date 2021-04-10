@@ -311,6 +311,7 @@ export const BasicDetails = ({ navigation }) => {
             selectedItems={interests}
             styles={[styles, localStyle]}
           />
+        <View style={{padding:40}}></View>
       </KeyboardAvoidingView>
     </ScrollView>
       <View style={ localStyle.navButtonContainer }>

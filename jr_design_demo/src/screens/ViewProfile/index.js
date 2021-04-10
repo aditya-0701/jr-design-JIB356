@@ -846,7 +846,7 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 100,
     backgroundColor: 'rgba(179, 163, 105, .7)',
-    top: 20,
+    top: -20,
     // right: 50
   },
   leftButton: {
@@ -854,19 +854,19 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 100,
     backgroundColor: 'rgba(179, 163, 105, .7)',
-    top: 20,
+    top: -20,
     right: 15
   },
   leftRightNav: {
-    bottom: 10,
-    right: 5,
+    bottom: 12,
+    right: 7,
     textAlign: 'center',
     color: 'white',
     fontWeight: '800',
     fontSize: 70
   },
   heart: {
-    top: 5,
+    top: -35,
     right: 15,
     color: 'rgba(179, 163, 105, .7)',
     fontSize: 80
@@ -943,7 +943,7 @@ const localStyle = StyleSheet.create({//File-specific
 const style = StyleSheet.create({
   buttonContainer: {
     position: "absolute",
-    bottom: 0,
+    bottom: -40,
     alignSelf: 'center',
     //width: "100%",
     backgroundColor: '#F5F5F5',

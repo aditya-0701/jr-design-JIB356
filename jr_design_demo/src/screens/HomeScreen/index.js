@@ -9,11 +9,15 @@ import { useEffect } from 'react';
 import styles from '../../globalStyles';
 import { ScrollView } from 'react-native-gesture-handler';
 import EditProfile from '../EditProfile'
+import ViewProfile from '../ViewProfile'
+import ViewProject from '../ViewProject'
+import ViewSaved from '../ViewSaved'
+import NewProject from '../NewProject'
 
 //import MainLogin from './mainLogin.js';
 // import AlumniLogin from './alumniLogin.js';
 // import StudentLogin from './studentLogin.js';
-import ViewProject from '../ViewProject/index.js'
+// import ViewProject from '../ViewProject/index.js'
 
 var gtUname= '';
 
@@ -41,9 +45,9 @@ const Home = (props) => {
             <TouchableOpacity style={styles.button} onPress={createNewProject}>
                 <Text style={styles.buttonText}>Create Project</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={viewProjects}>
+            {/* <TouchableOpacity style={styles.button} onPress={viewProjects}>
                 <Text style={styles.buttonText}>View Projects</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity style={styles.button} onPress={viewProfiles}>
                 <Text style={styles.buttonText}>View Profiles</Text>
             </TouchableOpacity>
@@ -196,19 +200,19 @@ const Profile = (props) => {
     )
 };
 
-const ViewProjects = (props) => {
-    const { navigation } = props;
-    const viewProjects = () => {
-        navigation.navigate("ViewProject");
-    }
-    return (
-        <View style={[styles.container, { alignItems: 'center' }]}>
-            <TouchableOpacity style={styles.button} onPress={viewProjects}>
-                <Text style={styles.buttonText}>View Projects</Text>
-            </TouchableOpacity>
-        </View>
-    )
-};
+// const ViewProjects = (props) => {
+//     const { navigation } = props;
+//     const viewProjects = () => {
+//         navigation.navigate("ViewProject");
+//     }
+//     return (
+//         <View style={[styles.container, { alignItems: 'center' }]}>
+//             <TouchableOpacity style={styles.button} onPress={viewProjects}>
+//                 <Text style={styles.buttonText}>View Projects</Text>
+//             </TouchableOpacity>
+//         </View>
+//     )
+// };
 
 const ProfileEdit = ( props ) => {
     const { email, gtUsername } = props.route.params ;
@@ -222,6 +226,49 @@ const ProfileEdit = ( props ) => {
     )
 }
 
+const ProfileView = ( props ) => {
+    return (
+        <Stack.Navigator screenOptions = {{headerShown: false}}>
+            <Stack.Screen name = "ViewProfile" component = { ViewProfile }/>
+        </Stack.Navigator>
+    )
+}
+
+const ProjectView = ( props ) => {
+    return (
+        <Stack.Navigator screenOptions = {{headerShown: false}}>
+            <Stack.Screen name = "ViewProject" component = { ViewProject } initialParams =
+            {{gtUsername: gtUname}}/>
+        </Stack.Navigator>
+    )
+}
+
+const ProjectsSaved = ( props ) => {
+    return (
+        <Stack.Navigator screenOptions = {{headerShown: false}}>
+            <Stack.Screen name = "ViewSaved" component = { ViewSaved } initialParams =
+            {{gtUsername: gtUname}}/>
+        </Stack.Navigator>
+    )
+}
+
+const StudentsSaved = ( props ) => {
+    return (
+        <Stack.Navigator screenOptions = {{headerShown: false}}>
+            <Stack.Screen name = "ViewSaved" component = { ViewSaved } initialParams =
+            {{gtUsername: gtUname}}/>
+        </Stack.Navigator>
+    )
+}
+
+const MyProjects = ( props ) => {
+    return (
+        <Stack.Navigator screenOptions = {{headerShown: false}}>
+            <Stack.Screen name = "NewProject" component = { NewProject } initialParams =
+            {{gtUsername: gtUname}}/>
+        </Stack.Navigator>
+    )
+}
 
 // export default function HomeScreen( props ) {
 //     const { email, gtUsername } = props.route.params ;
@@ -229,15 +276,30 @@ const ProfileEdit = ( props ) => {
 //     // getProf({email: email});
 
 export default function HomeScreen(props) {
-    const { email, gtUsername } = props.route.params ;
+    const { email, gtUsername, alumni } = props.route.params ;
     gtUname = gtUsername;
     // alert(email);
     // alert(JSON.stringify(props));
-    return (
-        <Tab.Navigator>
-            <Tab.Screen name = "Home" component = { Home } />
-            <Tab.Screen name = "Profile" component = { ProfileEdit } initialParams = 
-             {{email: email, gtUsername: gtUsername}}/>
-        </Tab.Navigator>
-    )
+    if (alumni) {
+        return (
+            <Tab.Navigator>
+                {/* <Tab.Screen name = "Home" component = { Home } /> */}
+                <Tab.Screen name = "Student Profiles" component = { ProfileView } />
+                <Tab.Screen name = "Saved Profiles" component = { StudentsSaved } />
+                <Tab.Screen name = "My Projects" component = { MyProjects } />
+                <Tab.Screen name = "My Profile" component = { ProfileEdit } initialParams = 
+                 {{email: email, gtUsername: gtUsername}}/>
+            </Tab.Navigator>
+        )
+    } else {
+        return (
+            <Tab.Navigator>
+                {/* <Tab.Screen name = "Home" component = { Home } /> */}
+                <Tab.Screen name = "Projects" component = { ProjectView } />
+                <Tab.Screen name = "Saved Projects" component = { ProjectsSaved } />
+                <Tab.Screen name = "My Profile" component = { ProfileEdit } initialParams = 
+                {{email: email, gtUsername: gtUsername}}/>
+            </Tab.Navigator>
+        )
+    }
 };
