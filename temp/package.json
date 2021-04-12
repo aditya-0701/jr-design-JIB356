@@ -1,0 +1,16 @@
+{
+  "name": "mysql",
+  "version": "1.0.0",
+  "description": "This is a test readme for the API being built to communicate with our RDS DB for the app. This will be updated shortly.",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "mysql": "^2.18.1",
+    "uuid": "^8.3.2"
+  },
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

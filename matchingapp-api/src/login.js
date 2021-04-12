@@ -36,7 +36,7 @@ Login.loginUser = async ( params ) => {
                 //Randomly generated session ID
                 let uid = uuid();
                 //Expiry set to 1 hour from current time
-                let expiry = ((new Date()).getTime() + 3 * 3600000) / 1000; 
+                let expiry = ((new Date()).getTime() + 3600000) / 1000; 
                 let insert = `REPLACE INTO StudentSessions SET ?`
                 let session = await connection.query(insert, {
                     'sessionId': uid,
@@ -82,21 +82,10 @@ Login.validateSession = async ( params ) => {
         let currTime = (new Date()).getTime() / 1000;
         if (session.sessionId == sessionId && 
             session.expiry > currTime) {
-                let uid = uuid();
-                //Expiry set to 1 hour from current time
-                let expiry = ((new Date()).getTime() + 3 * 3600000) / 1000; 
-                let insert = `REPLACE INTO StudentSessions SET ?`
-                let newSession = await connection.query(insert, {
-                    'sessionId': uid,
-                    'gtUsername': user.gtUsername,
-                    'expiry':expiry
-                });
                 return {
                     'body': JSON.stringify({
-                        'message': 'Successful login. Session currently active. New sessionId generated.',
-                        'oldExpiry': session.expiry,
-                        'sessionId': uid,
-                        'expiry': expiry
+                        'message': 'Successful login. Session currently active.',
+                        'expiry': session.expiry
                     }),
                     'statusCode': 200,
                     'headers': {

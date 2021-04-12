@@ -87,43 +87,43 @@ Alumni.deleteAlumniAccount = async ( params ) => {
 
 Alumni.addProject = async ( params ) => {
     // params
-    if (params.projectAlumni && params.createdAt) {
-        let projectParams = [[params.projectTitle, params.projectDescription, params.startDate, params.endDate, params.projectAlumni, params.createdAt, params.visible, params.weekHours]];
-        let query = `INSERT INTO Projects (projectTitle, projectDescription, startDate, endDate, projectAlumni, createdAt, visible, weekHours) VALUES ?;`;
-        var project = await connection.query(query, [projectParams]);
+    if (params.alumniId && params.createdAt) {
+        let projectParams = [params.projectTitle, params.projectDescription, params.startDate, params.endDate, params.alumniId, params.createdAt, params.visible];
+        let query = "INSERT INTO Projects (projectTitle, projectDescription, startDate, endDate, projectAlumni, createdAt, visible) VALUES ?";
+        var project = await connection.query(query, connection.escape(projectParams));
     } else {
         throw 'ERROR OCCURRED';
     }
-    console.log(project);
-    //let getProjIdQuery = `SELECT id FROM Projects WHERE projectAlumni = ${connection.escape(params.projectAlumni)} AND createdAt = ${connection.escape(params.createdAt)};`; 
-    let id = project['insertId'];//await connection.query(getProjIdQuery);
-    
+
+    let getProjIdQuery = `SELECT id FROM Projects WHERE projectAlumni = ${connection.escape(params.alumniId)} AND createdAt = ${connection.escape(params.createdAt)};`; 
+    project['id'] = await connection.query();
+
     if (project) {
         if (params.skills) {
             let skillsVals = [];
             for (let i = 0; i < params.skills.length; i++) {
-                skillsVals.push([id, params.skills[i]]);
+                skillsVals.push([project['id'], params.skills[i]]);
             }
-            let skillQuery = `INSERT IGNORE INTO ProjectSkills (projectId, skillId) VALUES ?`;
-            project['skills'] = await connection.query(skillQuery, [skillsVals]);
+            let skillQuery = `INSERT INTO ProjectSkills (projectId, skillId) VALUES ?`;
+            project['skills'] = await connection.query(skillQuery, connection.escape(skillsVals));
         }
         if (params.interests) {
             let interestsVals = [];
             for (let i = 0; i < params.interests.length; i++) {
-                interestsVals.push([id, params.interests[i]]);
+                interestsVals.push([project['id'], params.interests[i]]);
             }
-            let interestQuery = `INSERT IGNORE INTO ProjectInterests (projectId, interestId) VALUES ?`;
-            project['interests'] = await connection.query(interestQuery, [interestsVals]);
+            let interestQuery = `INSERT INTO ProjectInterests (projectId, interestId) VALUES ?`;
+            project['interests'] = await connection.query(interestQuery, connection.escape(interestsVals));
         }
         if (params.links) {
             // assumes params.links follows:
             // [[label, address], ...]
             let linksVals = [];
             for (let i = 0; i < params.links.length; i++) {
-                linksVals.push([id, null].concat(params.links[i]));
+                linksVals.push([project['id'], null].concat(params.links[i]));
             }
-            let linkQuery = `INSERT IGNORE INTO ProjectLinks (projectId, id, label, address) VALUES ?`;
-            project['links'] = await connection.query(linkQuery, [linksVals]);
+            let linkQuery = `INSERT INTO ProjectLinks (projectId, id, label, address) VALUES ?`;
+            project['links'] = await connection.query(linkQuery, connection.escape(linksVals));
         }
     }
     
@@ -131,23 +131,20 @@ Alumni.addProject = async ( params ) => {
 };
 
 Alumni.getAlumniProjects = async ( params ) => {
-    let query = `SELECT id, projectTitle, projectDescription, startDate, endDate, projectAlumni, weekHours FROM Projects`;
+    let query = `SELECT projectTitle, projectDescription, startDate, endDate, projectAlumni, weekHours FROM Projects`;
     let projIds = [];
-    let onlySearch = true;
     
     if (params.skills) {
-        onlySearch = false;
         let skills = 'SELECT projectId from ProjectSkills WHERE skillId IN ' + connection.escape([params.skills]);
         let skillIds = await connection.query(skills);
-        projIds.push(skillIds.map(element => element['projectId']));
+        projIds.push(skillIds.map(element => element['gtUsername']));
         
     }
     
     if (params.interests) {
-        onlySearch = false;
         let interests = 'SELECT projectId from ProjectInterests WHERE interestId IN ' + connection.escape([params.interests]);
         let interestIds = await connection.query(interests);
-        projIds.push(interestIds.map(element => element['projectId']));
+        projIds.push(interestIds.map(element => element['gtUsername']));
     }
     
     // To be implemented in DB
@@ -163,14 +160,10 @@ Alumni.getAlumniProjects = async ( params ) => {
     //     projIds.push(majorIds.map(element => element['gtUsername']));
     // }
     var whereActive = false;
-    projIds = projIds.flat()
+    
     if (projIds != null && projIds != [] && projIds.length != 0) {
         whereActive = true;
         query += ' WHERE id IN ' + connection.escape(projIds);
-    } else {
-        if (!onlySearch) {
-            return [];
-        }
     }
     
     
@@ -220,54 +213,8 @@ Alumni.getAlumniProjects = async ( params ) => {
     return students;
 };
 
-Alumni.findProject = async ( params ) => {
-        try {
-        const { projectId } = params;
-        var id = projectId;
-    //We can use knex to remove the need to do string interpolation to perform our DB transactions.
-        let query = `SELECT id, projectTitle, projectDescription, startDate, endDate, projectAlumni, weekHours FROM Projects WHERE id = ${id}`;
-
-        let student = (await connection.query(query))[0];
-        student = student || null;
-        if (student) {
-            console.log("Student exists");
-            let skillQuery = `SELECT skill, id FROM Skills 
-                WHERE id IN ( SELECT skillId FROM ProjectSkills WHERE projectId = "${id}")`
-            student['skills'] = await connection.query(skillQuery); 
-
-            let interestQuery = `SELECT interest, id FROM Interests 
-                WHERE id IN ( SELECT interestId FROM ProjectInterests WHERE projectId = "${id}")`
-            student['interests'] = await connection.query(interestQuery);
-            
-            let majorQuery = `SELECT major, id FROM Majors 
-                WHERE id IN ( SELECT majorId FROM ProjectMajors WHERE projectId = "${id}")`
-            student['major'] = await connection.query(majorQuery); 
-            
-            let degreeQuery = `SELECT degree, id FROM Degrees 
-                WHERE id IN ( SELECT degreeId FROM ProjectDegrees WHERE projectId = "${id}")`
-            student['degree'] = await connection.query(degreeQuery); 
-            
-            let expQuery = `SELECT * FROM Experience WHERE gtUsername = "${id}"`
-            student['experiences'] = await connection.query(expQuery); 
-            
-            let linkQuery = `SELECT * FROM ProjectLinks WHERE projectId = "${id}"`
-            student['links'] = await connection.query(linkQuery); 
-            
-            let alumniQuery = `SELECT email, CONCAT(firstName, ' ',lastName) AS 'name' FROM Alumni WHERE id = "${student.projectAlumni}"`
-            student['alumni'] = await connection.query(alumniQuery); 
-            
-            
-            
-        }
-        return student;
-    } catch (e) {
-        throw e;
-    }
-};
-
-
 Alumni.deleteAlumniProject = async (params) => {
-    let query = `DELETE FROM Projects WHERE id = ${params.projectId} AND projectAlumni = ${params.alumniId}`;
+    let query = `DELETE FROM Projects WHERE id = ${connectio.escape(params.projectId)} AND projectAlumni = ${connection.escape(params.alumniId)}`;
     var projects = await connection.query(query);
     return projects;
 };
@@ -275,9 +222,9 @@ Alumni.deleteAlumniProject = async (params) => {
 Alumni.updateProject = async (params) => {
     // need projectId
     if (params.projectId) {
-        let projectParams = [params.projectTitle, params.projectDescription, params.startDate, params.endDate, params.projectAlumni, params.createdAt, params.visible, params.weekHours, params.projectId];
-        let query = "UPDATE Projects SET projectTitle = ?, projectDescription = ?, startDate = ?, endDate = ?, projectAlumni = ?, createdAt = ?, visible = ?, weekHours = ? WHERE id = ?";
-        var project = await connection.query(query, projectParams);
+        let projectParams = [params.projectTitle, params.projectDescription, params.startDate, params.endDate, params.visible, params.projectId];
+        let query = "UPDATE Projects SET projectTitle = ?, projectDescription = ?, startDate = ?, endDate = ?, projectAlumni = ?, createdAt = ?, visible = ? WHERE id = ?";
+        var project = await connection.query(query, connection.escape(projectParams));
     } else {
         throw 'ERROR OCCURRED';
     }
@@ -290,7 +237,7 @@ Alumni.updateProject = async (params) => {
             let deleteQuery = `DELETE FROM ProjectSkills WHERE projectId = ${connection.escape(params.projectId)}`;
             let skillQuery = `INSERT INTO ProjectSkills (projectId, skillId) VALUES ?`;
             await connection.query(deleteQuery);
-            project['skills'] = await connection.query(skillQuery, [skillsVals]);
+            project['skills'] = await connection.query(skillQuery, connection.escape(skillsVals));
         }
         if (params.interests) {
             let interestsVals = [];
@@ -300,7 +247,7 @@ Alumni.updateProject = async (params) => {
             let deleteQuery = `DELETE FROM ProjectInterests WHERE projectId = ${connection.escape(params.projectId)}`;
             let interestQuery = `INSERT INTO ProjectInterests (projectId, interestId) VALUES ?`;
             await connection.query(deleteQuery);
-            project['interests'] = await connection.query(interestQuery, [interestsVals]);
+            project['interests'] = await connection.query(interestQuery, connection.escape(interestsVals));
         }
         if (params.links) {
             // assumes params.links follows:
@@ -312,7 +259,7 @@ Alumni.updateProject = async (params) => {
             let deleteQuery = `DELETE FROM ProjectLinks WHERE projectId = ${connection.escape(params.projectId)}`;
             let linkQuery = `INSERT INTO ProjectLinks (projectId, id, label, address) VALUES ?`;
             await connection.query(deleteQuery);
-            project['links'] = await connection.query(linkQuery, [linksVals]);
+            project['links'] = await connection.query(linkQuery, connection.escape(linksVals));
         }
     }
     
