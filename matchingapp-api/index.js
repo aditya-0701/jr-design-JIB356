@@ -119,12 +119,22 @@ exports.handler = async (event) => {
                 case 'POST':
                     return student.addProjectInterest(parsedBody);
                 case 'DELETE':
-                    return student.deleteAllStudentProjectInterests(query);
+                    if (pathParams) {
+                        
+                        return await student.deleteStudentProjectInterests( pathParams );
+                    } else {
+                        return student.deleteAllStudentProjectInterests(query);
+                    }
             }
         case 'projects':
             switch(method) {
                 case 'GET':
-                    // return student.getStudentProjectInterests(query);
+                    if (pathParams) {
+                        console.log("find");
+                        return await alumni.findProject( pathParams );
+                    } else {
+                        return alumni.getAllProjects( query );
+                    }
                 case 'PUT':
                     return alumni.updateProject(parsedBody);
                 case 'POST':
