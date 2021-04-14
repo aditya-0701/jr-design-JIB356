@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import styles from '../../globalStyles';
 import { ScrollView } from 'react-native-gesture-handler';
 import EditProfile from '../EditProfile'
+import EditAlumni from '../EditAlumni'
 import SavedProfiles from '../SavedProfiles/index.js'
 
 //import MainLogin from './mainLogin.js';
