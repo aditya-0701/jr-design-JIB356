@@ -952,7 +952,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     // alignItems: 'center',
     // justifyContent: 'center',
-    height: SCREEN_HEIGHT * .87,
+    height: SCREEN_HEIGHT * .825,
     width: SCREEN_WIDTH * .95,
     position: 'absolute',
     top: CARD_HEIGHT * .1,
