@@ -339,7 +339,7 @@ export class Card extends React.Component {
         </View>
         <View style={{ flex: 1 }}>
           {this.renderUsers()}
-          <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', top: SCREEN_HEIGHT * .71 }}>
+          <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', top: SCREEN_HEIGHT * .73 }}>
             <TouchableOpacity style={styles.leftButton} onPress={() => {
               this.setState({ currentIndex: this.state.currentIndex - 1 }, () => {
                 this.position.setValue({ x: 0, y: 0 })
@@ -854,7 +854,7 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 100,
     backgroundColor: 'rgba(179, 163, 105, .7)',
-    top: -20,
+    top: -40,
     right: 15
   },
   leftRightNav: {
