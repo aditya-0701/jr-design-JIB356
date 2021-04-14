@@ -55,7 +55,7 @@ export const BasicDetails = ({ navigation, route }) => {
                 onChangePassword(resp.body.pwd);
                 onChangeFirstName(resp.body.firstName);
                 onChangeLastName(resp.body.lastName);
-                onChangePhone([resp.body.phone);
+                onChangePhone(resp.body.phone);
             })
             .catch((err) => {
                 console.log(err);
