@@ -13,6 +13,7 @@ import styles from '../../globalStyles';
 const Stack = createStackNavigator();
 
 var userRole = 'S';
+var isAlumni = false;
 
 export const MainLogin = (props) => {
 
@@ -72,7 +73,7 @@ const LoginPage = (props) => {
                     routes: [
                         { 
                             name: 'HomeScreen',
-                            params: { email: emailValue, gtUsername: gtUsername },
+                            params: { email: emailValue, gtUsername: gtUsername, alumni: isAlumni },
                         }
                     ],
                 });
@@ -131,6 +132,7 @@ export const StudentLogin = ( props ) => {
             <Text style={styles.title} >
                 Student Login
             </Text>
+            {isAlumni = false}
             <LoginPage navigation={props.navigation} />
         </ScrollView>
     )
@@ -143,6 +145,7 @@ export const AlumniLogin = ( props ) => {
             <Text style={styles.title} >
                 Alumni Login
             </Text>
+            {isAlumni = true}
             <LoginPage navigation={props.navigation} />
         </ScrollView>
     )
