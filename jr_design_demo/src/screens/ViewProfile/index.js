@@ -846,7 +846,7 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 100,
     backgroundColor: 'rgba(179, 163, 105, .7)',
-    top: -20,
+    top: -35,
     // right: 50
   },
   leftButton: {
@@ -854,7 +854,7 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 100,
     backgroundColor: 'rgba(179, 163, 105, .7)',
-    top: -20,
+    top: -35,
     right: 15
   },
   leftRightNav: {
@@ -866,7 +866,7 @@ const styles = StyleSheet.create({
     fontSize: 70
   },
   heart: {
-    top: -35,
+    top: -45,
     right: 15,
     color: 'rgba(179, 163, 105, .7)',
     fontSize: 80

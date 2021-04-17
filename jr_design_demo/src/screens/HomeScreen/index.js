@@ -28,6 +28,7 @@ const Tab = new createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const Home = (props) => {
+    const { alumni } = props.route.params;
     const { navigation } = props;
     const createNewProject = () => {
         navigation.navigate("NewProject");
@@ -45,26 +46,43 @@ const Home = (props) => {
         navigation.navigate("SavedProfiles", { gtUsername: gtUname });
     }
 
-    return (
-        <View style={[styles.container, { alignItems: 'center' }]}>
-            <Text style={styles.title}>Welcome!</Text>
-            <TouchableOpacity style={styles.button} onPress={createNewProject}>
-                <Text style={styles.buttonText}>Create Project</Text>
-            </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.button} onPress={viewProjects}>
-                <Text style={styles.buttonText}>View Projects</Text>
-            </TouchableOpacity> */}
-            <TouchableOpacity style={styles.button} onPress={viewProfiles}>
-                <Text style={styles.buttonText}>View Profiles</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={savedProjects}>
-                <Text style={styles.buttonText}>Saved Projects</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={savedProfiles}>
-                <Text style={styles.buttonText}>Saved Profiles</Text>
-            </TouchableOpacity>
-        </View>
-    )
+    if (alumni) {
+        return (
+            <View style={[styles.container, { alignItems: 'center' }]}>
+                <Text style={styles.title}>Welcome!</Text>
+                <TouchableOpacity style={styles.button} onPress={createNewProject}>
+                    <Text style={styles.buttonText}>Create Project</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={viewProfiles}>
+                    <Text style={styles.buttonText}>View Profiles</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={savedProjects}>
+                    <Text style={styles.buttonText}>Saved Projects</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={savedProfiles}>
+                    <Text style={styles.buttonText}>Saved Profiles</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    } else {
+        return (
+            <View style={[styles.container, { alignItems: 'center' }]}>
+                <Text style={styles.title}>Welcome!</Text>
+                <TouchableOpacity style={styles.button} onPress={createNewProject}>
+                    <Text style={styles.buttonText}>Create Project</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={viewProjects}>
+                    <Text style={styles.buttonText}>View Projects</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={savedProjects}>
+                    <Text style={styles.buttonText}>Saved Projects</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={savedProfiles}>
+                    <Text style={styles.buttonText}>Saved Profiles</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
 };
 
 const Profile = (props) => {
@@ -422,7 +440,8 @@ export default function HomeScreen(props) {
     if (alumni) {
         return (
             <Tab.Navigator>
-                <Tab.Screen name = "Home" component = { Home } />
+                <Tab.Screen name = "Home" component = { Home } initialParams = 
+                 {{alumni: alumni}}/>
                 <Tab.Screen name = "Student Profiles" component = { StudentProfiles } initialParams =
                 // <Tab.Screen name = "Student Profiles" component = { ProfileView } initialParams =
                  {{email: email, gtUsername: gtUsername}}/>
@@ -435,7 +454,8 @@ export default function HomeScreen(props) {
     } else {
         return (
             <Tab.Navigator>
-                <Tab.Screen name = "Home" component = { Home } />
+            <Tab.Screen name = "Home" component = { Home } initialParams = 
+             {{alumni: alumni}}/>
                 <Tab.Screen name = "Projects" component = { ProjectView } />
                 <Tab.Screen name = "Saved Projects" component = { ProjectsSaved } />
                 <Tab.Screen name = "My Profile" component = { ProfileEdit } initialParams = 

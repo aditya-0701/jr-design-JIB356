@@ -343,7 +343,7 @@ export class Card extends React.Component {
             }}>
               <Text style={styles.leftRightNav}> &#171; </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.heartButton} onPress={() => {
+            <TouchableOpacity style={styles.heartbutton} onPress={() => {
               this.props.navigation.navigate("Page3")
             }}>
               <Text style={styles.heart}> &#9829;</Text>
@@ -906,7 +906,7 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 100,
     backgroundColor: 'rgba(179, 163, 105, .7)',
-    top: -20,
+    top: -50,
     // right: 50
   },
   leftButton: {
@@ -914,7 +914,7 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 100,
     backgroundColor: 'rgba(179, 163, 105, .7)',
-    top: -20,
+    top: -50,
     right: 15
   },
   leftRightNav: {
@@ -926,7 +926,7 @@ const styles = StyleSheet.create({
     fontSize: 70
   },
   heart: {
-    top: -35,
+    top: -65,
     right: 15,
     color: 'rgba(179, 163, 105, .7)',
     fontSize: 80
