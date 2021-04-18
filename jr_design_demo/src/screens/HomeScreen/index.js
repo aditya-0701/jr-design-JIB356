@@ -12,14 +12,7 @@ import EditProfile from '../EditProfile'
 import ViewProfile from '../ViewProfile'
 import ViewProject from '../ViewProject'
 import ViewSaved from '../ViewSaved'
-import NewProject from '../NewProject'
 import EditAlumni from '../EditAlumni'
-import SavedProfiles from '../SavedProfiles/index.js'
-
-//import MainLogin from './mainLogin.js';
-// import AlumniLogin from './alumniLogin.js';
-// import StudentLogin from './studentLogin.js';
-// import ViewProject from '../ViewProject/index.js'
 
 var gtUname = '';
 var name = '';
@@ -404,27 +397,24 @@ const ProjectsSaved = ( props ) => {
 }
 
 const StudentsSaved = ( props ) => {
+    const { gtUsername } = props.route.params;
     return (
         <Stack.Navigator screenOptions = {{headerShown: false}}>
             <Stack.Screen name = "ViewSaved" component = { ViewSaved } initialParams =
-            {{gtUsername: gtUname}}/>
+            {{gtUsername: gtUsername, savedProfiles: 1}}/>
         </Stack.Navigator>
     )
 }
 
 const MyProjects = ( props ) => {
+    const { gtUsername } = props.route.params;
     return (
         <Stack.Navigator screenOptions = {{headerShown: false}}>
-            <Stack.Screen name = "NewProject" component = { NewProject } initialParams =
-            {{gtUsername: gtUname}}/>
-        </Stack.Navigator>
+        <Stack.Screen name = "ViewSaved" component = { ViewSaved } initialParams =
+        {{gtUsername: gtUsername, myProjects: 1}}/>
+    </Stack.Navigator>
     )
 }
-
-// export default function HomeScreen( props ) {
-//     const { email, gtUsername } = props.route.params ;
-//     gtUname = gtUsername;
-//     // getProf({email: email});
 
 export default function HomeScreen(props) {
     const { email, gtUsername, alumni } = props.route.params ;
@@ -437,10 +427,11 @@ export default function HomeScreen(props) {
                 <Tab.Screen name = "Home" component = { Home } initialParams = 
                  {{alumni: alumni}}/>
                 <Tab.Screen name = "Student Profiles" component = { StudentProfiles } initialParams =
-                // <Tab.Screen name = "Student Profiles" component = { ProfileView } initialParams =
                  {{email: email, gtUsername: gtUsername}}/>
-                <Tab.Screen name = "Saved Profiles" component = { StudentsSaved } />
-                <Tab.Screen name = "My Projects" component = { MyProjects } />
+                <Tab.Screen name = "Saved Profiles" component = { StudentsSaved } initialParams =
+                  {{gtUsername: gtUsername, alumni: alumni}}/>
+                <Tab.Screen name = "My Projects" component = { MyProjects } initialParams = 
+                  {{gtUsername: gtUsername}}/>
                 <Tab.Screen name = "My Profile" component = { AlumniEdit } initialParams = 
                  {{email: email, gtUsername: gtUsername}}/>
             </Tab.Navigator>

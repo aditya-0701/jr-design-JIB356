@@ -10,6 +10,8 @@ const loadingSaved = { type: "profile", entries: [] };
 let needToLoad = true;
 var gtUname = '';
 var projId = 0;
+var sProfiles = 0;
+var myP = 0;
 
 
 class NiceButton extends React.Component {
@@ -81,29 +83,58 @@ export const SaveContainer = ({ navigation, route }) => {
     );
   }
 
-  return (
-    <View style={styles.container} >
-      <ScrollView /* contentContainerStyle={ styles.container } */>
-        {projectDetails.entries.map((item, index) => (
-          <View key={index}>
-            <TouchableOpacity style={localStyle.savedItem} onPress={() => { console.log(item); detailScreen(item.id); }}>
-              <Text style={localStyle.savedTextTitle}>{item.name}</Text>
-              <Text numberOfLines={2} style={[localStyle.savedText, { marginTop: 10 }]}>{item.detail1}</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </ScrollView>
-      <View style={localStyle.navButtonContainer}>
-        <NiceButton title="Refresh" onPress={() => {
-          refresh();
-        }} />
-        <NiceButton title="Exit" onPress={() => {
-          needToLoad = true;
-          navigation.goBack();
-        }} />
+  if (myP == 1) {
+    return (
+      <View style={styles.container} >
+        <ScrollView /* contentContainerStyle={ styles.container } */>
+          {projectDetails.entries.map((item, index) => (
+            <View key={index}>
+              <TouchableOpacity style={localStyle.savedItem} onPress={() => { console.log(item); detailScreen(item.id); }}>
+                <Text style={localStyle.savedTextTitle}>{item.name}</Text>
+                <Text numberOfLines={2} style={[localStyle.savedText, { marginTop: 10 }]}>{item.detail1}</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
+        <View style={localStyle.navButtonContainer}>
+          <NiceButton title="Refresh" onPress={() => {
+            refresh();
+          }} />
+          {/* <NiceButton title="Exit" onPress={() => {
+            needToLoad = true;
+            navigation.goBack();
+          }} /> */}
+          <NiceButton title="New Project" onPress={() => {
+            navigation.navigate("NewProject");
+          }} />
+        </View>
       </View>
-    </View>
-  );
+    );
+  } else {
+    return (
+      <View style={styles.container} >
+        <ScrollView /* contentContainerStyle={ styles.container } */>
+          {projectDetails.entries.map((item, index) => (
+            <View key={index}>
+              <TouchableOpacity style={localStyle.savedItem} onPress={() => { console.log(item); detailScreen(item.id); }}>
+                <Text style={localStyle.savedTextTitle}>{item.name}</Text>
+                <Text numberOfLines={2} style={[localStyle.savedText, { marginTop: 10 }]}>{item.detail1}</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
+        <View style={localStyle.navButtonContainer}>
+          <NiceButton title="Refresh" onPress={() => {
+            refresh();
+          }} />
+          {/* <NiceButton title="Exit" onPress={() => {
+            needToLoad = true;
+            navigation.goBack();
+          }} /> */}
+        </View>
+      </View>
+    );
+  }
 };
 
 
@@ -129,6 +160,27 @@ class DetailsScreen extends React.Component {
         "alumni": [{
           "email": "test@test.com",
           "name": "",
+        }]
+      },
+      profile: {
+        "id": 210,
+        "email": "",
+        "gtUsername": "",
+        "firstName": "",
+        "lastName": "",
+        "middleName": "",
+        "start_date": "",
+        "end_date": "",
+        "bio": "",
+        "degree": [],
+        "major": [],
+        "skills": [],
+        "experiences": [{
+          "companyName": "",
+          "position": "",
+          "expDescription": "",
+          "start_date": "",
+          "end_date": ""
         }]
       }
     }
@@ -161,96 +213,193 @@ class DetailsScreen extends React.Component {
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <ScrollView style={styles.detailsPage}>
-          <Text style={{ top: 20, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>{this.state.project.projectTitle}</Text>
-          <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}> Project Details </Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>{'\n\n'}Description:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.projectDescription}</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Skills:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.skills.join(', ')}</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Interests:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.interests.join(', ')}</Text>
+    if (sProfiles == 1) {
+      return (
+        <View style={styles.container}>
+          <ScrollView style={styles.detailsPage}>
+            <Text style={{ top: 20, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>{this.state.profile.firstName} {this.state.profile.lastName}</Text>
+            <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}> Profile Details </Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>{'\n\n'}Biography:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.bio}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Skills:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.skills.join(', ')}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Majors:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.major.join(', ')}</Text>
+  
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Degrees:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.degree.join(', ')}</Text>
+  
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Start Date:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.start_date}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>End Date:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.end_date}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>GT Email:</Text>
+            <Text
+              onPress={() => Linking.openURL('mailto:' + this.state.profile.email)}
+              style={[{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
+              { color: '#0000EE', fontWeight: 'bold' }]}>{this.state.profile.email}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.email}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>GT Username:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.gtUsername}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Experiences:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.experiences[0].companyName}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}></Text>
+            <Text style={{ height: 50 }}></Text>
+          </ScrollView>
+          <TouchableOpacity
+            style={{ backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 10, margin: 20, height: 40, width: '95%', alignSelf: 'center' }}
+            onPress={() => this.deleteSaved()}>
+            <Text style={{ top: 9, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 17 }}> Remove from Saved </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ bottom: 10, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 10, margin: 20, height: 40, width: '95%', alignSelf: 'center' }}
+            onPress={() => this.props.navigation.goBack()}>
+            <Text style={{ top: 9, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 17 }}> Back </Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <ScrollView style={styles.detailsPage}>
+            <Text style={{ top: 20, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>{this.state.project.projectTitle}</Text>
+            <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}> Project Details </Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>{'\n\n'}Description:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.projectDescription}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Skills:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.skills.join(', ')}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Interests:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.interests.join(', ')}</Text>
 
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Majors:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.major.join(', ')}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Majors:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.major.join(', ')}</Text>
 
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Degrees:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.degree.join(', ')}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Degrees:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.degree.join(', ')}</Text>
 
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Hours per Week:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.weekHours}</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Info Link:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.links.join(', ')}</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Project Alumni:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.alumni[0].name}</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Project Alumni Email:</Text>
-          <Text
-            onPress={() => Linking.openURL('mailto:' + this.state.project.alumni[0].email)}
-            style={[{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
-            { color: '#0000EE', fontWeight: 'bold' }]}>
-            {this.state.project.alumni[0].email}
-          </Text>
-          <Text style={{ height: 50 }}></Text>
-        </ScrollView>
-        <TouchableOpacity
-          style={{ backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 10, margin: 20, height: 40, width: '95%', alignSelf: 'center' }}
-          onPress={() => this.deleteSaved()}>
-          <Text style={{ top: 9, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 17 }}> Remove from Saved </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ bottom: 10, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 10, margin: 20, height: 40, width: '95%', alignSelf: 'center' }}
-          onPress={() => this.props.navigation.goBack()}>
-          <Text style={{ top: 9, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 17 }}> Back </Text>
-        </TouchableOpacity>
-      </View>
-    );
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Hours per Week:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.weekHours}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Info Link:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.links.join(', ')}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Project Alumni:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.alumni[0].name}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Project Alumni Email:</Text>
+            <Text
+              onPress={() => Linking.openURL('mailto:' + this.state.project.alumni[0].email)}
+              style={[{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
+              { color: '#0000EE', fontWeight: 'bold' }]}>
+              {this.state.project.alumni[0].email}
+            </Text>
+            <Text style={{ height: 50 }}></Text>
+          </ScrollView>
+          <TouchableOpacity
+            style={{ backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 10, margin: 20, height: 40, width: '95%', alignSelf: 'center' }}
+            onPress={() => this.deleteSaved()}>
+            <Text style={{ top: 9, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 17 }}> Remove from Saved </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ bottom: 10, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 10, margin: 20, height: 40, width: '95%', alignSelf: 'center' }}
+            onPress={() => this.props.navigation.goBack()}>
+            <Text style={{ top: 9, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 17 }}> Back </Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
   }
 }
 
@@ -258,6 +407,8 @@ const Stack = createStackNavigator();
 
 export default function ViewSaved(props) {
   gtUname = props.route.params.gtUsername;
+  myP = props.route.params.myProjects;
+  sProfiles = props.route.params.savedProfiles;
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="View">
