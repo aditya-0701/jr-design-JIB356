@@ -210,7 +210,6 @@ const interestLibrary = [{
   ]
 }];
 
-
 export const BasicDetails = ({ navigation }) => {
 
   const [name, onChangeName] = React.useState('');
@@ -319,7 +318,6 @@ export const BasicDetails = ({ navigation }) => {
       </View>
     </View>
   );
-
 };
 
 export const PictureLink = ({ navigation }) => {
