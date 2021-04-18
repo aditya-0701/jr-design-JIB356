@@ -8,7 +8,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import { addAlumni, updateAlumni } from '../../store'
 import { getStudent, getAlumni } from '../../store.js'
 import styles from '../../globalStyles';
-import DatePicker from 'react-native-datepicker';
 
 class NiceButton extends React.Component {
     constructor(props) { super(props); }
@@ -21,7 +20,6 @@ class NiceButton extends React.Component {
     }
 }
 
-var gtUname = "";
 var name = "";
 
 var userDetails = {
@@ -46,45 +44,44 @@ export const BasicDetails = ({ navigation, route }) => {
     const [lastName, onChangeLastName] = React.useState(userDetails.lastName);
     const [phone, onChangePhone] = React.useState(userDetails.phone);
 
-    if (!userName || userName == "" || userName.length == 0) {
-        getAlumni({ userName: name })
-            .then((resp) => {
-                console.log(resp.body);
-                userDetails = resp.body;
-                onChangeEmail(resp.body.email);
-                onChangePassword(resp.body.pwd);
-                onChangeFirstName(resp.body.firstName);
-                onChangeLastName(resp.body.lastName);
-                onChangePhone(resp.body.phone);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-    }
+    // if (!userName || userName == "" || userName.length == 0) {
+    //     getAlumni({ userName: name })
+    //         .then((resp) => {
+    //             console.log(resp.body);
+    //             userDetails = resp.body;
+    //             onChangeEmail(resp.body.email);
+    //             onChangePassword(resp.body.pwd);
+    //             onChangeFirstName(resp.body.firstName);
+    //             onChangeLastName(resp.body.lastName);
+    //             onChangePhone(resp.body.phone);
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         })
+    // }
 
     const saveVals = () => {
-        console.log(skills);
         userDetails.email = emailValue;
         userDetails.firstName = firstName;
         userDetails.lastName = lastName;
         userDetails.phone = phone;
-        userDetails.pwd = passwordValue;
-        if (emailValue != '' && passwordValue != ''
+   //     userDetails.pwd = passwordValue;
+        if (emailValue != '' && phone != ''
             && firstName != '' && lastName != ''
-            && phone != '') {
-            navigation.navigate("Page3");
+            /*&& passwordValue != ''*/) {
+            console.log("The done button was pressed and all fields were filled out");
         } else {
             alert("All fields must be filled out in order to proceed")
         }
         console.log(JSON.stringify(userDetails));
-        navigation.navigate("Page3");
+     //   navigation.navigate("Page3");
     }
 
     return (
         <View style={styles.container} >
             <ScrollView /* contentContainerStyle={ styles.container } */>
                 <KeyboardAvoidingView>
-                    <Text style={styles.title}>Initial Profile Setup</Text>
+                    <Text style={styles.title}>Profile Setup</Text>
 
                     <Text style={styles.label}>First Name</Text>
                     <TextInput
@@ -126,7 +123,7 @@ export const BasicDetails = ({ navigation, route }) => {
             </ScrollView>
             <View style={localStyle.navButtonContainer}>
                 <NiceButton title="Exit" onPress={() => navigation.goBack()} />
-                <NiceButton title="Work Experience" onPress={saveVals} />
+                <NiceButton title="Done" onPress={saveVals} />
             </View>
         </View>
     );
@@ -403,17 +400,17 @@ export default function EditAlumni(props) {
     var { name } = props.route.params;
     userName = name;
 
-    if (!userName || userName == "" || userName.length == 0) {
-        console.log("Alumni profile not found");
-        getStudent({ name: name })
-            .then((resp) => {
-                console.log(resp.body);
-                userDetails = resp.body;
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-    }
+    // if (!userName || userName == "" || userName.length == 0) {
+    //     console.log("Alumni profile not found");
+    //     getStudent({ name: name })
+    //         .then((resp) => {
+    //             console.log(resp.body);
+    //             userDetails = resp.body;
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         })
+    // }
 
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Page1">

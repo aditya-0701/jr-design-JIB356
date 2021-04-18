@@ -320,12 +320,6 @@ const Alumni = (props) => {
             <TouchableOpacity style = { styles.button } onPress = { logout }>
                 <Text style = { styles.buttonText }>Log Out</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={logout}>
-                <Text style={styles.buttonText}>Log Out</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style = { styles.button } onPress = { editProfile }>
-                <Text style = { styles.buttonText }>Edit Profile</Text>
-            </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={editAlumni}>
                 <Text style={styles.buttonText}>Edit Profile</Text>
             </TouchableOpacity>
@@ -447,7 +441,7 @@ export default function HomeScreen(props) {
                  {{email: email, gtUsername: gtUsername}}/>
                 <Tab.Screen name = "Saved Profiles" component = { StudentsSaved } />
                 <Tab.Screen name = "My Projects" component = { MyProjects } />
-                <Tab.Screen name = "My Profile" component = { ProfileEdit } initialParams = 
+                <Tab.Screen name = "My Profile" component = { AlumniEdit } initialParams = 
                  {{email: email, gtUsername: gtUsername}}/>
             </Tab.Navigator>
         )
