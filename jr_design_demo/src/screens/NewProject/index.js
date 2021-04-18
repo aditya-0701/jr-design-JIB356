@@ -10,7 +10,7 @@ import styles from '../../globalStyles';
 // import Icon from 'react-native-vector-icons/MaterialIcons'
 
 class NiceButton extends React.Component {
-  constructor(props) {super(props);}
+  constructor(props) { super(props); }
   render() {
     return (
       <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
@@ -210,7 +210,6 @@ const interestLibrary = [{
   ]
 }];
 
-
 export const BasicDetails = ({ navigation }) => {
 
   const [name, onChangeName] = React.useState('');
@@ -231,25 +230,26 @@ export const BasicDetails = ({ navigation }) => {
   }
   return (
     <View style={styles.container} >
-    <ScrollView>
-      <KeyboardAvoidingView>
-        <Text style={styles.title}>Basic Project Details</Text>
-        <Text style={styles.label}>Project Name</Text>
-        <TextInput
+      <ScrollView>
+        <KeyboardAvoidingView>
+          <Text style={styles.title}>Basic Project Details</Text>
+          <Text style={styles.label}>Project Name</Text>
+          <TextInput
             placeholder="Name"
             style={styles.inputs}
-            value = { name }
-            onChangeText = { (text) => onChangeName(text)}
-        />
-        <Text style={styles.label}>Description</Text>
-        <TextInput
-            multiline = { true }
-            onChangeText = { (text) => onChangeDescription(text)}
-            value = { description }
-            placeholder = 'Description of project'
-            style = {styles.inputs}
-        />
-        <SectionedMultiSelect
+            value={name}
+            onChangeText={(text) => onChangeName(text)}
+          />
+          <Text style={styles.label}>Description</Text>
+          <TextInput
+            multiline={true}
+            onChangeText={(text) => onChangeDescription(text)}
+            value={description}
+            placeholder='Description of project'
+            style={styles.inputs}
+          />
+          <Text style={styles.label}>Degree</Text>
+          <SectionedMultiSelect
             items={degreeLibrary}
             uniqueKey="id"
             subKey="children"
@@ -262,9 +262,9 @@ export const BasicDetails = ({ navigation }) => {
             single={true}
             onSelectedItemsChange={onChangeDegree}
             selectedItems={degree}
-            styles={[styles, localStyle]}/>
-        <Text style={styles.label}>Major</Text>
-            <SectionedMultiSelect
+            styles={[styles, localStyle]} />
+          <Text style={styles.label}>Major</Text>
+          <SectionedMultiSelect
             items={majorLibrary}
             uniqueKey="id"
             subKey="children"
@@ -279,9 +279,8 @@ export const BasicDetails = ({ navigation }) => {
             selectedItems={major}
             styles={[styles, localStyle]}
           />
-        <Text style={styles.label}>What Skills Would Be Useful for Your Project?</Text>
-        <Text style={styles.label}>Skills</Text>
-            <SectionedMultiSelect
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#B3A369', paddingVertical: 10 }}>What Skills Would Be Useful for Your Project?</Text>
+          <SectionedMultiSelect
             items={skillLibrary}
             uniqueKey="id"
             subKey="children"
@@ -295,9 +294,8 @@ export const BasicDetails = ({ navigation }) => {
             selectedItems={skills}
             styles={[styles, localStyle]}
           />
-        <Text style={styles.label}>What Interests are relevant to your project?</Text>
-        <Text style={styles.label}>Interests</Text>
-            <SectionedMultiSelect
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#B3A369', paddingVertical: 10 }}>What Interests are relevant to your project?</Text>
+          <SectionedMultiSelect
             items={interestLibrary}
             uniqueKey="id"
             subKey="children"
@@ -311,73 +309,72 @@ export const BasicDetails = ({ navigation }) => {
             selectedItems={interests}
             styles={[styles, localStyle]}
           />
-        <View style={{padding:40}}></View>
-      </KeyboardAvoidingView>
-    </ScrollView>
-      <View style={ localStyle.navButtonContainer }>
-        <NiceButton title="Exit" onPress={() => navigation.goBack()}/>
-        <NiceButton title="Picture and External Link" onPress={ saveVals }/>
+          <View></View>
+        </KeyboardAvoidingView>
+      </ScrollView>
+      <View style={localStyle.navButtonContainer}>
+        <NiceButton title="Exit" onPress={() => navigation.goBack()} />
+        <NiceButton title="Picture and External Link" onPress={saveVals} />
       </View>
     </View>
   );
-
 };
 
 export const PictureLink = ({ navigation }) => {
   const title = React.useState("Project Picture and External Link");
-  
+
   const [hoursPerWeek, onChangeHours] = React.useState('');
   const [externalLink, onChangeExternalLink] = React.useState('');
   const [startDate, onChangeStartDate] = React.useState(new Date());
   const [endDate, onChangeEndDate] = React.useState(new Date());
 
   return (
-    <View id="page2" style={[localStyle.container, {flex: 1}]}>
+    <View id="page2" style={[localStyle.container, { flex: 1 }]}>
 
       <Text style={styles.title}>Timeframe and External Link</Text>
       <Text style={styles.label}>Start and end Dates</Text>
-      <View style={{flexDirection: "row"}}>
+      <View style={{ flexDirection: "row" }}>
         <DatePicker
           date={startDate}
-          style={{flexGrow: 1}}
+          style={{ flexGrow: 1 }}
           mode="date"
           placeholder="select project start date"
           format="MM-DD-YYYY"
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
-          onDateChange={(date) => {onChangeStartDate(date)}}
+          onDateChange={(date) => { onChangeStartDate(date) }}
         />
-        <Text style={[styles.label, {flexGrow: 1}]}>to</Text>
+        <Text style={[styles.label, { flexGrow: 1 }]}>to</Text>
         <DatePicker
           date={endDate}
-          style={{flexGrow: 1}}
+          style={{ flexGrow: 1 }}
           mode="date"
           placeholder="select project end date"
           format="MM-DD-YYYY"
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
-          onDateChange={(date) => {onChangeEndDate(date)}}
+          onDateChange={(date) => { onChangeEndDate(date) }}
         />
       </View>
       <Text style={styles.label}>How many Hours per week are expected?</Text>
-        <TextInput
-            placeholder="--"
-            style={styles.inputs}
-            value={hoursPerWeek}
-            onChangeText = { (text) => onChangeHours(text) }
-            keyboardType = "decimal-pad"
-            maxLength= {4}
-        />
+      <TextInput
+        placeholder="Hours per Week"
+        style={styles.inputs}
+        value={hoursPerWeek}
+        onChangeText={(text) => onChangeHours(text)}
+        keyboardType="decimal-pad"
+        maxLength={4}
+      />
       <Text style={styles.label}>External Link</Text>
       <TextInput placeholder="Link to external site (Optional)"
         style={styles.inputs}
         value={externalLink}
-        onChangeText={(text) => {onChangeExternalLink(text)}}
+        onChangeText={(text) => { onChangeExternalLink(text) }}
       />
 
-      <View style={[localStyle.navButtonContainer, {flex: 1}]}>
-        <NiceButton title="Basic Info" onPress={() => navigation.navigate("Page1")}/>
-        <NiceButton title="Finish" onPress={() => 0}/>
+      <View style={[localStyle.navButtonContainer, { flex: 1 }]}>
+        <NiceButton title="Basic Info" onPress={() => navigation.navigate("Page1")} />
+        <NiceButton title="Finish" onPress={() => 0} />
       </View>
     </View>
   );
@@ -385,9 +382,9 @@ export const PictureLink = ({ navigation }) => {
 
 const Stack = createStackNavigator();
 
-export default function NewProject( props ) {
+export default function NewProject(props) {
   return (
-    <Stack.Navigator screenOptions = {{headerShown: false}} initialRouteName="Page1">
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Page1">
       <Stack.Screen name="Page1" component={BasicDetails} />
       <Stack.Screen name="Page2" component={PictureLink} />
     </Stack.Navigator>
@@ -414,12 +411,12 @@ const localStyle = StyleSheet.create({//File-specific
     borderColor: "black"
   },
   container: {
-      backgroundColor: '#F5F5F5',
-      color: '#F5F5F5',
-      //opacity: 100,
-      padding: 15,
-      marginTop: 30,
-      flex: 1
+    backgroundColor: '#F5F5F5',
+    color: '#F5F5F5',
+    //opacity: 100,
+    padding: 15,
+    marginTop: 30,
+    flex: 1
   },
   listContainer: {
     backgroundColor: '#F5F5F5',
@@ -428,13 +425,13 @@ const localStyle = StyleSheet.create({//File-specific
     padding: 15,
     marginTop: 30,
     flex: 1
-},
-backdrop: {
-  backgroundColor: '#F5F5F5',
-  color: '#F5F5F5',
-  //opacity: 100,
-  padding: 15,
-  marginTop: 30,
-  flex: 1
-}
+  },
+  backdrop: {
+    backgroundColor: '#F5F5F5',
+    color: '#F5F5F5',
+    //opacity: 100,
+    padding: 15,
+    marginTop: 30,
+    flex: 1
+  }
 });
