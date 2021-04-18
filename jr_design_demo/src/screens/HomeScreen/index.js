@@ -357,7 +357,6 @@ const AlumniEdit = (props) => {
         </Stack.Navigator>
     )
 }
-
 const ProfileView = ( props ) => {
     const { email, gtUsername } = props.route.params;
     return (
