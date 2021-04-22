@@ -9,6 +9,7 @@ import HomeScreen from './screens/HomeScreen'
 import ViewProfile from './screens/ViewProfile'
 import ViewProject from './screens/ViewProject'
 import ViewSaved from './screens/ViewSaved'
+import NewAlumni from './screens/NewAlumni'
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ export default function App ( props ) {
             <Stack.Navigator screenOptions = {{headerShown: false}} >
                 <Stack.Screen name = "Login" component = { Login } />
                 <Stack.Screen name="NewProfile" component={ NewProfile } />
+                <Stack.Screen name="NewAlumni" component={ NewAlumni } />
                 <Stack.Screen name="NewProject" component={ NewProject } />
                 <Stack.Screen name="HomeScreen" component={ HomeScreen } />
                 <Stack.Screen name="ViewProject" component={ ViewProject } />

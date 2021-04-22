@@ -18,10 +18,11 @@ const selectVals = `gtUsername,
                     email,
                     bio`;
 
+// Gets info about a specific student
 Student.findStudent = async ( params ) => {
   try {
     const { gtUsername } = params;
-    // We can use knex to remove the need to do string interpolation to perform our DB transactions.
+    // Get basic student info
     const query = `SELECT gtUsername, 
                      firstName,
                      lastName,
@@ -35,6 +36,7 @@ Student.findStudent = async ( params ) => {
     student = student || null;
     if (student) {
       console.log('Student exists');
+      // Get additional student info
       const skillQuery = `SELECT skill, id FROM Skills 
                 WHERE id IN ( SELECT skillId FROM StudentSkills WHERE gtUsername = "${gtUsername}")`;
       student.skills = await connection.query(skillQuery);
@@ -64,12 +66,14 @@ Student.findStudent = async ( params ) => {
   }
 };
 
+// Custom query to get student info not user facing
 Student.queryStudent = async ( params ) => {
   const { query } = params;
   var students = await connection.query(query);
   return students;
 };
 
+// Gets basic sutdent info based on given filters
 Student.getAll = async ( params ) => {
   let query = 'SELECT gtUsername, firstName, lastName, email FROM Students';
   let gtUnames = [];
@@ -124,7 +128,7 @@ Student.getAll = async ( params ) => {
     }
     query += 'weekHours >= ' + connection.escape(params.hours);
   }
-
+  // Search for students based on name and bio
   if (params.search) {
     var searchString = connection.escape(params.search);
     if (whereActive) {
@@ -171,6 +175,7 @@ Student.addStudent = async ( params ) => {
 
       if (params.interests) {
         var interestsVals = [];
+        // Format data for bulk insertion
         for (let i = 0; i < params.interests.length; i++) {
           interestsVals.push([params.gtUsername, params.interests[i]]);
         }
@@ -182,6 +187,7 @@ Student.addStudent = async ( params ) => {
         // assumes params.experience follows:
         // [[description, company name, start date, end date], ...]
         var experiencesVals = [];
+        // Format data for bulk insertion
         for (let i = 0; i < params.experiences.length; i++) {
           const exp = params.experiences[i];
           const gtU = params.gtUsername;
@@ -203,6 +209,7 @@ Student.addStudent = async ( params ) => {
       if (params.links) {
         var linksVals = [];
         const gtU = params.gtUsername;
+        // Format data for bulk insertion
         for (let i = 0; i < params.links.length; i++) {
           const link = params.links[i];
           const linkVal = [gtU, link.label, link.address];
@@ -225,6 +232,8 @@ Student.deleteStudent = async ( params ) => {
   return student;
 };
 
+// Updates all basic student info
+// Only updates additional student info if provided
 Student.updateStudent = async ( params ) => {
   const { gtUsername } = params;
   const inputs = Object.assign({}, params);
@@ -267,6 +276,7 @@ Student.updateStudent = async ( params ) => {
 
   if (params.interests) {
     var interestsVals = [];
+    // Format data for bulk insertion
     for (let i = 0; i < params.interests.length; i++) {
       interestsVals.push([params.gtUsername, params.interests[i]]);
     }
@@ -280,6 +290,7 @@ Student.updateStudent = async ( params ) => {
     // assumes params.experience follows:
     // [[description, company name, start date, end date], ...]
     var experiencesVals = [];
+    // Format data for bulk insertion
     for (let i = 0; i < params.experiences.length; i++) {
       const exp = params.experiences[i];
       const gtU = params.gtUsername;
@@ -309,7 +320,7 @@ Student.updateStudent = async ( params ) => {
 
   if (params.links) {
     var linksVals = [];
-
+    // Format data for bulk insertion
     for (let i = 0; i < params.links.length; i++) {
       const link = params.links[i];
       const linkVal = [gtUsername, link.label, link.address];
@@ -334,6 +345,7 @@ Student.getStudentSkills = async ( params ) => {
 Student.updateStudentSkills = async (params) => {
   const { gtUsername, newSkills } = params;
   var skillsVals = [];
+  // Format data for bulk insertion
   for (let i = 0; i < newSkills.length; i++) {
     skillsVals.push([gtUsername, newSkills[i]]);
   }
@@ -361,6 +373,7 @@ Student.getStudentInterests = async ( params ) => {
 Student.updateStudentInterests = async ( params ) => {
   const { gtUsername, newInterests } = params;
   const interestVals = [];
+  // Format data for bulk insertion
   for (let i = 0; i < newInterests.length; i++) {
     interestVals.push([gtUsername, newInterests[i]]);
   }
@@ -390,6 +403,7 @@ Student.updateStudentExperiences = async ( params ) => {
   // if experience already exists then id must be included, otherwise id must be null
   const { gtUsername, newExperiences } = params;
   var experiencesVals = [];
+  // Format data for bulk insertion
   for (let i = 0; i < newExperiences.length; i++) {
     newExperiences[i].splice(1, 0, gtUsername);
     experiencesVals.push(newExperiences[i]);
@@ -417,10 +431,9 @@ Student.getStudentProjectInterests = async (params) => {
 };
 
 Student.addProjectInterest = async ( params ) => {
-  // TODO: Talk with aditya if this should be replaced with update?
   const { gtUsername, projectIDs } = params;
   var interestParams = [];
-  // gtUsername = connection.escape(gtUsername);
+  // Format data for bulk insertion
   for (let i = 0; i < projectIDs.length; i++) {
     interestParams.push([gtUsername, projectIDs[i]]);
   }
@@ -432,11 +445,10 @@ Student.addProjectInterest = async ( params ) => {
 Student.updateProjectInterests = async (params) => {
   const { gtUsername, projectIDs } = params;
   var interestParams = [];
+  // Format data for bulk insertion
   for (let i = 0; i < projectIDs.length; i++) {
     interestParams.push([gtUsername, projectIDs[i]]);
   }
-  // TODO: Talk with aditya the best way to update this
-  //       - Delete Then Insert?
   const deleteQuery = `DELETE FROM StudentSavedProjects WHERE gtUsername = ${connection.escape(gtUsername)}`;
   const query = 'INSERT IGNORE INTO StudentSavedProjects (gtUsername, projectId) VALUES ?';
   await connection.query(deleteQuery);

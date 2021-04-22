@@ -3,13 +3,58 @@ import { View, ScrollView, Text, Dimensions, StyleSheet, TouchableOpacity, Butto
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import styles from '../../globalStyles';
-import { getStudentProjectInterests, getProject, deleteProjectInterest } from "../../store";
+import { getStudentProjectInterests, getProject, deleteProjectInterest, getStudent } from "../../store";
 
 
 const loadingSaved = { type: "profile", entries: [] };
 let needToLoad = true;
 var gtUname = '';
 var projId = 0;
+
+var profiles = [{
+  id: "1",
+  email: "asudarshan30@gatech.edu",
+  gtUsername: "asudarshan30",
+  firstName: "Aditya",
+  lastName: "Sudarshan",
+  middleName: "",
+  bio: "I am a 3rd year CS major",
+  degree: "B.S.",
+  major: "Computer Science",
+  skills: "Programming",
+  start_date: "May 10, 2021",
+  end_date: "August 1, 2021",
+  experiences: [{
+    'companyName': 'Microsoft',
+    'position': 'Software Engineer',
+    'expDescription': 'sdklgna;klgnd',
+    'start_date': new Date(),
+    'end_date': new Date()
+  }],
+  uri: require('../../../assets/defaultskin.png')
+},
+{
+  id: "2",
+  email: "aharris322@gatech.edu",
+  gtUsername: "aharris322",
+  firstName: "Andrew",
+  lastName: "Harris",
+  middleName: "",
+  bio: "I am a 2nd yr cs major",
+  degree: "B.S.",
+  major: "Computer Science",
+  skills: "Programming",
+  start_date: "May 5, 2021",
+  end_date: "August 10, 2021",
+  experiences: [{
+    'companyName': 'Google',
+    'position': 'Software Engineer',
+    'expDescription': 'sdklgna;klgnd',
+    'start_date': new Date(),
+    'end_date': new Date()
+  }],
+  uri: require('../../../assets/defaultskin.png')
+}]
 
 
 class NiceButton extends React.Component {
@@ -42,7 +87,7 @@ class SavedItem extends React.Component {
 function getProfileDetails(storedData) {
   let result = { type: "project", entries: [] };
   for (let i = 0; i < storedData.length; i++) {
-    result.entries.push({ name: storedData[i].projectTitle, detail1: storedData[i].projectDescription, id: storedData[i].id });
+    result.entries.push({ name: storedData[i].firstName + " " + storedData[i].lastName, detail1: storedData[i].email, id: storedData[i].gtUsername });
   }
 
   return result;
@@ -57,28 +102,34 @@ export const SaveContainer = ({ navigation, route }) => {
     projId = ind;
     navigation.navigate("DetailsScreen")
   }
+  // React.useEffect(() => {
+  //   getStudentProjectInterests({ gtUsername: gtUname }).then(
+  //     (data) => {
+  //       console.log(data.body);
+  //       setProjectDetails(getProfileDetails(data.body));
+  //     }
+  //   ).catch(
+  //     (err) => { console.log(err); }
+  //   );
+  // }, [gtUname]);
+  let load = 0; 
   React.useEffect(() => {
-    getStudentProjectInterests({ gtUsername: gtUname }).then(
-      (data) => {
-        console.log(data.body);
-        setProjectDetails(getProfileDetails(data.body));
-      }
-    ).catch(
-      (err) => { console.log(err); }
-    );
-  }, [gtUname]);
+    setProjectDetails(getProfileDetails(profiles))  
+  }, [load])
+  
   let i = 0;
 
   const refresh = () => {
-    getStudentProjectInterests({ gtUsername: gtUname }).then(
-      (data) => {
-        console.log(data.body);
-        setProjectDetails(getProfileDetails(data.body));
-        console.log(projectDetails)
-      }
-    ).catch(
-      (err) => { console.log(err); }
-    );
+    // getStudentProjectInterests({ gtUsername: gtUname }).then(
+    //   (data) => {
+    //     console.log(data.body);
+    //     setProjectDetails(getProfileDetails(data.body));
+    //     console.log(projectDetails)
+    //   }
+    // ).catch(
+    //   (err) => { console.log(err); }
+    // );
+    setProjectDetails(getProfileDetails(profiles))
   }
 
   return (
@@ -114,19 +165,15 @@ class DetailsScreen extends React.Component {
 
     this.state = {
       profile: {
-        "id": 21,
-        "email": "",
-        "gtUsername": "",
-        "firstName": "",
-        "lastName": "",
-        "middleName": "",
-        "start_date": "",
-        "end_date": "",
-        "bio": "",
-        "degree": [],
-        "major": [],
-        "skills": [],
-        "experiences": [{
+        firstName: '',
+        lastName: '',
+        email: '',
+        skills: [],
+        major: [],
+        interests: [],
+        degree: [],
+        links: [],
+        experiences: [{
           "companyName": "",
           "position": "",
           "expDescription": "",
@@ -142,11 +189,11 @@ class DetailsScreen extends React.Component {
     //   console.log("TEST");
     //   console.log(proj.id);
     //   var projId = proj.id;
-    getProject({ projId: projId })
+    getStudent({ gtUsername: projId })
       .then((resp) => {
         let body = resp.body;
         console.log(body);
-        this.setState({ project: body })
+        this.setState({ profile: body })
       })
       .catch((err) => console.log(err))
 
@@ -166,85 +213,60 @@ class DetailsScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView style={styles.detailsPage}>
-          <Text style={{ top: 20, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>{this.state.profile.firstName} {this.state.profile.lastName}</Text>
-          <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}> Profile Details </Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>{'\n\n'}Biography:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.bio}</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Skills:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.skills.join(', ')}</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Majors:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.major.join(', ')}</Text>
-
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Degrees:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.degree.join(', ')}</Text>
-
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Start Date:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.start_date}</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>End Date:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.end_date}</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>GT Email:</Text>
-          <Text
-            onPress={() => Linking.openURL('mailto:' + this.state.profile.email)}
-            style={[{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
-            { color: '#0000EE', fontWeight: 'bold' }]}>{this.state.profile.email}</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.email}</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>GT Username:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.gtUsername}</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Experiences:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.experiences[0].companyName}</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}></Text>
-          <Text style={{ height: 50 }}></Text>
+        <ScrollView>
+        <View style={styles.info}>
+            <Text style={styles.label}>Name</Text>
+            <Text>{ this.state.profile.firstName || "" } {this.state.profile.lastName || ""}</Text>
+            <Text style={styles.label}>Email</Text>
+            <Text 
+                onPress = {() => Linking.openURL('mailto:'+ this.state.profile.email)}
+                style = {{color: '#0000EE', fontWeight: 'bold'}}
+            >
+                { this.state.profile.email || "" }
+            </Text>
+            <Text style = {styles.label}>Degree</Text>
+            <Text>{ this.state.profile.degree.map(({ degree }) => degree).join(', ') || "" }</Text>
+            <Text style = {styles.label}>Major</Text>
+            <Text>{ this.state.profile.major.map(({ major }) => major).join(', ') || "" }</Text>
+            <Text style = {styles.label}>Skills</Text>
+            <Text>{ this.state.profile.skills.map(({ skill }) => skill).join(', ') || "" }</Text>
+            <Text style = {styles.label}>Interests</Text>
+            <Text>{ this.state.profile.interests.map(({ interest }) => interest).join(', ') || "" }</Text>
+            <Text style = {styles.label}>Experiences</Text>
+            {this.state.profile.experiences.map((element, index) => {
+                return (<View key = {index}>
+                    <Text style={[styles.label, { fontSize: 18, fontStyle: 'italic' }]}>Company</Text>
+                    <Text style={{ color: 'black' }}>{element.companyName || "not found"}</Text>
+                    <Text style={[styles.label, { fontSize: 18, fontStyle: 'italic' }]}>Position</Text>
+                    <Text style={{ color: 'black' }}>{element.position || "not found"}</Text>
+                    <View style={{ textAlign: 'stretch', flexDirection: "row",alignItems: 'stretch',justifyContent: 'center' }}>
+                        <Text style={[styles.label,
+                        { marginHorizontal: 20, width: '45%' }, 
+                        { fontSize: 18, fontStyle: 'italic' }]}>Start Date</Text>
+                        <Text style={[styles.label,
+                        { marginHorizontal: 20, width: '45%' },
+                        { fontSize: 18, fontStyle: 'italic' }]}>End Date</Text>
+                    </View>
+                    <View style={{ textAlign: 'center', flexDirection: "row", alignItems: 'stretch', justifyContent: 'center' }}>
+                        {<Text style={{ marginHorizontal: 20, width: '45%' }}>{element.start_date.split('T')[0]}</Text>}
+                        {<Text style={{ marginHorizontal: 20, width: '45%' }}>{element.end_date.split('T')[0]}</Text> }
+                    </View>
+                    <Text style={[styles.label, { fontSize: 18, fontStyle: 'italic' }]}>Description</Text>
+                    <Text style={{ color: 'black' }}>{element.expDescription}</Text>
+                </View>
+            )})}
+            <Text style = {styles.label}>External Links</Text>
+            {this.state.profile.links.map((element, index) => {
+                return (<View key = {index}>
+                    <Text style={[styles.label, {fontSize: 18, fontStyle: 'italic'}]}>Link Label</Text>
+                    <Text style={{color: 'black'}}>{element.label || "not found"}</Text>
+                    <Text style={[styles.label, {fontSize: 18, fontStyle: 'italic'}]}>Link Address</Text>
+                    <Text style={{color: 'blue', fontWeight: 'bold'}} onPress = {() => Linking.openURL(element.address)}>
+                      {element.address || "not found"}</Text>
+                </View>
+                )
+            })}
+            </View>
         </ScrollView>
         <TouchableOpacity
           style={{ backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 10, margin: 20, height: 40, width: '95%', alignSelf: 'center' }}
@@ -264,7 +286,7 @@ class DetailsScreen extends React.Component {
 const Stack = createStackNavigator();
 
 export default function ViewSaved(props) {
-  gtUname = props.route.params.gtUsername;
+  // gtUname = props.route.params.gtUsername;
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="View">

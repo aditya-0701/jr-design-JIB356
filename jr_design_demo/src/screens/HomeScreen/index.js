@@ -13,6 +13,7 @@ import ViewProfile from '../ViewProfile'
 import ViewProject from '../ViewProject'
 import ViewSaved from '../ViewSaved'
 import EditAlumni from '../EditAlumni'
+import SavedProfiles from '../SavedProfiles'
 
 var gtUname = '';
 var name = '';
@@ -399,7 +400,7 @@ const StudentsSaved = ( props ) => {
     const { gtUsername } = props.route.params;
     return (
         <Stack.Navigator screenOptions = {{headerShown: false}}>
-            <Stack.Screen name = "ViewSaved" component = { ViewSaved } initialParams =
+            <Stack.Screen name = "SavedProfiles" component = { SavedProfiles } initialParams =
             {{gtUsername: gtUsername, savedProfiles: 1}}/>
         </Stack.Navigator>
     )
@@ -423,8 +424,8 @@ export default function HomeScreen(props) {
     if (alumni) {
         return (
             <Tab.Navigator>
-                <Tab.Screen name = "Home" component = { Home } initialParams = 
-                 {{alumni: alumni}}/>
+                {/* <Tab.Screen name = "Home" component = { Home } initialParams = 
+                 {{alumni: alumni}}/> */}
                 <Tab.Screen name = "Student Profiles" component = { StudentProfiles } initialParams =
                  {{email: email, gtUsername: gtUsername}}/>
                 <Tab.Screen name = "Saved Profiles" component = { StudentsSaved } initialParams =
@@ -438,8 +439,8 @@ export default function HomeScreen(props) {
     } else {
         return (
             <Tab.Navigator>
-            <Tab.Screen name = "Home" component = { Home } initialParams = 
-             {{alumni: alumni}}/>
+            {/* <Tab.Screen name = "Home" component = { Home } initialParams = 
+             {{alumni: alumni}}/> */}
                 <Tab.Screen name = "Projects" component = { ProjectView } />
                 <Tab.Screen name = "Saved Projects" component = { ProjectsSaved } />
                 <Tab.Screen name = "My Profile" component = { ProfileEdit } initialParams = 

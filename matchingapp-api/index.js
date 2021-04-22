@@ -21,6 +21,7 @@ const four03 = () => {
  *   - payload: a parameter to pass to the operation being performed
  */
 exports.handler = async (event) => {
+  // Process request
   const { rawPath, rawQueryString = null, body } = event;
   const pathArr = rawPath.split('/');
   const mainPath = pathArr[1];
@@ -28,6 +29,7 @@ exports.handler = async (event) => {
   const query = (rawQueryString != null && rawQueryString !== '') ? parseQuery(rawQueryString) : null;
   const method = event.requestContext.http.method;
   const pathParams = event.pathParameters || null;
+  // Handle Routing for the API
   switch ( mainPath ) {
     case 'student':
       switch ( method ) {
@@ -186,7 +188,19 @@ exports.handler = async (event) => {
         default:
           return four03();
       }
-
+    case 'alumniSavedStudents':
+      switch (method) {
+        case 'GET':
+          return alumni.getSavedStudents(query);
+        case 'PUT':
+          return alumni.updateSavedStudents(parsedBody);
+        case 'POST':
+          return alumni.addSavedStudents(parsedBody);
+        case 'DELETE':
+          return alumni.deleteAllSavedStudents(query);
+        default:
+          return four03();
+      }
     default:
       return four03();
   }

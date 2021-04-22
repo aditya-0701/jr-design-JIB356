@@ -59,7 +59,7 @@ const userDetails = [
     firstName: "Aditya",
     lastName: "Sudarshan",
     middleName: "",
-    bio: "I am a 3rd yr cs major",
+    bio: "I am a 3rd year CS major",
     degree: "B.S.",
     major: "Computer Science",
     skills: "Programming",

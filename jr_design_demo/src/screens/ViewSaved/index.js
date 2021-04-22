@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, ScrollView, Text, Dimensions, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView } from 'react-native';
+import { View, ScrollView, Text, Linking, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import styles from '../../globalStyles';
@@ -238,14 +238,17 @@ class DetailsScreen extends React.Component {
               color: '#B3A369',
               paddingLeft: 15,
             }}>Skills:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.skills.join(', ')}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.profile.skills.map(({ skill }) => skill).join(', ')}
+            </Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
               color: '#B3A369',
               paddingLeft: 15,
             }}>Majors:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.major.join(', ')}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.profile.major.map(({ major }) => major).join(', ')}</Text>
   
             <Text style={{
               fontSize: 20,
@@ -253,7 +256,8 @@ class DetailsScreen extends React.Component {
               color: '#B3A369',
               paddingLeft: 15,
             }}>Degrees:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.degree.join(', ')}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.profile.degree.map(({ degree }) => degree).join(', ')}</Text>
   
             <Text style={{
               fontSize: 20,
@@ -261,14 +265,16 @@ class DetailsScreen extends React.Component {
               color: '#B3A369',
               paddingLeft: 15,
             }}>Start Date:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.start_date}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.profile.start_date}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
               color: '#B3A369',
               paddingLeft: 15,
             }}>End Date:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.profile.end_date}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.profile.end_date}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
@@ -333,14 +339,16 @@ class DetailsScreen extends React.Component {
               color: '#B3A369',
               paddingLeft: 15,
             }}>Skills:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.skills.join(', ')}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.project.skills.map(({ skill }) => skill).join(', ')}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
               color: '#B3A369',
               paddingLeft: 15,
             }}>Interests:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.interests.join(', ')}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.project.interests.map(({ interests }) => interests).join(', ')}</Text>
 
             <Text style={{
               fontSize: 20,
@@ -348,7 +356,8 @@ class DetailsScreen extends React.Component {
               color: '#B3A369',
               paddingLeft: 15,
             }}>Majors:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.major.join(', ')}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.project.major.map(({ major }) => major).join(', ')}</Text>
 
             <Text style={{
               fontSize: 20,
@@ -356,7 +365,8 @@ class DetailsScreen extends React.Component {
               color: '#B3A369',
               paddingLeft: 15,
             }}>Degrees:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.degree.join(', ')}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.project.degree.map(({ degree }) => degree).join(', ')}</Text>
 
             <Text style={{
               fontSize: 20,
@@ -364,21 +374,24 @@ class DetailsScreen extends React.Component {
               color: '#B3A369',
               paddingLeft: 15,
             }}>Hours per Week:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.weekHours}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.project.weekHours}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
               color: '#B3A369',
               paddingLeft: 15,
             }}>Info Link:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.links.join(', ')}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.project.links.join(', ')}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
               color: '#B3A369',
               paddingLeft: 15,
             }}>Project Alumni:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.alumni[0].name}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.project.alumni[0].name}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',

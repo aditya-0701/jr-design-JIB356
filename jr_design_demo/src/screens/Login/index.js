@@ -19,10 +19,12 @@ export const MainLogin = (props) => {
 
     const { navigation } = props
     const alumniLogin = function () {
+        userRole = 'A';
         navigation.navigate('AlumniLogin');
     }
 
     const studentLogin = function () {
+        userRole = 'S';
         navigation.navigate('StudentLogin');
     }
 
@@ -56,7 +58,7 @@ const LoginPage = (props) => {
         console.log(sessionId + " Session ID")
         onChangeError('Logging in...');
         //var value = false;
-        userLogin( { email: emailValue, pass: passwordValue } )
+        userLogin( { email: emailValue, pass: passwordValue, role: userRole } )
         .then(async (resp) => {
             console.log("Response: " + JSON.stringify(resp.body))
             console.log(resp.body.gtUsername);
@@ -87,7 +89,11 @@ const LoginPage = (props) => {
     }
 
     const setupProfile = () => {
-        navigation.navigate('NewProfile');
+        if (userRole == 'S') {
+            navigation.navigate('NewProfile');
+        } else {
+            navigation.navigate('NewAlumni');
+        }
     }
     return (
         <View>

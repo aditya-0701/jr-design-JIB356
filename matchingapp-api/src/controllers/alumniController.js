@@ -1,5 +1,5 @@
 const Alumni = require('../models/alumniModels');
-
+// Basic Requests errors
 var rtr = {
   body: '',
   statusCode: 0,
@@ -168,6 +168,95 @@ exports.deleteProject = async ( req ) => {
 exports.updateProject = async ( req ) => {
   try {
     var result = await Alumni.updateProject( req );
+    if (result === null) {
+      rtr.body = JSON.stringify({
+        message: 'Record not found with the given input parameters.',
+        status: 404
+      });
+      rtr.statusCode = 404;
+      return rtr;
+    }
+
+    return result;
+  } catch (e) {
+    return four00(e);
+  }
+};
+
+exports.getSavedStudents = async ( req ) => {
+  try {
+    var result = await Alumni.getSavedStudents( req );
+    if (result === null) {
+      rtr.body = JSON.stringify({
+        message: 'Record not found with the given input parameters.',
+        status: 404
+      });
+      rtr.statusCode = 404;
+      return rtr;
+    }
+
+    return result;
+  } catch (e) {
+    return four00(e);
+  }
+};
+exports.addSavedStudents = async ( req ) => {
+  try {
+    var result = await Alumni.addSavedStudents( req );
+    if (result === null) {
+      rtr.body = JSON.stringify({
+        message: 'Record not found with the given input parameters.',
+        status: 404
+      });
+      rtr.statusCode = 404;
+      return rtr;
+    }
+
+    return result;
+  } catch (e) {
+    return four00(e);
+  }
+};
+
+exports.updateSavedStudents = async ( req ) => {
+  try {
+    var result = await Alumni.updateSavedStudents( req );
+    if (result === null) {
+      rtr.body = JSON.stringify({
+        message: 'Record not found with the given input parameters.',
+        status: 404
+      });
+      rtr.statusCode = 404;
+      return rtr;
+    }
+
+    return result;
+  } catch (e) {
+    return four00(e);
+  }
+};
+
+exports.deleteAllSavedStudents = async ( req ) => {
+  try {
+    var result = await Alumni.deleteAllSavedStudents( req );
+    if (result === null) {
+      rtr.body = JSON.stringify({
+        message: 'Record not found with the given input parameters.',
+        status: 404
+      });
+      rtr.statusCode = 404;
+      return rtr;
+    }
+
+    return result;
+  } catch (e) {
+    return four00(e);
+  }
+};
+
+exports.deleteSavedStudent = async ( req ) => {
+  try {
+    var result = await Alumni.deleteSavedStudent( req );
     if (result === null) {
       rtr.body = JSON.stringify({
         message: 'Record not found with the given input parameters.',

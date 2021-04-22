@@ -17,17 +17,12 @@ var failure = (err = 'unauthorized access') => {
 
 const Login = {};
 
+// Process to login a user
 Login.loginUser = async ( params ) => {
   const { gtUsername, password } = params;
-  // Need to implement for Alumni
   const query = `SELECT gtUsername, pwd
         FROM Students
         WHERE gtUsername = "${gtUsername}"`;
-    // if (role == "" || role == "Students" /*|| role == "Alumni"*/) {
-    //     let query = `SELECT username, pwd
-    //     FROM Alumni
-    //     WHERE id = "${gtUsername}"`;
-    // }
   try {
     const user = (await connection.query(query))[0];
     if (!user) return failure('User not found');
@@ -59,13 +54,10 @@ Login.loginUser = async ( params ) => {
   } catch (e) {
     return failure(e);
   }
-  // } else {
-  //     return failure();
-  // }
 };
 
+// Check to see if user has logged in recently
 Login.validateSession = async ( params ) => {
-  // return params;
   var { gtUsername, sessionId } = params;
   const query = `SELECT gtUsername
         FROM Students
@@ -73,7 +65,7 @@ Login.validateSession = async ( params ) => {
   try {
     const user = (await connection.query(query))[0];
     if (!user) return failure('User not found');
-
+    // If user exists then renew SESSIONID
     const sessionQuery = `SELECT gtUsername, sessionId, expiry
             FROM StudentSessions
             WHERE gtUsername = "${gtUsername}"`;

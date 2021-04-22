@@ -78,7 +78,7 @@ Alumni.deleteAlumniAccount = async ( params ) => {
 };
 
 Alumni.addProject = async ( params ) => {
-  // params
+  // Add basic Project info
   if (params.projectAlumni && params.createdAt) {
     const projectParams = [[params.projectTitle, params.projectDescription, params.startDate, params.endDate, params.projectAlumni, params.createdAt, params.visible, params.weekHours]];
     const query = 'INSERT INTO Projects (projectTitle, projectDescription, startDate, endDate, projectAlumni, createdAt, visible, weekHours) VALUES ?;';
@@ -87,12 +87,13 @@ Alumni.addProject = async ( params ) => {
     throw new Error('ERROR OCCURRED');
   }
   console.log(project);
-  // let getProjIdQuery = `SELECT id FROM Projects WHERE projectAlumni = ${connection.escape(params.projectAlumni)} AND createdAt = ${connection.escape(params.createdAt)};`;
-  const id = project.insertId;// await connection.query(getProjIdQuery);
+  const id = project.insertId;
 
   if (project) {
+    // Add additional project info if given
     if (params.skills) {
       const skillsVals = [];
+      // Format data for bulk
       for (let i = 0; i < params.skills.length; i++) {
         skillsVals.push([id, params.skills[i]]);
       }
@@ -101,6 +102,7 @@ Alumni.addProject = async ( params ) => {
     }
     if (params.interests) {
       const interestsVals = [];
+      // Format data for bulk insertion
       for (let i = 0; i < params.interests.length; i++) {
         interestsVals.push([id, params.interests[i]]);
       }
@@ -111,6 +113,7 @@ Alumni.addProject = async ( params ) => {
       // assumes params.links follows:
       // [[label, address], ...]
       const linksVals = [];
+      // Format data for bulk insertion
       for (let i = 0; i < params.links.length; i++) {
         linksVals.push([id, null].concat(params.links[i]));
       }
@@ -122,6 +125,7 @@ Alumni.addProject = async ( params ) => {
   return project;
 };
 
+// Search for projects
 Alumni.getAlumniProjects = async ( params ) => {
   let query = 'SELECT id, projectTitle, projectDescription, startDate, endDate, projectAlumni, weekHours FROM Projects';
   let projIds = [];
@@ -140,19 +144,6 @@ Alumni.getAlumniProjects = async ( params ) => {
     const interestIds = await connection.query(interests);
     projIds.push(interestIds.map(element => element.projectId));
   }
-
-  // To be implemented in DB
-  // if (params.degree) {
-  //     let degrees = 'SELECT projectId from ProjectDegrees WHERE degreeId IN ' + connection.escape([params.degree]);
-  //     let degreeIds = await connection.query(degrees);
-  //     projIds.push(degreeIds.map(element => element['gtUsername']));
-  // }
-
-  // if (params.major) {
-  //     let majors = 'SELECT projectId from ProjectMajors WHERE majorId IN ' + connection.escape([params.major]);
-  //     let majorIds = await connection.query(majors);
-  //     projIds.push(majorIds.map(element => element['gtUsername']));
-  // }
   var whereActive = false;
   projIds = projIds.flat();
   if (projIds != null && projIds !== [] && projIds.length !== 0) {
@@ -163,7 +154,7 @@ Alumni.getAlumniProjects = async ( params ) => {
       return [];
     }
   }
-
+  // Append additional filters if given
   if (params.hours || params.startDate || params.endDate) {
     if (whereActive) {
       query += ' AND ';
@@ -192,7 +183,7 @@ Alumni.getAlumniProjects = async ( params ) => {
       query += 'endDate <= ' + connection.escape(params.endDate);
     }
   }
-
+  // Search Projects against title and desc
   if (params.search) {
     var searchString = connection.escape(params.search);
     if (whereActive) {
@@ -207,37 +198,38 @@ Alumni.getAlumniProjects = async ( params ) => {
   return students;
 };
 
+// Get Specific Project Info
 Alumni.findProject = async ( params ) => {
   const { projectId } = params;
   var id = projectId;
-  // We can use knex to remove the need to do string interpolation to perform our DB transactions.
   const query = `SELECT id, projectTitle, projectDescription, startDate, endDate, projectAlumni, weekHours FROM Projects WHERE id = ${id}`;
-  let student = (await connection.query(query))[0];
-  student = student || null;
-  if (student) {
-    console.log('Student exists');
+  let project = (await connection.query(query))[0];
+  project = project || null;
+  if (project) {
+    console.log('project exists');
     const skillQuery = `SELECT skill, id FROM Skills
             WHERE id IN ( SELECT skillId FROM ProjectSkills WHERE projectId = "${id}")`;
-    student.skills = await connection.query(skillQuery);
+    project.skills = await connection.query(skillQuery);
     const interestQuery = `SELECT interest, id FROM Interests
             WHERE id IN ( SELECT interestId FROM ProjectInterests WHERE projectId = "${id}")`;
-    student.interests = await connection.query(interestQuery);
+    project.interests = await connection.query(interestQuery);
     const majorQuery = `SELECT major, id FROM Majors
             WHERE id IN ( SELECT majorId FROM ProjectMajors WHERE projectId = "${id}")`;
-    student.major = await connection.query(majorQuery);
+    project.major = await connection.query(majorQuery);
     const degreeQuery = `SELECT degree, id FROM Degrees
             WHERE id IN ( SELECT degreeId FROM ProjectDegrees WHERE projectId = "${id}")`;
-    student.degree = await connection.query(degreeQuery);
+    project.degree = await connection.query(degreeQuery);
     const expQuery = `SELECT * FROM Experience WHERE gtUsername = "${id}"`;
-    student.experiences = await connection.query(expQuery);
+    project.experiences = await connection.query(expQuery);
     const linkQuery = `SELECT * FROM ProjectLinks WHERE projectId = "${id}"`;
-    student.links = await connection.query(linkQuery);
-    const alumniQuery = `SELECT email, CONCAT(firstName, ' ',lastName) AS 'name' FROM Alumni WHERE id = "${student.projectAlumni}"`;
-    student.alumni = await connection.query(alumniQuery);
-    return student;
+    project.links = await connection.query(linkQuery);
+    const alumniQuery = `SELECT email, CONCAT(firstName, ' ',lastName) AS 'name' FROM Alumni WHERE id = "${project.projectAlumni}"`;
+    project.alumni = await connection.query(alumniQuery);
+    return project;
   }
 };
 
+// Deletes specific project
 Alumni.deleteAlumniProject = async (params) => {
   const query = `DELETE FROM Projects WHERE id = ${params.projectId} AND projectAlumni = ${params.alumniId}`;
   var projects = await connection.query(query);
@@ -245,7 +237,8 @@ Alumni.deleteAlumniProject = async (params) => {
 };
 
 Alumni.updateProject = async (params) => {
-  // need projectId
+  // needs projectId
+  // Update basic project info
   if (params.projectId) {
     const projectParams = [params.projectTitle, params.projectDescription, params.startDate, params.endDate, params.projectAlumni, params.createdAt, params.visible, params.weekHours, params.projectId];
     const query = 'UPDATE Projects SET projectTitle = ?, projectDescription = ?, startDate = ?, endDate = ?, projectAlumni = ?, createdAt = ?, visible = ?, weekHours = ? WHERE id = ?';
@@ -254,6 +247,7 @@ Alumni.updateProject = async (params) => {
     throw new Error('ERROR OCCURRED');
   }
   if (project) {
+    // Updates Addditional info if given
     if (params.skills) {
       const skillsVals = [];
       for (let i = 0; i < params.skills.length; i++) {
@@ -287,6 +281,53 @@ Alumni.updateProject = async (params) => {
       project.links = await connection.query(linkQuery, [linksVals]);
     }
   }
+
+  Alumni.getSavedStudents = async (params) => {
+    const { username } = params;
+    const query = `SELECT gtUsername FROM Students WHERE gtUsername IN (SELECT gtUsername from AlumniSavedStudents WHERE username = ${connection.escape(username)})`;
+    const students = connection.query(query);
+    return students;
+  };
+
+  Alumni.addSavedStudent = async ( params ) => {
+    const { username, gtUsernames } = params;
+    var insertParams = [];
+    // Format data for bulk insertion
+    for (let i = 0; i < gtUsernames.length; i++) {
+      insertParams.push([username, gtUsernames[i]]);
+    }
+    const query = 'INSERT IGNORE INTO AlumniSavedStudents (username, gtUsername) VALUES ?';
+    var students = await connection.query(query, [insertParams]);
+    return students;
+  };
+
+  Alumni.updateSavedStudents = async (params) => {
+    const { username, gtUsernames } = params;
+    var insertParams = [];
+    // Format data for bulk insertion
+    for (let i = 0; i < gtUsernames.length; i++) {
+      insertParams.push([username, gtUsernames[i]]);
+    }
+    const deleteQuery = `DELETE FROM AlumniSavedStudents WHERE username = ${connection.escape(username)}`;
+    const query = 'INSERT IGNORE INTO AlumniSavedStudents (username, gtUsername) VALUES ?';
+    await connection.query(deleteQuery);
+    var students = await connection.query(query, [insertParams]);
+    return students;
+  };
+
+  Alumni.deleteAllSavedStudents = async (params) => {
+    const { username } = params;
+    const query = `DELETE FROM AlumniSavedStudents WHERE username = ${connection.escape(username)}`;
+    var students = await connection.query(query);
+    return students;
+  };
+
+  Alumni.deleteSavedStudent = async (params) => {
+    const { username, gtUsername } = params;
+    const query = `DELETE FROM AlumniSavedStudents WHERE username = ${connection.escape(username)} AND gtUsername = ${connection.escape(gtUsername)}`;
+    var students = await connection.query(query);
+    return students;
+  };
 
   return project;
 };

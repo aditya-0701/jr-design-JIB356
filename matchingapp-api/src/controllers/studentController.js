@@ -1,5 +1,6 @@
 const Student = require('../models/studentModels');
 
+// Basic Requests errors
 const rtr = {
   body: '',
   statusCode: 0,
