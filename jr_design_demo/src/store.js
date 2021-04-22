@@ -50,6 +50,7 @@ export function userExists(params) {
 export async function userLogin(params) {
     const { email, pass, role } = params;
     const gtUsername = email.split('@')[0];
+    const username = email.split('@')[0];
     console.log(gtUsername + " GT Username");
     const sessionId = await AsyncStorage.getItem('sessionId');
     console.log(sessionId + " Session ID")
@@ -62,7 +63,7 @@ export async function userLogin(params) {
     }
     console.log("Session ID NOT Found")
     return superagent.post(URI + '/login')
-        .send({ 'gtUsername': gtUsername, 'password': pass, 'role': role })
+        .send({ 'gtUsername': gtUsername, 'password': pass, 'role': role, 'username': username })
 }
 
 
