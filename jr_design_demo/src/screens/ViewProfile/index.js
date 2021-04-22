@@ -28,29 +28,6 @@ const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 const CARD_HEIGHT = SCREEN_HEIGHT * 0.86
 
-// const userDetails = {
-//   email: "",
-//   gtUsername: "",
-//   firstName: "",
-//   lastName: "",
-//   middleName: "",
-//   pwd: "",
-//   degree: [],
-//   major: [],
-//   interests: [],
-//   skills: [],
-//   start_date: [],
-//   end_date: [],
-//   experiences: [{
-//     'companyName': '',
-//     'position': '',
-//     'expDescription': '',
-//     'start_date': new Date(),
-//     'end_date': new Date()
-//   }],
-//   links: []
-// };
-
 const userDetails = [
   {
     id: "1",
@@ -160,6 +137,12 @@ const userDetails = [
       'start_date': new Date(),
       'end_date': new Date()
     }],
+    uri: require('../../../assets/defaultskin.png')
+  },
+  {
+    id: "-1",
+    firstName: "No Profiles Found",
+    bio: "No profiles found with the given search parameters",
     uri: require('../../../assets/defaultskin.png')
   }
 ]
@@ -341,7 +324,10 @@ export class Card extends React.Component {
           {this.renderUsers()}
           <View style={{ flexDirection: 'row', marginLeft: 20, justifyContent: 'space-evenly', top: SCREEN_HEIGHT * .745 }}>
             <TouchableOpacity style={styles.leftButton} onPress={() => {
-              this.setState({ currentIndex: this.state.currentIndex - 1 }, () => {
+              this.setState({
+                currentIndex: (this.state.currentIndex - 1) >= 0 ?
+                  (this.state.currentIndex - 1) : userDetails.length - 1
+              }, () => {
                 this.position.setValue({ x: 0, y: 0 })
               })
             }}>
@@ -353,7 +339,10 @@ export class Card extends React.Component {
               <Text style={styles.heart}> &#9829;</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.rightButton} onPress={() => {
-              this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+              this.setState({
+                currentIndex: (this.state.currentIndex + 1) < userDetails.length ?
+                  (this.state.currentIndex + 1) : 0
+              }, () => {
                 this.position.setValue({ x: 0, y: 0 })
               })
             }}>
