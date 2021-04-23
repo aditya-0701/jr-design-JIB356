@@ -144,6 +144,7 @@ export function updateAlumni( params ) {
 
 export function getAlumni( params ) {
     const { name }  = ( params != null ) ? params : {};
+    console.log(name);
     if (name != 'undefined' && name != null) {
         return superagent.get(URI + '/alumni')
         .query({'name':  name})
@@ -291,6 +292,12 @@ export function getAllProjects ( params ) {
     .send()
 }
 
+export function getAlumniProjects ( params ) {
+    return superagent.get(URI + '/alumniProjects')
+    .query ( params )
+    .send()
+}
+
 export function getProject ( params ) {
     var projId = params.projId;
     return superagent.get(URI + '/projects/' + projId)
@@ -307,3 +314,40 @@ export function addProject ( params ) {
     return superagent.post(URI + '/projects')
     .send( params )
 }
+
+export function deleteProject ( params ) {
+    return superagent.post(URI + '/projects')
+    .send( params )
+}
+
+
+// Alumni Saved Students
+export function getAlumniSavedStudents ( params ) {
+    return superagent.get(URI + '/alumniSavedStudents')
+    .query ( params )
+    .send()
+}
+
+export function deleteAllAlumniSavedStudents ( params ) {
+    var { username } = params;
+    return superagent.delete(URI + '/alumniSavedStudents/')
+    .send()
+}
+
+export function deleteAlumniSavedStudents ( params ) {
+    var { username, gtUsername } = params; 
+    return superagent.delete(URI + '/alumniSavedStudents/'
+    + `${username}/${gtUsername}`)
+    .send()
+}
+
+
+export function addAlumniSavedStudents ( params ) {
+    return superagent.put(URI + '/alumniSavedStudents')
+    .send( params )
+}
+
+// export function addAlumniSavedStudents ( params ) {
+//     return superagent.post(URI + '/alumniSavedStudents')
+//     .send( params )
+// }

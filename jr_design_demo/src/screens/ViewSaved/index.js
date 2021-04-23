@@ -3,15 +3,17 @@ import { View, ScrollView, Text, Linking, StyleSheet, TouchableOpacity, Button, 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import styles from '../../globalStyles';
-import { getStudentProjectInterests, getProject, deleteProjectInterest } from "../../store";
+import { getStudentProjectInterests, getProject, deleteProjectInterest, getAlumniProjects, deleteProject } from "../../store";
+import EditProject from '../EditProject';
 
 
 const loadingSaved = { type: "profile", entries: [] };
 let needToLoad = true;
 var gtUname = '';
-var projId = 0;
+var projId = 'hi';
 var sProfiles = 0;
 var myP = 0;
+var username = 0;
 
 
 class NiceButton extends React.Component {
@@ -57,9 +59,12 @@ export const SaveContainer = ({ navigation, route }) => {
     //   console.log( projectDetails[ind])
     console.log(ind);
     projId = ind;
-    navigation.navigate("DetailsScreen")
+    console.log(projId)
+    navigation.navigate("DetailsScreen", {'projId': projId})
   }
+
   React.useEffect(() => {
+    if (myP == 1) { return; }
     getStudentProjectInterests({ gtUsername: gtUname }).then(
       (data) => {
         console.log(data.body);
@@ -69,6 +74,17 @@ export const SaveContainer = ({ navigation, route }) => {
       (err) => { console.log(err); }
     );
   }, [gtUname]);
+
+  React.useEffect(() => {
+    getAlumniProjects({ username: username }).then(
+      (data) => {
+        console.log(data.body);
+        setProjectDetails(getProfileDetails(data.body));
+      }
+    ).catch(
+      (err) => { console.log(err); }
+    );
+  }, [username])
   let i = 0;
 
   const refresh = () => {
@@ -105,7 +121,7 @@ export const SaveContainer = ({ navigation, route }) => {
             navigation.goBack();
           }} /> */}
           <NiceButton title="New Project" onPress={() => {
-            navigation.navigate("NewProject");
+            navigation.navigate("NewProject", { username: username});
           }} />
         </View>
       </View>
@@ -156,7 +172,9 @@ class DetailsScreen extends React.Component {
         "major": [],
         "degree": [],
         "experiences": [],
-        "links": [],
+        "links": [{
+          'address': ''
+        }],
         "alumni": [{
           "email": "test@test.com",
           "name": "",
@@ -191,10 +209,13 @@ class DetailsScreen extends React.Component {
     //   console.log("TEST");
     //   console.log(proj.id);
     //   var projId = proj.id;
-    getProject({ projId: projId })
+    
+    var projectID = this.props.route.params.projId;
+    console.log("Project ID", projectID)
+    getProject({ 'projId': projectID })
       .then((resp) => {
+        console.log(resp.body);
         let body = resp.body;
-        console.log(body);
         this.setState({ project: body })
       })
       .catch((err) => console.log(err))
@@ -202,20 +223,35 @@ class DetailsScreen extends React.Component {
   }
 
   deleteSaved() {
+    if (myP == 1) {
+      //delete project
+      deleteProject({'projectId': projId})
+      .then((resp) => {
+        console.log(resp.body);
+        this.props.navigation.goBack();
+      })
+      .catch((err) => { console.log(err) })
+    }
     deleteProjectInterest({
       'gtUsername': gtUname,
       'projectId': this.state.project.id
     })
       .then((resp) => {
-        console.log(resp.body)
+        console.log(projId);
+        console.log(resp);
+        this.props.navigation.goBack();
       })
       .catch((err) => { console.log(err) })
   }
 
   editProject() {
-    console.log("Implement me!")
+    // console.log("Implement me!")
     // this should take you to NewProject but it'll need to be implemented with back-end stuff to keep the project's current info as the default value.
     // the front-end portion of the screen is done.
+    this.props.navigation.navigate('EditProject', {
+      params: { username: username,
+        projectId: projId}
+    })
   }
 
   render() {
@@ -348,7 +384,7 @@ class DetailsScreen extends React.Component {
               paddingLeft: 15,
             }}>Interests:</Text>
             <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
-              {this.state.project.interests.map(({ interests }) => interests).join(', ')}</Text>
+              {this.state.project.interests.map(({ interest }) => interest).join(', ')}</Text>
 
             <Text style={{
               fontSize: 20,
@@ -382,8 +418,11 @@ class DetailsScreen extends React.Component {
               color: '#B3A369',
               paddingLeft: 15,
             }}>Info Link:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
-              {this.state.project.links.join(', ')}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}
+            onPress={() => Linking.openURL(this.state.project.links[0].address)}
+            style={[{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
+            { color: '#0000EE', fontWeight: 'bold' }]}>
+              {this.state.project.links[0].address}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
@@ -407,12 +446,17 @@ class DetailsScreen extends React.Component {
             <Text style={{ height: 50 }}></Text>
           </ScrollView>
           <TouchableOpacity
-            style={{ backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 10, margin: 20, height: 40, width: '95%', alignSelf: 'center' }}
+            style={{ backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 10, margin: 10, height: 40, width: '95%', alignSelf: 'center' }}
             onPress={() => this.editProject()}>
             <Text style={{ top: 9, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 17 }}> Edit Project </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ bottom: 10, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 10, margin: 20, height: 40, width: '95%', alignSelf: 'center' }}
+            style={{ backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 10, margin: 10, height: 40, width: '95%', alignSelf: 'center' }}
+            onPress={() => this.deleteSaved()}>
+            <Text style={{ top: 9, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 17 }}> Delete Project </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ bottom: 10, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 10, margin: 10, height: 40, width: '95%', alignSelf: 'center' }}
             onPress={() => this.props.navigation.goBack()}>
             <Text style={{ top: 9, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 17 }}> Back </Text>
           </TouchableOpacity>
@@ -519,11 +563,14 @@ export default function ViewSaved(props) {
   gtUname = props.route.params.gtUsername;
   myP = props.route.params.myProjects;
   sProfiles = props.route.params.savedProfiles;
+  projId = (props.route.params.projId) ? props.route.params.projId : 0;
+  username = props.route.params.username;
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="View">
       <Stack.Screen name="View" component={SaveContainer} />
       <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
+      <Stack.Screen name="EditProject" component={EditProject} />
     </Stack.Navigator>
   );
 };

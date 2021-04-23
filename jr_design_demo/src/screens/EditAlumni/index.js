@@ -31,6 +31,7 @@ var userDetails = {
     phone: ""
 };
 var userName = userDetails.firstName + userDetails.lastName;
+var username = 0;
 
 
 
@@ -42,7 +43,7 @@ export const BasicDetails = ({ navigation, route }) => {
     const [passwordValue, onChangePassword] = React.useState(userDetails.pwd);
     const [firstName, onChangeFirstName] = React.useState(userDetails.firstName);
     const [lastName, onChangeLastName] = React.useState(userDetails.lastName);
-    const [phone, onChangePhone] = React.useState(userDetails.phone);
+    const [phone, onChangePhone] = React.useState(userDetails.mobile);
 
     // if (!userName || userName == "" || userName.length == 0) {
     //     getAlumni({ userName: name })
@@ -60,16 +61,47 @@ export const BasicDetails = ({ navigation, route }) => {
     //         })
     // }
 
+    React.useEffect(() => {
+        console.log(username);
+        getAlumni({ name: username })
+            .then((resp) => {
+                console.log(resp.body);
+                userDetails = resp.body[0];
+                onChangeEmail(resp.body[0].email);
+                //onChangePassword(resp.body[0].pwd);
+                onChangeFirstName(resp.body[0].firstName);
+                onChangeLastName(resp.body[0].lastName);
+                onChangePhone(resp.body[0].mobile);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }, [username])
+
     const saveVals = () => {
         userDetails.email = emailValue;
         userDetails.firstName = firstName;
         userDetails.lastName = lastName;
-        userDetails.phone = phone;
+        userDetails.mobile = phone;
+        userDetails.username = username;
    //     userDetails.pwd = passwordValue;
         if (emailValue != '' && phone != ''
             && firstName != '' && lastName != ''
             /*&& passwordValue != ''*/) {
             console.log("The done button was pressed and all fields were filled out");
+            console.log(userDetails)
+            updateAlumni(userDetails)
+            .then((resp) => {
+              console.log(resp);
+              navigation.navigate("Alumni", {
+                username: userDetails.username 
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+              alert("An error occurred in user creation. Please check your inputs and try again.")
+            })
+            console.log(JSON.parse(JSON.stringify(userDetails)))
         } else {
             alert("All fields must be filled out in order to proceed")
         }
@@ -129,276 +161,22 @@ export const BasicDetails = ({ navigation, route }) => {
     );
 };
 
-// export const PictureResume = ({ navigation }) => {
-//     const title = React.useState("Profile Picture and Resume");
-//     const saveVals = () => {
-//         userDetails.email = emailValue;
-//         userDetails.pass = passwordValue;
-//         userDetails.firstName = firstName;
-//         userDetails.lastName = lastName;
-//         userDetails.degree = degree;
-//         userDetails.major = major;
-//         userDetails.interests = interests,
-//             userDetails.skills = skills;
-//         userDetails.pwd = passwordValue;
-//         navigation.navigate("Page3");
-//     }
-//     return (
-//         <View id="page2" style={[localStyle.container, { flex: 1 }]}>
-
-//             <Text style={styles.title}>Profile Picture and Resume</Text>
-//             <Text style={styles.label}>Profile Picture</Text>
-//             <Image source={require("../../../assets/defaultskin.png")} style={{
-//                 width: "80%",
-//                 alignSelf: "center",
-//                 resizeMode: "center",
-//                 flex: 0.75
-//             }} />
-//             <TextInput placeholder="File picker placeholder" style={styles.inputs} />
-//             <Text style={styles.label}>Resume</Text>
-//             <TextInput placeholder="File picker placeholder" style={styles.inputs} />
-
-//             <View style={[localStyle.navButtonContainer, { flex: 1 }]}>
-//                 <NiceButton title="Basic Info" onPress={() => navigation.navigate("Page1")} />
-//                 <NiceButton title="Work Experience" onPress={savevals} />
-//             </View>
-//         </View>
-//     );
-// };
-
-// export const PrevExperience = ({ navigation }) => {
-//     // const title = React.useState("Previous Experience");
-//     // Create react state arrays. Each array will hold a value corresponding experience[i]
-//     // Or create one state array that will hold all details of each experience[i]
-//     const saveVals = () => {
-//         userDetails['experiences'] = experiences;
-//         console.log(experiences);
-//     }
-//     var [experiences, onChangeExperiences] = React.useState(userDetails.experiences);
-//     const updateExperience = (index, key, value) => {
-//         const oldExperiences = JSON.parse(JSON.stringify(experiences));
-//         oldExperiences[index][key] = value
-//         onChangeExperiences(oldExperiences);
-//     }
-
-//     const addExperience = () => {
-//         const oldExperiences = JSON.parse(JSON.stringify(experiences));
-//         oldExperiences.push({
-//             'companyName': '',
-//             'position': '',
-//             'expDescription': '',
-//             'start_date': new Date(),
-//             'end_date': new Date()
-//         });
-//         onChangeExperiences(oldExperiences);
-//     }
-
-//     const removeExperience = (index) => {
-//         const oldExperiences = JSON.parse(JSON.stringify(experiences));
-//         oldExperiences.splice(index, 1);
-//         onChangeExperiences(oldExperiences);
-//     }
-
-//     return (
-//         <View id="page3" style={localStyle.container} >
-//             <Text style={styles.title}>Previous Experience</Text>
-//             <FlatList
-//                 style={{ marginBottom: 50 }}
-//                 data={experiences}
-//                 keyExtractor={(item, index) => index.toString()}
-//                 renderItem={({ item, index }) =>
-//                     <View key={index}>
-//                         <Text style={styles.label}>Company</Text>
-//                         <TextInput
-//                             placeholder="Company/Organization name"
-//                             style={styles.inputs}
-//                             value={item.companyName}
-//                             onChangeText={(text) => { updateExperience(index, 'companyName', text) }} />
-//                         <Text style={styles.label}>Position</Text>
-//                         <TextInput
-//                             placeholder="Position held"
-//                             style={styles.inputs}
-//                             value={item.position}
-//                             onChangeText={(text) => { updateExperience(index, 'position', text) }} />
-//                         <View style={{ textAlign: 'stretch', flexDirection: "row", alignItems: 'stretch', justifyContent: 'center' }}>
-//                             <Text style={[styles.label, { marginHorizontal: 20, width: '45%' }]}>Start Date</Text>
-//                             <Text style={[styles.label, { marginHorizontal: 20, width: '45%' }]}>End Date</Text>
-//                         </View>
-//                         <View style={{ textAlign: 'center', flexDirection: "row", alignItems: 'stretch', justifyContent: 'center' }}>
-//                             {/* <TextInput placeholder="Start Date" style={[styles.inputs, {marginHorizontal: 20, width: '45%'}]}/> */}
-//                             {/* <TextInput placeholder="End Date" style={[styles.inputs, {marginHorizontal: 20, width: '45%'}]}/> */}
-//                             <DatePicker
-//                                 date={item.start_date}
-//                                 onDateChange={(date) => { updateExperience(index, 'start_date', date) }}
-//                                 mode='date'
-//                                 showIcon={false}
-//                                 style={{ marginHorizontal: 20, width: '45%' }}
-//                                 customStyles={{
-//                                     dateInput: {
-//                                         borderWidth: 0,
-//                                         marginBottom: 15,
-//                                         borderRadius: 15,
-//                                         backgroundColor: '#B3A36975',
-//                                         padding: 10,
-//                                         paddingLeft: 20,
-//                                         height: 40
-//                                     }
-//                                     // ... You can check the source to find the other keys.
-//                                 }}
-//                             />
-//                             <DatePicker
-//                                 date={item.end_date}
-//                                 onDateChange={(date) => { updateExperience(index, 'end_date', date) }}
-//                                 mode='date'
-//                                 showIcon={false}
-//                                 style={{ marginHorizontal: 20, width: '45%' }}
-//                                 cancelBtnText="Cancel"
-//                                 customStyles={{
-//                                     dateInput: {
-//                                         borderWidth: 0,
-//                                         marginBottom: 15,
-//                                         borderRadius: 15,
-//                                         backgroundColor: '#B3A36975',
-//                                         padding: 10,
-//                                         paddingLeft: 20,
-//                                         height: 40
-//                                     }
-//                                 }}
-//                             />
-//                         </View>
-//                         <Text style={styles.label}>Description</Text>
-//                         <TextInput
-//                             multiline={true}
-//                             placeholder="Describe your experience..."
-//                             style={[styles.inputs, { height: 100, textAlignVertical: 'top' }]}
-//                             value={item.expDescription}
-//                             onChangeText={(text) => { updateExperience(index, 'expDescription', text) }}
-//                         />
-//                         <TouchableOpacity onPress={() => removeExperience(index)} style={[styles.button, { alignSelf: 'center', width: '50%' }]}>
-//                             <Text style={styles.buttonText}>Remove Experience</Text>
-//                         </TouchableOpacity>
-//                     </View>}
-//                 ListFooterComponent={<TouchableOpacity
-//                     style={[styles.button, { alignSelf: 'center', width: '100%' }]}
-//                     onPress={addExperience}>
-//                     <Text style={styles.buttonText}>Add Experience</Text>
-//                 </TouchableOpacity>}
-//             />
-
-//             <View style={localStyle.navButtonContainer} >
-//                 <NiceButton title="Basic Info" onPress={() => { saveVals(); navigation.navigate("Page1") }} />
-//                 <NiceButton title="External Services" onPress={() => { saveVals(); navigation.navigate("Page4") }} />
-//             </View>
-//         </View>
-//     );
-// };
-
-// export const ExtSites = ({ navigation }) => {
-//     var [links, onChangeLink] = React.useState(userDetails.links);
-//     const saveVals = () => {
-//         userDetails['links'] = links;
-//         console.log(links);
-//         // navigation.navigate("Page4")
-//     }
-
-//     const updateLink = (index, key, value) => {
-//         const oldLinks = JSON.parse(JSON.stringify(links));
-//         oldLinks[index][key] = value
-//         onChangeLink(oldLinks);
-//     }
-
-//     const addLink = () => {
-//         const oldLinks = JSON.parse(JSON.stringify(links));
-//         console.log("old" + oldLinks)
-//         oldLinks.push({
-//             'label': '',
-//             'address': '',
-//         });
-//         console.log("new" + oldLinks)
-//         onChangeLink(oldLinks);
-//     }
-
-//     const removeLink = (index) => {
-//         const oldLinks = JSON.parse(JSON.stringify(links));
-//         oldLinks.splice(index, 1);
-//         console.log(oldLinks)
-//         onChangeLink(oldLinks);
-//     }
-
-//     /**[{
-//       'label': '',
-//       'id': '',
-//       'address': '',
-//   }]); */
-//     const login = () => {
-//         saveVals();
-//         console.log(JSON.stringify(userDetails));
-//         updateStudent(userDetails)
-//             .then((resp) => {
-//                 console.log(resp);
-//                 navigation.navigate("Profile", {
-//                     gtUsername: userDetails.gtUsername
-//                 });
-//             })
-//             .catch((err) => {
-//                 console.log(err);
-//                 alert("An error occurred in user creation. Please check your inputs and try again.")
-//             })
-//         console.log(JSON.parse(JSON.stringify(userDetails)))
-//     }
-
-//     return (
-//         <View style={localStyle.container}>
-//             <Text style={[styles.title, { marginTop: "6%" }]}>Links to External Services</Text>
-//             {/* 
-//         <Text style={styles.label}>LinkedIn</Text>
-//         <TextInput placeholder="LinkedIn Link" style={styles.inputs}/>
-//         <Text style={styles.label}>Github</Text>
-//         <TextInput placeholder="Github Link" style={styles.inputs}/>
-//         <Text style={styles.label}>Add other Links</Text> */}
-//             <FlatList
-//                 style={{ marginBottom: 50 }}
-//                 data={links}
-//                 keyExtractor={(item, index) => index.toString()}
-//                 renderItem={({ item, index }) => (
-//                     <View key={index}>
-//                         <Text style={styles.label}>Link Label</Text>
-//                         <TextInput
-//                             value={item.label}
-//                             onChangeText={(text) => { updateLink(index, 'label', text) }}
-//                             style={styles.inputs}
-//                         />
-//                         <Text style={styles.label}>Link Address</Text>
-//                         <TextInput
-//                             value={item.address}
-//                             onChangeText={(text) => { updateLink(index, 'address', text) }}
-//                             style={styles.inputs}
-//                         />
-//                         <TouchableOpacity onPress={() => removeLink(index)}
-//                             style={[styles.button, { alignSelf: 'center', width: '90%' }]}>
-//                             <Text style={styles.buttonText}>Remove Link</Text>
-//                         </TouchableOpacity>
-//                     </View>
-//                 )}
-//                 ListFooterComponent={
-//                     <TouchableOpacity onPress={() => { addLink() }} style={[styles.button, { alignSelf: 'center', width: '100%' }]}>
-//                         <Text style={styles.buttonText}>Add Link</Text>
-//                     </TouchableOpacity>
-//                 }
-//             />
-//             <View style={localStyle.navButtonContainer}>
-//                 <NiceButton title="Previous Experience" onPress={() => { saveVals(); navigation.navigate("Page3") }} />
-//                 <NiceButton title="Finish" onPress={login} />
-//             </View>
-//         </View>
-//     );
-// };
-
 const Stack = createStackNavigator();
 
 export default function EditAlumni(props) {
     var { name } = props.route.params;
     userName = name;
+    username = props.route.params.username;
+    console.log(props.route.params);
+
+    getAlumni({ name: props.route.params.username })
+    .then((resp) => {
+        console.log(resp.body);
+        userDetails = resp.body[0];
+    })
+    .catch((err) => {
+        console.log
+    })
 
     // if (!userName || userName == "" || userName.length == 0) {
     //     console.log("Alumni profile not found");

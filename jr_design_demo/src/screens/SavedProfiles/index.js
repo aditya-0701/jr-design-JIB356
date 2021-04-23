@@ -3,12 +3,13 @@ import { View, ScrollView, Text, Dimensions, StyleSheet, TouchableOpacity, Butto
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import styles from '../../globalStyles';
-import { getStudentProjectInterests, getProject, deleteProjectInterest, getStudent } from "../../store";
+import { getAlumniSavedStudents, deleteProjectInterest, getStudent } from "../../store";
 
 
 const loadingSaved = { type: "profile", entries: [] };
 let needToLoad = true;
 var gtUname = '';
+var username = '';
 var projId = 0;
 
 var profiles = [{
@@ -102,20 +103,18 @@ export const SaveContainer = ({ navigation, route }) => {
     projId = ind;
     navigation.navigate("DetailsScreen")
   }
-  // React.useEffect(() => {
-  //   getStudentProjectInterests({ gtUsername: gtUname }).then(
-  //     (data) => {
-  //       console.log(data.body);
-  //       setProjectDetails(getProfileDetails(data.body));
-  //     }
-  //   ).catch(
-  //     (err) => { console.log(err); }
-  //   );
-  // }, [gtUname]);
-  let load = 0; 
+  
   React.useEffect(() => {
-    setProjectDetails(getProfileDetails(profiles))  
-  }, [load])
+    getAlumniSavedStudents( {'username': username})
+    .then(
+      (data) => {
+        console.log(data.body);
+        setProjectDetails(getProfileDetails(data.body));
+      }
+    ).catch(
+      (err) => { console.log(err); }
+    );
+  }, [username])
   
   let i = 0;
 
@@ -287,6 +286,7 @@ const Stack = createStackNavigator();
 
 export default function ViewSaved(props) {
   // gtUname = props.route.params.gtUsername;
+  username = props.route.params.username;
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="View">

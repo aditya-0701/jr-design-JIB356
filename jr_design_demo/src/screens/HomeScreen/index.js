@@ -17,6 +17,7 @@ import SavedProfiles from '../SavedProfiles'
 
 var gtUname = '';
 var name = '';
+var username = '';
 
 const Tab = new createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -25,13 +26,13 @@ const Home = (props) => {
     const { alumni } = props.route.params;
     const { navigation } = props;
     const createNewProject = () => {
-        navigation.navigate("NewProject");
+        navigation.navigate("NewProject", { username: username });
     }
     const viewProjects = () => {
         navigation.navigate("ViewProject", { gtUsername: gtUname });
     }
     const viewProfiles = () => {
-        navigation.navigate("ViewProfile");
+        navigation.navigate("ViewProfile", { username: username });
     }
     const savedProjects = () => {
         navigation.navigate("ViewSaved", { gtUsername: gtUname });
@@ -257,41 +258,44 @@ const Alumni = (props) => {
     }
 
     const refresh = () => {
-        getAlumni({ gtUsername: gtUname })
-            .then((resp) => {
-                console.log(resp.body);
-                onChangeFirstName(resp.body.firstName)
-                onChangeLastName(resp.body.lastName);
-                onChangeEmail(resp.body.email);
-                onChangePhone(resp.body.phone)
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+        getAlumni({ name: username })
+        .then((resp) => {
+            console.log("Alumni:")
+            console.log(resp.body[0]);
+            onChangeFirstName(resp.body[0].firstName);
+            onChangeLastName(resp.body[0].lastName);
+            onChangeEmail(resp.body[0].email);
+            onChangePhone(resp.body[0].mobile);
+            console.log(firstName, lastName)
+        })
+        .catch((err) => {
+            console.log(err);
+        })
     }
 
     const editAlumni = () => {
         navigation.navigate("EditAlumni", {
-            name: name
+            name: name,
+            username: username
         })
     }
 
     useEffect(() => {
         console.log(props)
         // var em = (props != 'undefined' && props != null) ? props.route.params.gtUsername : null;
-        if (name == null) return;
-        getAlumni({ name: name })
+        if (username == null) return;
+        getAlumni({ name: username })
             .then((resp) => {
                 console.log(resp.body);
-                onChangeFirstName(resp.body.firstName);
-                onChangeLastName(resp.body.lastName);
-                onChangeEmail(resp.body.email);
-                onChangePhone(resp.body.phone);
+                onChangeFirstName(resp.body[0].firstName);
+                onChangeLastName(resp.body[0].lastName);
+                onChangeEmail(resp.body[0].email);
+                onChangePhone(resp.body[0].mobile);
             })
             .catch((err) => {
                 console.log(err);
             })
-    }, [name])
+    }, [username])
 
     return (
         <View style={styles.container}>
@@ -299,7 +303,7 @@ const Alumni = (props) => {
             <ScrollView>
                 <View style={styles.info}>
                     <Text style={styles.label}>Name</Text>
-                    <Text>{firstName || ""} {lastName || ""}</Text>
+                    <Text style={{ color: 'black'}}>{firstName || ""} {lastName || ""}</Text>
                     <Text style={styles.label}>Email</Text>
                     <Text
                         onPress={() => Linking.openURL('mailto:' + email)}
@@ -308,9 +312,12 @@ const Alumni = (props) => {
                         {email || ""}
                     </Text>
                     <Text style={styles.label}>Phone Number</Text>
-                    <Text>{phone || ""}</Text>
+                    <Text style={{ color: 'black'}}>{phone || ""}</Text>
                 </View>
             </ScrollView>
+            <TouchableOpacity style = { styles.button } onPress = { refresh }>
+                <Text style = { styles.buttonText }>Refresh</Text>
+            </TouchableOpacity>
             <TouchableOpacity style = { styles.button } onPress = { logout }>
                 <Text style = { styles.buttonText }>Log Out</Text>
             </TouchableOpacity>
@@ -397,11 +404,11 @@ const ProjectsSaved = ( props ) => {
 }
 
 const StudentsSaved = ( props ) => {
-    const { gtUsername } = props.route.params;
+    const { gtUsername, username } = props.route.params;
     return (
         <Stack.Navigator screenOptions = {{headerShown: false}}>
             <Stack.Screen name = "SavedProfiles" component = { SavedProfiles } initialParams =
-            {{gtUsername: gtUsername, savedProfiles: 1}}/>
+            {{gtUsername: gtUsername, savedProfiles: 1, username: username}}/>
         </Stack.Navigator>
     )
 }
@@ -411,7 +418,7 @@ const MyProjects = ( props ) => {
     return (
         <Stack.Navigator screenOptions = {{headerShown: false}}>
         <Stack.Screen name = "ViewSaved" component = { ViewSaved } initialParams =
-        {{gtUsername: gtUsername, myProjects: 1}}/>
+        {{myProjects: 1, username: username}}/>
     </Stack.Navigator>
     )
 }
@@ -419,6 +426,9 @@ const MyProjects = ( props ) => {
 export default function HomeScreen(props) {
     const { email, gtUsername, alumni } = props.route.params ;
     gtUname = gtUsername;
+    if (alumni) {
+        username = gtUsername;
+    }
     // alert(email);
     // alert(JSON.stringify(props));
     if (alumni) {
@@ -427,13 +437,13 @@ export default function HomeScreen(props) {
                 {/* <Tab.Screen name = "Home" component = { Home } initialParams = 
                  {{alumni: alumni}}/> */}
                 <Tab.Screen name = "Student Profiles" component = { StudentProfiles } initialParams =
-                 {{email: email, gtUsername: gtUsername}}/>
-                <Tab.Screen name = "Saved Profiles" component = { StudentsSaved } initialParams =
-                  {{gtUsername: gtUsername, alumni: alumni}}/>
+                 {{email: email, username: username }}/>
+                <Tab.Screen name = "Saved Profiles" component = { SavedProfiles } initialParams =
+                  {{username: username, alumni: alumni}}/>
                 <Tab.Screen name = "My Projects" component = { MyProjects } initialParams = 
-                  {{gtUsername: gtUsername}}/>
+                  {{username: username }}/>
                 <Tab.Screen name = "My Profile" component = { AlumniEdit } initialParams = 
-                 {{email: email, gtUsername: gtUsername}}/>
+                 {{email: email, username: username}}/>
             </Tab.Navigator>
         )
     } else {

@@ -6,7 +6,7 @@ import DatePicker from 'react-native-datepicker'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import styles from '../../globalStyles';
-import { addProject } from '../../store'
+import { addProject, updateProject } from '../../store'
 // import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 // import Icon from 'react-native-vector-icons/MaterialIcons'
 
@@ -22,6 +22,7 @@ class NiceButton extends React.Component {
   }
 
 var username = 0;
+var projectId = 0;
 var alumniUName = '';
 
 const projectDetails = {
@@ -227,6 +228,24 @@ export const BasicDetails = ({ navigation }) => {
   const [externalLink, onChangeExternalLink] = React.useState('');
   const [startDate, onChangeStartDate] = React.useState(new Date());
   const [endDate, onChangeEndDate] = React.useState(new Date());
+
+  React.useEffect(() => {
+    getProject({ projId: projectId })
+    .then((data) => {
+      console.log(data.body);
+      projectDetails = data.body;
+      onChangeName(data.body.name)
+      onChangeDescription(data.body.description)
+      onChangeDegree([data.body.degree[0].id])
+      onChangeMajor([data.body.major[0].id]);
+      onChangeSkills(data.body.skills.map(({ id }) => id));
+      onChangeInterests(data.body.interests.map(({ id }) => id));
+      onChangeHours(data.body.hoursPerWeek)
+      onChangeExternalLink(data.body.externalLink)
+      onChangeStartDate(data.body.startDate)
+      onChangeEndDate(data.body.endDate)
+    })
+  }, [projectId])
   
   const saveVals = () => {
     projectDetails.name = name;
@@ -246,15 +265,16 @@ export const BasicDetails = ({ navigation }) => {
     projectDetails.externalLink= externalLink
     projectDetails.startDate= startDate
     projectDetails.endDate= endDate
-    projectDetails.projectAlumni = username;
-    
+    projectDetails.id = projId;
     console.log(JSON.stringify(projectDetails))
-
-    addProject(projectDetails)
+    updateProject(projectDetails)
     .then((resp) => {
       console.log(resp.body);
       // setGTUsername(userDetails.gtUsername);
-      navigation.navigate('ViewSaved', {myProjects: 1, username: username});
+      navigation.navigate('ViewSaved', { 
+        screen: 'DetailsScreen',
+        params: { username: username, projId: projectId },
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -483,13 +503,14 @@ export const BasicDetails = ({ navigation }) => {
     
 const Stack = createStackNavigator();
 
-export default function NewProject(props) {
+export default function EditProject(props) {
   username = props.route.params.username;
+  projectId = props.route.params.projectId;
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Page1">
-    <Stack.Screen name="Page1" component={BasicDetails} />
-    {/* <Stack.Screen name="Page2" component={PictureLink} /> */}
+      <Stack.Screen name="Page1" component={BasicDetails} />
+      {/* <Stack.Screen name="Page2" component={PictureLink} /> */}
     </Stack.Navigator>
     );
   };

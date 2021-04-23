@@ -104,7 +104,7 @@ const LoginPage = (props) => {
                     keyboardType='email-address'
                     onChangeText={(text) => onChangeEmail(text)}
                     value={emailValue}
-                    placeholder='EMAIL'
+                    placeholder={userRole == 'A' ? 'USERNAME' : 'EMAIL'}
                     style={styles.inputs}
                 />
                 <TextInput

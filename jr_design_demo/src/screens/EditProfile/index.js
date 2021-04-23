@@ -602,7 +602,7 @@ export const ExtSites = ({ navigation }) => {
     console.log(JSON.stringify(userDetails));
     updateStudent(userDetails)
     .then((resp) => {
-      console.log(resp);
+      console.log(resp.body);
       navigation.navigate("Profile", {
         gtUsername: userDetails.gtUsername 
       });
