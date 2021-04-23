@@ -27,6 +27,7 @@ Version: 1.0
 
 
 ## Installation Guide
+Verson 1.0
 
 ### Pre-requisites
 #### 1. Install NodeJS
