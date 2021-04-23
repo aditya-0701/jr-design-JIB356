@@ -1,4 +1,4 @@
-# Demo App
+# Instructions for Devs
 
 This is the demo app that we are building for our final presentation during the Fall 2020 semester. This app will only have the functionality to create and log in to your student or alumni profile. It is being built using React Native with a Firebase DB.
 
