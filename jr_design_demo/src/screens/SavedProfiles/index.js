@@ -114,34 +114,36 @@ export const SaveContainer = ({ navigation, route }) => {
     ).catch(
       (err) => { console.log(err); }
     );
-  }, [username])
+  }, [])
   
   let i = 0;
 
   const refresh = () => {
-    // getStudentProjectInterests({ gtUsername: gtUname }).then(
-    //   (data) => {
-    //     console.log(data.body);
-    //     setProjectDetails(getProfileDetails(data.body));
-    //     console.log(projectDetails)
-    //   }
-    // ).catch(
-    //   (err) => { console.log(err); }
-    // );
-    setProjectDetails(getProfileDetails(profiles))
+    getAlumniSavedStudents( {'username': username})
+    .then(
+      (data) => {
+        console.log(data.body);
+        setProjectDetails(getProfileDetails(data.body));
+      }
+    ).catch(
+      (err) => { console.log(err); }
+    );
   }
 
   return (
     <View style={styles.container} >
       <ScrollView /* contentContainerStyle={ styles.container } */>
-        {projectDetails.entries.map((item, index) => (
-          <View key={index}>
-            <TouchableOpacity style={localStyle.savedItem} onPress={() => { console.log(item); detailScreen(item.id); }}>
-              <Text style={localStyle.savedTextTitle}>{item.name}</Text>
-              <Text numberOfLines={2} style={[localStyle.savedText, { marginTop: 10 }]}>{item.detail1}</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
+        {(projectDetails.entries.length <= 0) ?
+          <Text style={{color: 'black'}}> No Projects Found</Text> : 
+          projectDetails.entries.map((item, index) => (
+            <View key={index}>
+              <TouchableOpacity style={localStyle.savedItem} onPress={() => { console.log(item); detailScreen(item.id); }}>
+                <Text style={localStyle.savedTextTitle}>{item.name}</Text>
+                <Text numberOfLines={2} style={[localStyle.savedText, { marginTop: 10 }]}>{item.detail1}</Text>
+              </TouchableOpacity>
+            </View>
+          ))
+      }
       </ScrollView>
       <View style={localStyle.navButtonContainer}>
         <NiceButton title="Refresh" onPress={() => {

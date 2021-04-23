@@ -25,14 +25,14 @@ var username = 0;
 var alumniUName = '';
 
 const projectDetails = {
-  name: "",
-  description: "",
+  projectTitle: "",
+  projectDescription: "",
   degree: "",
   major: "",
   skills: "",
   interests: "",
-  hoursPerWeek: "",
-  externalLink: ""
+  weekHours: "",
+  links: ""
 };
 
 const degreeLibrary = [{
@@ -246,7 +246,7 @@ export const BasicDetails = ({ navigation }) => {
     projectDetails.links = [{address: `${externalLink}`, label: name}]
     projectDetails.startDate= startDate
     projectDetails.endDate= endDate
-    projectDetails.projectAlumni = username;;
+    projectDetails.projectAlumni = username;
     projectDetails.alumni = null;
     console.log("projectDetails")    
     console.log(JSON.stringify(projectDetails))
@@ -420,67 +420,7 @@ export const BasicDetails = ({ navigation }) => {
     </View>
     );
   };
-  
-  // export const PictureLink = ({ navigation }) => {
-  //   const title = React.useState("Project Picture and External Link");
-    
-  //   const [hoursPerWeek, onChangeHours] = React.useState('');
-  //   const [externalLink, onChangeExternalLink] = React.useState('');
-  //   const [startDate, onChangeStartDate] = React.useState(new Date());
-  //   const [endDate, onChangeEndDate] = React.useState(new Date());
-    
-  //   return (
-  //     <View id="page2" style={[localStyle.container, { flex: 1 }]}>
       
-  //     <Text style={styles.title}>Timeframe and External Link</Text>
-  //     <Text style={styles.label}>Start and end Dates</Text>
-  //     <View style={{ flexDirection: "row" }}>
-  //     <DatePicker
-  //     date={startDate}
-  //     style={{ flexGrow: 1 }}
-  //     mode="date"
-  //     placeholder="select project start date"
-  //     format="MM-DD-YYYY"
-  //     confirmBtnText="Confirm"
-  //     cancelBtnText="Cancel"
-  //     onDateChange={(date) => { onChangeStartDate(date) }}
-  //     />
-  //     <Text style={[styles.label, { flexGrow: 1 }]}>to</Text>
-  //     <DatePicker
-  //     date={endDate}
-  //     style={{ flexGrow: 1 }}
-  //     mode="date"
-  //     placeholder="select project end date"
-  //     format="MM-DD-YYYY"
-  //     confirmBtnText="Confirm"
-  //     cancelBtnText="Cancel"
-  //     onDateChange={(date) => { onChangeEndDate(date) }}
-  //     />
-  //     </View>
-  //     <Text style={styles.label}>How many Hours per week are expected?</Text>
-  //     <TextInput
-  //     placeholder="Hours per Week"
-  //     style={styles.inputs}
-  //     value={hoursPerWeek}
-  //     onChangeText={(text) => onChangeHours(text)}
-  //     keyboardType="decimal-pad"
-  //     maxLength={4}
-  //     />
-  //     <Text style={styles.label}>External Link</Text>
-  //     <TextInput placeholder="Link to external site (Optional)"
-  //     style={styles.inputs}
-  //     value={externalLink}
-  //     onChangeText={(text) => { onChangeExternalLink(text) }}
-  //     />
-      
-  //     <View style={[localStyle.navButtonContainer, { flex: 1 }]}>
-  //     <NiceButton title="Basic Info" onPress={() => navigation.navigate("Page1")} />
-  //     <NiceButton title="Finish" onPress={() => 0} />
-  //     </View>
-  //     </View>
-  //     );
-  //   };
-    
 const Stack = createStackNavigator();
 
 export default function NewProject(props) {

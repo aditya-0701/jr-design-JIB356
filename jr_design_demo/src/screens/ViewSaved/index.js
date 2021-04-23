@@ -425,10 +425,10 @@ class DetailsScreen extends React.Component {
               paddingLeft: 15,
             }}>Info Link:</Text>
             <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}
-            onPress={() => Linking.openURL(this.state.project.links[0].address)}
+            onPress={() => Linking.openURL((this.state.project.links[0]) ? this.state.project.links[0].address : "")}
             style={[{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
             { color: '#0000EE', fontWeight: 'bold' }]}>
-              {this.state.project.links[0].address}</Text>
+              {(this.state.project.links[0]) ? this.state.project.links[0].address : ""}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',

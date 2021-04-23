@@ -246,7 +246,7 @@ export const BasicDetails = ({ navigation, route }) => {
         onChangeInterests(data.body.interests.map(({ id }) => id));
         console.log(data.body.weekHours);
         onChangeHours(`${data.body.weekHours}`)
-        onChangeExternalLink(data.body.links[0].address)
+        onChangeExternalLink((data.body.links[0]) ? data.body.links[0].address : "")
         onChangeStartDate(new Date(data.body.startDate))
         onChangeEndDate(new Date(data.body.endDate))
       })
