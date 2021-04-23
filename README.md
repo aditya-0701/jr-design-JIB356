@@ -41,3 +41,19 @@ Check Version: ```npm -v```
 
 Update NPM: ```npm install npm@latest -g```
 
+### Dependent Libraries
+To install dependencies, simply run:
+```npm install```
+
+### Download Instructions
+Clone this repo locally
+
+### Build Instructions
+TODO
+
+### Install Instructions
+TODO
+
+### Run Instructions
+TODO
+
