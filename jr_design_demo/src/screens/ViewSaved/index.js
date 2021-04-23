@@ -214,12 +214,20 @@ class DetailsScreen extends React.Component {
     console.log("Project ID", projectID)
     getProject({ 'projId': projectID })
       .then((resp) => {
+        console.log("--------------Fetching vals-------------");
         console.log(resp.body);
         let body = resp.body;
         this.setState({ project: body })
       })
       .catch((err) => console.log(err))
+  }
 
+  componentDidUpdate() {
+    var refresh = this.props.route.params.refresh;
+    if (refresh) {
+      this.componentDidMount();
+      this.props.route.params.refresh = false;
+    }
   }
 
   deleteSaved() {
@@ -248,10 +256,8 @@ class DetailsScreen extends React.Component {
     // console.log("Implement me!")
     // this should take you to NewProject but it'll need to be implemented with back-end stuff to keep the project's current info as the default value.
     // the front-end portion of the screen is done.
-    this.props.navigation.navigate('EditProject', {
-      params: { username: username,
-        projectId: projId}
-    })
+    this.props.navigation.navigate('EditProject', { username: username,
+        projectId: this.props.route.params.projId})
   }
 
   render() {

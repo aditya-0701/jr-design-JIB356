@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView } from 'react-native';
+import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, Button, Image, KeyboardAvoidingView, ViewPagerAndroidBase } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import DatePicker from 'react-native-datepicker'
 import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import styles from '../../globalStyles';
-import { addProject, updateProject } from '../../store'
+import { getProject, updateProject } from '../../store'
 // import SectionedMultiSelect from 'react-native-sectioned-multi-select'
 // import Icon from 'react-native-vector-icons/MaterialIcons'
 
@@ -22,10 +22,10 @@ class NiceButton extends React.Component {
   }
 
 var username = 0;
-var projectId = 0;
+// var projId = 0;
 var alumniUName = '';
 
-const projectDetails = {
+var projectDetails = {
   name: "",
   description: "",
   degree: "",
@@ -215,8 +215,8 @@ const interestLibrary = [{
   ]
 }];
 
-export const BasicDetails = ({ navigation }) => {
-  
+export const BasicDetails = ({ navigation, route }) => {
+  const projectId = route.params.projId;
   const [name, onChangeName] = React.useState('');
   const [description, onChangeDescription] = React.useState('');
   const [degree, onChangeDegree] = React.useState([]);
@@ -228,24 +228,31 @@ export const BasicDetails = ({ navigation }) => {
   const [externalLink, onChangeExternalLink] = React.useState('');
   const [startDate, onChangeStartDate] = React.useState(new Date());
   const [endDate, onChangeEndDate] = React.useState(new Date());
+  // console.log(route);
 
   React.useEffect(() => {
-    getProject({ projId: projectId })
-    .then((data) => {
-      console.log(data.body);
-      projectDetails = data.body;
-      onChangeName(data.body.name)
-      onChangeDescription(data.body.description)
-      onChangeDegree([data.body.degree[0].id])
-      onChangeMajor([data.body.major[0].id]);
-      onChangeSkills(data.body.skills.map(({ id }) => id));
-      onChangeInterests(data.body.interests.map(({ id }) => id));
-      onChangeHours(data.body.hoursPerWeek)
-      onChangeExternalLink(data.body.externalLink)
-      onChangeStartDate(data.body.startDate)
-      onChangeEndDate(data.body.endDate)
-    })
-  }, [projectId])
+    if (projectDetails.id) return
+    else {
+      getProject({ "projId": projectId })
+      .then((data) => {
+        projectDetails = data.body;
+        console.log("--------------Fetching vals-------------");
+        console.log(projectDetails);
+        onChangeName(data.body.projectTitle)
+        onChangeDescription(data.body.projectDescription)
+        onChangeDegree([data.body.degree[0].id])
+        onChangeMajor([data.body.major[0].id]);
+        onChangeSkills(data.body.skills.map(({ id }) => id));
+        onChangeInterests(data.body.interests.map(({ id }) => id));
+        console.log(data.body.weekHours);
+        onChangeHours(`${data.body.weekHours}`)
+        onChangeExternalLink(data.body.links[0].address)
+        onChangeStartDate(new Date(data.body.startDate))
+        onChangeEndDate(new Date(data.body.endDate))
+      })
+      .catch((err) => console.log(err));
+    }
+  }, []);
   
   const saveVals = () => {
     projectDetails.name = name;
@@ -255,17 +262,22 @@ export const BasicDetails = ({ navigation }) => {
   }
 
   const createProj = () => {
-    projectDetails.name = name;
-    projectDetails.description = description;
+    projectDetails.projectTitle = name;
+    projectDetails.projectDescription = description;
     projectDetails.skills = skills;
     projectDetails.degree= degree
     projectDetails.major= major
     projectDetails.interests= interests
-    projectDetails.hoursPerWeek= hoursPerWeek
-    projectDetails.externalLink= externalLink
+    projectDetails.weekHours= hoursPerWeek
+    console.log(JSON.stringify([{address: `${externalLink}`, label: name}]))
+    console.log([{address: `${externalLink}`, label: name}])
+    projectDetails.links = [{address: `${externalLink}`, label: name}]
     projectDetails.startDate= startDate
     projectDetails.endDate= endDate
-    projectDetails.id = projId;
+    projectDetails.projectAlumni = username;
+    projectDetails.id = projectId;
+    projectDetails.alumni = null;
+    console.log("projectDetails")
     console.log(JSON.stringify(projectDetails))
     updateProject(projectDetails)
     .then((resp) => {
@@ -273,7 +285,7 @@ export const BasicDetails = ({ navigation }) => {
       // setGTUsername(userDetails.gtUsername);
       navigation.navigate('ViewSaved', { 
         screen: 'DetailsScreen',
-        params: { username: username, projId: projectId },
+        params: { username: username, projId: projectId, refresh: true },
       });
     })
     .catch((err) => {
@@ -304,7 +316,7 @@ export const BasicDetails = ({ navigation }) => {
       style={[styles.inputs, {height: 100, textAlignVertical: 'top'}]}
     />
     
-    <Text style={styles.label}>Degree</Text>
+    <Text style={styles.label}>Degrees</Text>
     <SectionedMultiSelect
     items={degreeLibrary}
     uniqueKey="id"
@@ -315,7 +327,6 @@ export const BasicDetails = ({ navigation }) => {
     readOnlyHeadings={true}
     hideSearch={true}
     showChips={true}
-    single={true}
     onSelectedItemsChange={onChangeDegree}
     selectedItems={degree}
     styles={[styles, localStyle]} />
@@ -330,7 +341,6 @@ export const BasicDetails = ({ navigation }) => {
     readOnlyHeadings={true}
     hideSearch={true}
     showChips={true}
-    single={true}
     onSelectedItemsChange={onChangeMajor}
     selectedItems={major}
     styles={[styles, localStyle]}
@@ -345,7 +355,7 @@ export const BasicDetails = ({ navigation }) => {
     showDropDowns={false}
     readOnlyHeadings={true}
     hideSearch={true}
-    showChips={false}
+    showChips={true}
     onSelectedItemsChange={onChangeSkills}
     selectedItems={skills}
     styles={[styles, localStyle]}
@@ -360,7 +370,7 @@ export const BasicDetails = ({ navigation }) => {
     showDropDowns={false}
     readOnlyHeadings={true}
     hideSearch={true}
-    showChips={false}
+    showChips={true}
     onSelectedItemsChange={onChangeInterests}
     selectedItems={interests}
     styles={[styles, localStyle]}
@@ -400,7 +410,7 @@ export const BasicDetails = ({ navigation }) => {
     format="MM-DD-YYYY"
     confirmBtnText="Confirm"
     cancelBtnText="Cancel"
-    onDateChange={(date) => { onChangeStartDate(date) }}
+    onDateChange={(date) => { onChangeEndDate(date) }}
     showIcon ={false}
     style={{marginHorizontal: 20, width: '45%'}}
     cancelBtnText="Cancel"
@@ -425,11 +435,12 @@ export const BasicDetails = ({ navigation }) => {
     keyboardType="decimal-pad"
     maxLength={4}
     />
-    <Text style={styles.label}>External Link</Text>
+    <Text style={styles.label}>Info Link</Text>
     <TextInput placeholder="Link to external site (Optional)"
     style={styles.inputs}
     value={externalLink}
-    onChangeText={(text) => { onChangeExternalLink(text) }}
+    autoCapitalize = {"none"}
+    onChangeText={(text) => { onChangeExternalLink(text); console.log("external link", text) }}
     />
     </KeyboardAvoidingView>
     </ScrollView>
@@ -440,76 +451,16 @@ export const BasicDetails = ({ navigation }) => {
     </View>
     );
   };
-  
-  // export const PictureLink = ({ navigation }) => {
-  //   const title = React.useState("Project Picture and External Link");
-    
-  //   const [hoursPerWeek, onChangeHours] = React.useState('');
-  //   const [externalLink, onChangeExternalLink] = React.useState('');
-  //   const [startDate, onChangeStartDate] = React.useState(new Date());
-  //   const [endDate, onChangeEndDate] = React.useState(new Date());
-    
-  //   return (
-  //     <View id="page2" style={[localStyle.container, { flex: 1 }]}>
       
-  //     <Text style={styles.title}>Timeframe and External Link</Text>
-  //     <Text style={styles.label}>Start and end Dates</Text>
-  //     <View style={{ flexDirection: "row" }}>
-  //     <DatePicker
-  //     date={startDate}
-  //     style={{ flexGrow: 1 }}
-  //     mode="date"
-  //     placeholder="select project start date"
-  //     format="MM-DD-YYYY"
-  //     confirmBtnText="Confirm"
-  //     cancelBtnText="Cancel"
-  //     onDateChange={(date) => { onChangeStartDate(date) }}
-  //     />
-  //     <Text style={[styles.label, { flexGrow: 1 }]}>to</Text>
-  //     <DatePicker
-  //     date={endDate}
-  //     style={{ flexGrow: 1 }}
-  //     mode="date"
-  //     placeholder="select project end date"
-  //     format="MM-DD-YYYY"
-  //     confirmBtnText="Confirm"
-  //     cancelBtnText="Cancel"
-  //     onDateChange={(date) => { onChangeEndDate(date) }}
-  //     />
-  //     </View>
-  //     <Text style={styles.label}>How many Hours per week are expected?</Text>
-  //     <TextInput
-  //     placeholder="Hours per Week"
-  //     style={styles.inputs}
-  //     value={hoursPerWeek}
-  //     onChangeText={(text) => onChangeHours(text)}
-  //     keyboardType="decimal-pad"
-  //     maxLength={4}
-  //     />
-  //     <Text style={styles.label}>External Link</Text>
-  //     <TextInput placeholder="Link to external site (Optional)"
-  //     style={styles.inputs}
-  //     value={externalLink}
-  //     onChangeText={(text) => { onChangeExternalLink(text) }}
-  //     />
-      
-  //     <View style={[localStyle.navButtonContainer, { flex: 1 }]}>
-  //     <NiceButton title="Basic Info" onPress={() => navigation.navigate("Page1")} />
-  //     <NiceButton title="Finish" onPress={() => 0} />
-  //     </View>
-  //     </View>
-  //     );
-  //   };
-    
 const Stack = createStackNavigator();
 
 export default function EditProject(props) {
   username = props.route.params.username;
-  projectId = props.route.params.projectId;
+  // projId = props.route.params.projectId;
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Page1">
-      <Stack.Screen name="Page1" component={BasicDetails} />
+      <Stack.Screen name="Page1" component={BasicDetails} initialParams = {{projId: props.route.params.projectId}}/>
       {/* <Stack.Screen name="Page2" component={PictureLink} /> */}
     </Stack.Navigator>
     );

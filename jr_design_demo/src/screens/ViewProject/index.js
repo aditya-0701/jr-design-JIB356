@@ -240,6 +240,13 @@ export class Card extends React.Component {
   //     console.log(err);
   //   })
   // }
+  componentDidUpdate() {
+    var refresh = this.props.route.params.refresh;
+    if (refresh) {
+      // Empty state update for refresh
+      this.setState({});
+    }
+  }
 
 
   renderUsers = () => {

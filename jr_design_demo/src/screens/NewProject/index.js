@@ -236,18 +236,19 @@ export const BasicDetails = ({ navigation }) => {
   }
 
   const createProj = () => {
-    projectDetails.name = name;
-    projectDetails.description = description;
+    projectDetails.projectTitle = name;
+    projectDetails.projectDescription = description;
     projectDetails.skills = skills;
     projectDetails.degree= degree
     projectDetails.major= major
     projectDetails.interests= interests
-    projectDetails.hoursPerWeek= hoursPerWeek
-    projectDetails.externalLink= externalLink
+    projectDetails.weekHours= hoursPerWeek
+    projectDetails.links = [{address: `${externalLink}`, label: name}]
     projectDetails.startDate= startDate
     projectDetails.endDate= endDate
-    projectDetails.projectAlumni = username;
-    
+    projectDetails.projectAlumni = username;;
+    projectDetails.alumni = null;
+    console.log("projectDetails")    
     console.log(JSON.stringify(projectDetails))
 
     addProject(projectDetails)
@@ -284,7 +285,7 @@ export const BasicDetails = ({ navigation }) => {
       style={[styles.inputs, {height: 100, textAlignVertical: 'top'}]}
     />
     
-    <Text style={styles.label}>Degree</Text>
+    <Text style={styles.label}>Degrees</Text>
     <SectionedMultiSelect
     items={degreeLibrary}
     uniqueKey="id"
@@ -295,7 +296,6 @@ export const BasicDetails = ({ navigation }) => {
     readOnlyHeadings={true}
     hideSearch={true}
     showChips={true}
-    single={true}
     onSelectedItemsChange={onChangeDegree}
     selectedItems={degree}
     styles={[styles, localStyle]} />
@@ -310,7 +310,6 @@ export const BasicDetails = ({ navigation }) => {
     readOnlyHeadings={true}
     hideSearch={true}
     showChips={true}
-    single={true}
     onSelectedItemsChange={onChangeMajor}
     selectedItems={major}
     styles={[styles, localStyle]}
@@ -325,7 +324,7 @@ export const BasicDetails = ({ navigation }) => {
     showDropDowns={false}
     readOnlyHeadings={true}
     hideSearch={true}
-    showChips={false}
+    showChips={true}
     onSelectedItemsChange={onChangeSkills}
     selectedItems={skills}
     styles={[styles, localStyle]}
@@ -340,7 +339,7 @@ export const BasicDetails = ({ navigation }) => {
     showDropDowns={false}
     readOnlyHeadings={true}
     hideSearch={true}
-    showChips={false}
+    showChips={true}
     onSelectedItemsChange={onChangeInterests}
     selectedItems={interests}
     styles={[styles, localStyle]}
@@ -405,11 +404,12 @@ export const BasicDetails = ({ navigation }) => {
     keyboardType="decimal-pad"
     maxLength={4}
     />
-    <Text style={styles.label}>External Link</Text>
+    <Text style={styles.label}>Info Link</Text>
     <TextInput placeholder="Link to external site (Optional)"
     style={styles.inputs}
     value={externalLink}
-    onChangeText={(text) => { onChangeExternalLink(text) }}
+    autoCapitalize = {"none"}
+    onChangeText={(text) => { onChangeExternalLink(text); console.log("external link", text) }}
     />
     </KeyboardAvoidingView>
     </ScrollView>
