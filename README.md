@@ -48,6 +48,11 @@ To install dependencies, simply run:
 ### Download Instructions
 Clone this repo locally
 
+Cloning instructions:
+
+https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository/
+
+
 ### Build Instructions
 TODO
 
