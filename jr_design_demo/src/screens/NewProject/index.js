@@ -380,7 +380,7 @@ export const BasicDetails = ({ navigation }) => {
     format="MM-DD-YYYY"
     confirmBtnText="Confirm"
     cancelBtnText="Cancel"
-    onDateChange={(date) => { onChangeStartDate(date) }}
+    onDateChange={(date) => { onChangeEndDate(date) }}
     showIcon ={false}
     style={{marginHorizontal: 20, width: '45%'}}
     cancelBtnText="Cancel"
