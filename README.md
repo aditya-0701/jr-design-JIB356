@@ -78,7 +78,7 @@ Clone this repo locally
 
 Cloning instructions:
 
-[https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository/]
+https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository/
 
 ### Dependent Libraries
 After cloning the repository, you will need to install the dependencies for this project. To install dependencies, open the terminal for the "jr_design_app
