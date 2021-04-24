@@ -3,6 +3,7 @@
 ## Team 0356
 
 Members: Andrew Harris, Hannah Kim, Sam Sanders, Saket Shirsath, Aditya Sudarshan
+
 Client: Chirsten Steele
 
 ## Release Notes
@@ -44,13 +45,6 @@ Check Version: ```npm -v```
 
 Update NPM: ```npm install npm@latest -g```
 
-### Dependent Libraries
-To install dependencies, simply run:
-```npm install```
-Expo is needed to run this application. Please ensure that Expo is installed by running:
-
-```npm install --global expo-cli```
-
 ### Download Instructions
 Clone this repo locally
 
@@ -58,13 +52,20 @@ Cloning instructions:
 
 https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository/
 
+### Dependent Libraries
+After cloning the repository, you will need to install the dependencies for this project. To install dependencies, open the terminal for the "jr_design_app
+ folder, and then run:
+```npm install```
 
-### Build Instructions
-TODO
-
-### Install Instructions
-TODO
+(Expo)[https://docs.expo.io/] is needed to run this application. Please ensure that Expo is installed by running:
+```npm install --global expo-cli```
 
 ### Run Instructions
-TODO
+After installing all dependent libraries, you can run the application by opening the terminal for the "jr_design_app folder, and then run:
+ ```expo start```
+ 
+Expo will then display a QR code that you can scan on your device to run the app locally. 
 
+### Troubleshooting
+- When running the app using Expo, sometimes you will notice that the app does not build on your device after you scan the QR code. In order to get past this problem, go to the browser window which opened when you ran `expo start` and select "Tunnel" as the connection type.
+- If you run into errors with npm dependencies, or with expo dependencies, a good start to solving these issues is to delete your cloned copy of the app and re-clone it from this GitHub repository. Aditionally, deleting and reinstalling Expo, and restarting your computer will help you run this app.
