@@ -9,21 +9,23 @@ Client: Chirsten Steele
 Version: 1.0
 
 ### New Features
-- Student account creation, aogin, update account info
-- Alumni account creation, aogin, update account info
+- Student account creation, login, update account info
+- Alumni account creation, login, update account info
 - Alumni can create, read, update, and delete projects
-- Students can view and save projects by swiping
-- Students can provide filters to view desired projects
-- Students can search directly for projects
-- Alumni can view and save student profiles by swiping
+- Students can view and save projects by swiping through cards with project details
+- Students can provide filters to view only a set of desired projects
+- Students can search directly for projects by using a keyword search
+- Alumni can view and save student profiles by swiping through cards with student details
 - Alumni can provide filters to view desired student profiles
-- Alumni can search directly for student profiles
-- Alumni and students can contact each other through email links
+- Alumni can search directly for student profiles by using a keyword search
+- Alumni and students can contact each other by clicking on displayed emails that will open in any installed email app 
 
 ### Known Bugs and Defects
-- Cannot change account passwords
+- Alumni and Students do not have the capability to change their password
 - If quickly swiping, next card data will not load in time. Requires at most 1 second on each card to load next card
-- After returning to card swiping screen using Search and filtering screen, cards do not refresh until new swipe or left/right buttons used
+- After returning to card swiping screen after using Search and filtering screen, cards sometimes do not refresh until new swipe or left/right buttons used
+- After removing/creating projects on the My Projects screen, sometimes the screen does not update with latest values until the refresh button is clicked
+- After removing project Interests or saved student Profiles on the Saved Projects/Saved Profiles screens, sometimes the screen does not update with latest values until the refresh button is clicked
 
 
 ## Installation Guide
@@ -45,6 +47,9 @@ Update NPM: ```npm install npm@latest -g```
 ### Dependent Libraries
 To install dependencies, simply run:
 ```npm install```
+Expo is needed to run this application. Please ensure that Expo is installed by running:
+
+```npm install --global expo-cli```
 
 ### Download Instructions
 Clone this repo locally
