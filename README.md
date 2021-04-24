@@ -6,8 +6,12 @@ Members: Andrew Harris, Hannah Kim, Sam Sanders, Saket Shirsath, Aditya Sudarsha
 
 Client: Chirsten Steele
 
+## File Structure Overview
+
+There are two main, top level folders in our GitHub. Firstly, we have the `jr_design_app` folder, which houses all the code for our React Native application that we built for this project. Secondly, we have the `matchingapp-api` folder, which serves as a backup of all of our API code. This is simply a copy from our AWS Lambda that we keep as a backup and for reference. The `miscellaneous` folder holds files and documents that are not used in the codebase for either our app our API. In order to run the app or change the codebase, all changes must be made in the `jr_design_app` folder.
+
 ## Release Notes
-Version: 1.0
+### Version: 1.0
 
 ### New Features
 - Student account creation, login, update account info
