@@ -30,9 +30,37 @@ Version: 1.0
 
 
 ## Installation Guide
-Verson 1.0
+Version 1.0
+
+We have a .apk file ready to go for Android users, with installation instructions in our ReadME. Currently, iOS users will have to use Expo to run the application, and if they choose to, they can package the app themselves to be run on iOS. Intructions are not provided for iOS packaging, but can be found on the (Expo website)[https://docs.expo.io/]. Separate instructions are given below for users installing the .apk, and users that want to use Expo to run the application.
+
+## Running app using (tech_connect.apk)[https://github.com/aditya-sudarshan/jr_design_JIB356/raw/master/tech_connect.apk]
+
+Details are provided below on how you can download, install, and run the .apk version of our application on your Android device. This (article)[https://www.lifewire.com/install-apk-on-android-4177185] by Lifewire also provides a helpful guide of how you can install the application. 
 
 ### Pre-requisites
+
+- To download and install the .apk, you must first enable the setting `Install unknown apps` on your device. You might be prompted multiple times asking you to confirm whether you want to install the app through the installation process. This is because the .apk does not have a recognized/registered developer linked to it. Simply say yes every time you are asked whether you want to proceed.
+
+### Download Instructions
+- To download tech_connect.apk on your Android device, use this (link)[https://github.com/aditya-sudarshan/jr_design_JIB356/raw/master/tech_connect.apk] to download the file. You can download the file directly to your phone if you choose to, or you can download it to another device and move it to your phone.
+
+### Install Instructions
+- After downloading the file, you must install it on your Android device. To do this, navigate to the file using your file manager. 
+- After navigating to the file in your file manager, click on the file to install it. You will be asked a few times whether you want to proceed with installation. Simply say yes every time you are prompted with this question and proceed through the steps given by your device to install the app.
+
+### Run Instructions
+
+The app will now be available in your list of applications with the name `Tech Connect`. To run the application you can open it the same way you would any other app on your device.
+
+### Troublshooting
+
+- If you are running into issues with the download or installation of the app, ensure that all of your phones settings to enable installation of apps from unknown sources are enabled. As our application is not registered with Google Play, and does not have a registered developer account linked to it, it is imperative that you enable all settings on your device to let you download files from unknown sources.
+
+## Running app on Expo
+
+### Pre-requisites
+
 #### 1. Install NodeJS
 - Visit https://nodejs.org/en/download/
 - Select LTS
