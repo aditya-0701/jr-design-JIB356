@@ -32,18 +32,18 @@ Version: 1.0
 ## Installation Guide
 Version 1.0
 
-We have a .apk file ready to go for Android users, with installation instructions in our ReadME. Currently, iOS users will have to use Expo to run the application, and if they choose to, they can package the app themselves to be run on iOS. Intructions are not provided for iOS packaging, but can be found on the (Expo website)[https://docs.expo.io/]. Separate instructions are given below for users installing the .apk, and users that want to use Expo to run the application.
+We have a .apk file ready to go for Android users, with installation instructions in our ReadME. Currently, iOS users will have to use Expo to run the application, and if they choose to, they can package the app themselves to be run on iOS. Intructions are not provided for iOS packaging, but can be found on the [Expo website](https://docs.expo.io/). Separate instructions are given below for users installing the .apk, and users that want to use Expo to run the application.
 
-## Running app using (tech_connect.apk)[https://github.com/aditya-sudarshan/jr_design_JIB356/raw/master/tech_connect.apk]
+## Running app using [tech_connect.apk](https://github.com/aditya-sudarshan/jr_design_JIB356/raw/master/tech_connect.apk)
 
-Details are provided below on how you can download, install, and run the .apk version of our application on your Android device. This (article)[https://www.lifewire.com/install-apk-on-android-4177185] by Lifewire also provides a helpful guide of how you can install the application. 
+Details are provided below on how you can download, install, and run the .apk version of our application on your Android device. This [article](https://www.lifewire.com/install-apk-on-android-4177185) by Lifewire also provides a helpful guide of how you can install the application. 
 
 ### Pre-requisites
 
 - To download and install the .apk, you must first enable the setting `Install unknown apps` on your device. You might be prompted multiple times asking you to confirm whether you want to install the app through the installation process. This is because the .apk does not have a recognized/registered developer linked to it. Simply say yes every time you are asked whether you want to proceed.
 
 ### Download Instructions
-- To download tech_connect.apk on your Android device, use this (link)[https://github.com/aditya-sudarshan/jr_design_JIB356/raw/master/tech_connect.apk] to download the file. You can download the file directly to your phone if you choose to, or you can download it to another device and move it to your phone.
+- To download tech_connect.apk on your Android device, use this [link](https://github.com/aditya-sudarshan/jr_design_JIB356/raw/master/tech_connect.apk) to download the file. You can download the file directly to your phone if you choose to, or you can download it to another device and move it to your phone.
 
 ### Install Instructions
 - After downloading the file, you must install it on your Android device. To do this, navigate to the file using your file manager. 
@@ -78,14 +78,14 @@ Clone this repo locally
 
 Cloning instructions:
 
-https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository/
+[https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository/]
 
 ### Dependent Libraries
 After cloning the repository, you will need to install the dependencies for this project. To install dependencies, open the terminal for the "jr_design_app
  folder, and then run:
 ```npm install```
 
-(Expo)[https://docs.expo.io/] is needed to run this application. Please ensure that Expo is installed by running:
+[Expo](https://docs.expo.io/) is needed to run this application. Please ensure that Expo is installed by running:
 ```npm install --global expo-cli```
 
 ### Run Instructions
