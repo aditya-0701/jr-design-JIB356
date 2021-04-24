@@ -76,6 +76,7 @@ export const SaveContainer = ({ navigation, route }) => {
   }, [gtUname]);
 
   React.useEffect(() => {
+    if (myP != 1) { return; }
     getAlumniProjects({ username: username }).then(
       (data) => {
         console.log(data.body);
@@ -88,15 +89,26 @@ export const SaveContainer = ({ navigation, route }) => {
   let i = 0;
 
   const refresh = () => {
-    getStudentProjectInterests({ gtUsername: gtUname }).then(
-      (data) => {
-        console.log(data.body);
-        setProjectDetails(getProfileDetails(data.body));
-        console.log(projectDetails)
-      }
-    ).catch(
-      (err) => { console.log(err); }
-    );
+    if (myP == 1) {
+      getAlumniProjects({ username: username }).then(
+        (data) => {
+          console.log(data.body);
+          setProjectDetails(getProfileDetails(data.body));
+        }
+      ).catch(
+        (err) => { console.log(err); }
+      );
+    } else {
+      getStudentProjectInterests({ gtUsername: gtUname }).then(
+        (data) => {
+          console.log(data.body);
+          setProjectDetails(getProfileDetails(data.body));
+          console.log(projectDetails)
+        }
+      ).catch(
+        (err) => { console.log(err); }
+      );
+    }
   }
 
   if (myP == 1) {
@@ -232,24 +244,25 @@ class DetailsScreen extends React.Component {
 
   deleteSaved() {
     if (myP == 1) {
-      //delete project
-      deleteProject({'projectId': projId})
+      console.log('deleting project' + JSON.stringify({'projectId': projId}))
+      deleteProject({'projectId': this.state.project.id})
       .then((resp) => {
         console.log(resp.body);
         this.props.navigation.goBack();
       })
       .catch((err) => { console.log(err) })
-    }
-    deleteProjectInterest({
-      'gtUsername': gtUname,
-      'projectId': this.state.project.id
-    })
-      .then((resp) => {
-        console.log(projId);
-        console.log(resp);
-        this.props.navigation.goBack();
+    } else {
+      deleteProjectInterest({
+        'gtUsername': gtUname,
+        'projectId': this.state.project.id
       })
-      .catch((err) => { console.log(err) })
+        .then((resp) => {
+          console.log(projId);
+          console.log(resp);
+          this.props.navigation.goBack();
+        })
+        .catch((err) => { console.log(err) })
+    }
   }
 
   editProject() {
@@ -425,7 +438,7 @@ class DetailsScreen extends React.Component {
               paddingLeft: 15,
             }}>Info Link:</Text>
             <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}
-            onPress={() => Linking.openURL((this.state.project.links[0]) ? this.state.project.links[0].address : "")}
+            onPress={() => Linking.openURL('http://' + (this.state.project.links[0]) ? this.state.project.links[0].address : "")}
             style={[{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
             { color: '#0000EE', fontWeight: 'bold' }]}>
               {(this.state.project.links[0]) ? this.state.project.links[0].address : ""}</Text>
@@ -436,7 +449,7 @@ class DetailsScreen extends React.Component {
               paddingLeft: 15,
             }}>Project Alumni:</Text>
             <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
-              {this.state.project.alumni[0].name}</Text>
+              {(this.state.project.alumni[0]) ? this.state.project.alumni[0].name : ""}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
@@ -444,10 +457,10 @@ class DetailsScreen extends React.Component {
               paddingLeft: 15,
             }}>Project Alumni Email:</Text>
             <Text
-              onPress={() => Linking.openURL('mailto:' + this.state.project.alumni[0].email)}
+              onPress={() => Linking.openURL('mailto:' + (this.state.project.alumni[0]) ? this.state.project.alumni[0].email: "")}
               style={[{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
               { color: '#0000EE', fontWeight: 'bold' }]}>
-              {this.state.project.alumni[0].email}
+              {(this.state.project.alumni[0]) ? this.state.project.alumni[0].email: ""}
             </Text>
             <Text style={{ height: 50 }}></Text>
           </ScrollView>
@@ -525,14 +538,17 @@ class DetailsScreen extends React.Component {
               color: '#B3A369',
               paddingLeft: 15,
             }}>Info Link:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.links.join(', ')}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}
+            onPress={()=> Linking.openURL('http://' + (this.state.project.links[0]) ? this.state.project.links[0].address : "")}>
+              {(this.state.project.links[0]) ? this.state.project.links[0].address : ""}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
               color: '#B3A369',
               paddingLeft: 15,
             }}>Project Alumni:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.alumni[0].name}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {(this.state.project.alumni[0]) ? this.state.project.alumni[0].name : ""}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
@@ -540,10 +556,10 @@ class DetailsScreen extends React.Component {
               paddingLeft: 15,
             }}>Project Alumni Email:</Text>
             <Text
-              onPress={() => Linking.openURL('mailto:' + this.state.project.alumni[0].email)}
+              onPress={() => Linking.openURL('mailto:' + (this.state.project.alumni[0]) ? this.state.project.alumni[0].email: "")}
               style={[{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
               { color: '#0000EE', fontWeight: 'bold' }]}>
-              {this.state.project.alumni[0].email}
+              {(this.state.project.alumni[0]) ? this.state.project.alumni[0].email: ""}
             </Text>
             <Text style={{ height: 50 }}></Text>
           </ScrollView>

@@ -1,6 +1,6 @@
 // import * as React from 'react';
 import React from 'react';
-import { SafeAreaView, ScrollView, Switch, TextInput, KeyboardAvoidingView, Image, TouchableOpacity, ImageBackground, View, Text, StyleSheet, Dimensions, Animated, PanResponder, Touchable, Button } from 'react-native';
+import { SafeAreaView, ScrollView, Linking, TextInput, KeyboardAvoidingView, Image, TouchableOpacity, ImageBackground, View, Text, StyleSheet, Dimensions, Animated, PanResponder, Touchable, Button } from 'react-native';
 // import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import shouldUseActivityState, { screensEnabled } from 'react-native-screens'
@@ -12,6 +12,7 @@ import { render } from 'react-dom';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { addAlumniSavedStudents, getAllStudents, getStudent,deleteAlumniSavedStudents } from '../../store';
 
 class NiceButton extends React.Component {
   constructor(props) { super(props); }
@@ -27,125 +28,18 @@ class NiceButton extends React.Component {
 const SCREEN_HEIGHT = Dimensions.get('window').height
 const SCREEN_WIDTH = Dimensions.get('window').width
 const CARD_HEIGHT = SCREEN_HEIGHT * 0.86
+var username = '';
 
-const userDetails = [
-  {
-    id: "1",
-    email: "asudarshan30@gatech.edu",
-    gtUsername: "asudarshan30",
-    firstName: "Aditya",
-    lastName: "Sudarshan",
-    middleName: "",
-    bio: "I am a 3rd year CS major",
-    degree: "B.S.",
-    major: "Computer Science",
-    skills: "Programming",
-    start_date: "May 10, 2021",
-    end_date: "August 1, 2021",
-    experiences: [{
-      'companyName': 'Microsoft',
-      'position': 'Software Engineer',
-      'expDescription': 'sdklgna;klgnd',
-      'start_date': new Date(),
-      'end_date': new Date()
-    }],
-    uri: require('../../../assets/defaultskin.png')
-  },
-  {
-    id: "2",
-    email: "aharris322@gatech.edu",
-    gtUsername: "aharris322",
-    firstName: "Andrew",
-    lastName: "Harris",
-    middleName: "",
-    bio: "I am a 2nd yr cs major",
-    degree: "B.S.",
-    major: "Computer Science",
-    skills: "Programming",
-    start_date: "May 5, 2021",
-    end_date: "August 10, 2021",
-    experiences: [{
-      'companyName': 'Google',
-      'position': 'Software Engineer',
-      'expDescription': 'sdklgna;klgnd',
-      'start_date': new Date(),
-      'end_date': new Date()
-    }],
-    uri: require('../../../assets/defaultskin.png')
-  },
-  {
-    id: "3",
-    email: "hkim946@gatech.edu",
-    gtUsername: "hkim946",
-    firstName: "Hannah",
-    lastName: "Kim",
-    middleName: "",
-    bio: "I am a 3rd yr cs major",
-    degree: "B.S.",
-    major: "Computer Science",
-    skills: "Programming",
-    start_date: "June 7, 2021",
-    end_date: "August 13, 2021",
-    experiences: [{
-      'companyName': 'Apple',
-      'position': 'Software Engineer',
-      'expDescription': 'sdklgna;klgnd',
-      'start_date': new Date(),
-      'end_date': new Date()
-    }],
-    uri: require('../../../assets/defaultskin.png')
-  },
-  {
-    id: "4",
-    email: "shirsath.saket@gatech.edu",
-    gtUsername: "shirsath.saket",
-    firstName: "Saket",
-    lastName: "Shirsath",
-    middleName: "",
-    bio: "I am a 3rd yr cs major",
-    degree: "B.S.",
-    major: "Computer Science",
-    skills: "Programming",
-    start_date: "May 20, 2021",
-    end_date: "August 10, 2021",
-    experiences: [{
-      'companyName': 'Facebook',
-      'position': 'Software Engineer',
-      'expDescription': 'sdklgna;klgnd',
-      'start_date': new Date(),
-      'end_date': new Date()
-    }],
-    uri: require('../../../assets/defaultskin.png')
-  },
-  {
-    id: "5",
-    email: "unicycler@gatech.edu",
-    gtUsername: "unicycler",
-    firstName: "Sam",
-    lastName: "Sanders",
-    middleName: "",
-    bio: "I am a 3rd yr cs major",
-    degree: "B.S.",
-    major: "Computer Science",
-    skills: "Programming",
-    start_date: "June 10, 2021",
-    end_date: "August 20, 2021",
-    experiences: [{
-      'companyName': 'Instagram',
-      'position': 'Software Engineer',
-      'expDescription': 'sdklgna;klgnd',
-      'start_date': new Date(),
-      'end_date': new Date()
-    }],
-    uri: require('../../../assets/defaultskin.png')
-  },
-  {
-    id: "-1",
-    firstName: "No Profiles Found",
-    bio: "No profiles found with the given search parameters",
-    uri: require('../../../assets/defaultskin.png')
-  }
-]
+var userDetails = [{
+  id: "-1",
+  projectTitle: "No Profiles Found",
+  projectDescription: "No student profiles found with the given search parameters",
+  // bio: "lkdgnsd;lkzgnsad;lgnasdg",
+  // hoursPerWeek: "7",
+  // externalLink: "maps.google.com",,
+  gtUsername: '',
+  uri: require('../../../assets/5.jpg')
+}]
 
 var viewSwitch = false;
 var x = 0;
@@ -155,6 +49,29 @@ export class Card extends React.Component {
 
   constructor() {
     super()
+    var refresh = true;
+
+    try {
+      console.log(this.props);
+      refresh = this.props.route.params.refresh;
+    } catch(e) {
+      console.log(e);
+      refresh = true;
+    }
+    if (refresh) {
+      getAllStudents()
+      .then((resp) => {
+        let body = resp.body;
+        console.log("Inside card");
+        console.log(body);
+        userDetails = body;
+        this.forceUpdate();
+        // callback();
+      })
+      .catch((err) => {
+        console.log(err);
+      }) 
+    }
 
     this.position = new Animated.ValueXY()
     this.state = {
@@ -207,16 +124,37 @@ export class Card extends React.Component {
       },
       onPanResponderRelease: (evt, gestureState) => {
         if (gestureState.dx > 120) {
+          // var idx = 
+         
+          // })
+          // })
+          console.log(username);
+          addAlumniSavedStudents({
+            'username': username,
+            'gtUsername': userDetails[this.state.currentIndex].gtUsername
+          })
+          .then((resp) => {
+            console.log(resp.body)
+          })
+          .catch((err) => { console.log(err) })
           Animated.spring(this.position, {
             toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy }
             , useNativeDriver: true
           }).start(() => {
             this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
               this.position.setValue({ x: 0, y: 0 })
-            })
-          })
+          })})
+              
         }
         else if (gestureState.dx < -120) {
+          deleteAlumniSavedStudents({
+            'username': username,
+            'gtUsername': userDetails[this.state.currentIndex].gtUsername
+          })
+            .then((resp) => {
+              console.log(resp.body)
+            })
+            .catch((err) => { console.log(err) })
           Animated.spring(this.position, {
             toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy },
             useNativeDriver: true
@@ -225,6 +163,7 @@ export class Card extends React.Component {
               this.position.setValue({ x: 0, y: 0 })
             })
           })
+          // })
         }
         else {
           Animated.spring(this.position, {
@@ -250,7 +189,7 @@ export class Card extends React.Component {
         return (
           <Animated.View
             {...this.PanResponder.panHandlers}
-            key={item.id} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 150, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+            key={item.gtUsername} style={[this.rotateAndTranslate, { height: CARD_HEIGHT - 150, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
             <Animated.View style={{ opacity: this.likeOpacity, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
               <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
@@ -264,15 +203,19 @@ export class Card extends React.Component {
             <ImageBackground
               style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
               imageStyle={{ borderRadius: 17 }}
-              source={item.uri} >
-              <Text style={styles.textAbstract}>
-                <Text style={styles.textTitle}>{item.firstName} {item.middleName} {item.lastName}{'\n'}</Text>
-                <Text style={styles.textMain}>{'\n'}{item.degree}</Text>
-                <Text style={styles.textMain}>{'\n'}{item.major}{'\n'}</Text>
-                <TouchableOpacity style={{ alignCenter: 'center' }} onPress={() => this.props.navigation.navigate("Page2")}>
+              source={require('../../../assets/1.jpg')} >
+              <View style={styles.textAbstract}>
+              <Text numberOfLines={1} style={styles.textTitle}>{item.firstName} {item.middleName} {item.lastName}</Text>
+              <Text numberOfLines={3} style={[styles.textMain]}>{item.bio}</Text>
+                {/* <Text style={styles.textMain}>{'\n'}{item.degree}</Text> */}
+                {/* <Text style={styles.textMain}>{'\n'}{item.major}{'\n'}</Text> */}
+                {/* <TouchableOpacity style={{ alignCenter: 'center' }} onPress={() => this.props.navigation.navigate("Page2")}>
                   <Text style={{ left: 135, top: 40, color: 'white', fontSize: 15, fontWeight: 'bold' }}>View User Details</Text>
+                </TouchableOpacity> */}
+                <TouchableOpacity style={{ marginVertical: 20, position: 'absolute', top: CARD_HEIGHT * 0.3 - 120 }} onPress={() => { x = this.state.currentIndex; this.props.navigation.navigate("Page2") }}>
+                  <Text style={[styles.buttonText]}>View User Details</Text>
                 </TouchableOpacity>
-              </Text>
+              </View>
             </ImageBackground>
           </Animated.View>
         )
@@ -280,7 +223,7 @@ export class Card extends React.Component {
         return (
 
           <Animated.View
-            key={item.id} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: CARD_HEIGHT - 150, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
+            key={item.gtUsername} style={[{ opacity: this.nextCardOpacity, transform: [{ scale: this.nextCardScale }], height: CARD_HEIGHT - 150, width: SCREEN_WIDTH, padding: 10, position: 'absolute' }]}>
 
             <Animated.View style={{ opacity: 0, transform: [{ rotate: '-30deg' }], position: 'absolute', top: 50, left: 40, zIndex: 1000 }}>
               <Text style={{ borderWidth: 1, borderColor: '#046307', color: '#046307', fontSize: 32, fontWeight: '800', padding: 10 }}>LIKE</Text>
@@ -295,14 +238,18 @@ export class Card extends React.Component {
               style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
               imageStyle={{ borderRadius: 17 }}
               source={item.uri}>
-              <Text style={styles.textAbstract}>
-                <Text style={styles.textTitle}>{item.firstName} {item.middleName} {item.lastName}{'\n'}</Text>
-                <Text style={styles.textMain}>{'\n'}{item.degree}</Text>
-                <Text style={styles.textMain}>{'\n'}{item.major}{'\n'}</Text>
-                <TouchableOpacity style={{ alignCenter: 'center' }} onPress={() => this.props.navigation.navigate("Page2")}>
+              <View style={styles.textAbstract}>
+              <Text numberOfLines={1} style={styles.textTitle}>{item.firstName} {item.middleName} {item.lastName}</Text>
+              <Text numberOfLines={3} style={[styles.textMain]}>{item.bio}</Text>
+                {/* <Text style={styles.textMain}>{'\n'}{item.degree}</Text> */}
+                {/* <Text style={styles.textMain}>{'\n'}{item.major}{'\n'}</Text> */}
+                {/* <TouchableOpacity style={{ alignCenter: 'center' }} onPress={() => this.props.navigation.navigate("Page2")}>
                   <Text style={{ left: 135, top: 40, color: 'white', fontSize: 15, fontWeight: 'bold' }}>View User Details</Text>
+                </TouchableOpacity> */}
+                <TouchableOpacity style={{ marginVertical: 20, position: 'absolute', top: CARD_HEIGHT * 0.3 - 120 }} onPress={() => { x = this.state.currentIndex; this.props.navigation.navigate("Page2") }}>
+                  <Text style={[styles.buttonText]}>View User Details</Text>
                 </TouchableOpacity>
-              </Text>
+              </View>
             </ImageBackground>
           </Animated.View>
         )
@@ -385,27 +332,109 @@ class SavedUsers extends React.Component {
 }
 
 class DetailsScreen extends React.Component {
+
+  constructor() {
+    super()
+
+    this.state = {
+      profile: {
+        "gtUsername": "",
+        "firstName": "",
+        "middleName": "",
+        "lastName": "",
+        "weekHours": "",
+        "skills": [],
+        "interests": [],
+        "major": [],
+        "degree": [],
+        "experiences": [],
+        "links": []
+      }
+    }
+  }
+
+  componentDidMount() {
+    var proj = userDetails[x];
+    console.log("TEST");
+    console.log(proj);
+    // var projId = proj.id;
+    getStudent({ gtUsername: proj.gtUsername })
+      .then((resp) => {
+        let body = resp.body;
+        console.log(body);
+        this.setState({ profile: body })
+      })
+      .catch((err) => console.log(err))
+
+  }
+
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <ScrollView style={styles.detailsPage}>
-          <Text style={{ top: 20, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>User Details</Text>
-          <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}> {userDetails[x].firstName} {userDetails[x].middleName} {userDetails[x].lastName}</Text>
-          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Email: {'\n'}{userDetails[x].email}{'\n'}</Text>
-          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>GT Username: {'\n'}{userDetails[x].gtUsername}{'\n'}</Text>
-          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Bio: {'\n'}{userDetails[x].bio}{'\n'}</Text>
-          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Major: {'\n'}{userDetails[x].major}{'\n'}</Text>
-          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Degree: {'\n'}{userDetails[x].degree}{'\n'}</Text>
-          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{userDetails[x].skills}{'\n'}</Text>
-          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Start Date: {'\n'}{userDetails[x].start_date}{'\n'}</Text>
-          <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>End Date: {'\n'}{userDetails[x].end_date}{'\n'}</Text>
+          <Text
+          style={{ top: 20, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>
+            { this.state.profile.firstName || "" } {this.state.profile.lastName || ""}
+          </Text>
+          <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}> User Details </Text>
+          <Text style={[style.label, {marginTop: 15}]}>Email</Text>
+          <Text 
+              onPress = {() => Linking.openURL('mailto:'+ this.state.profile.email)}
+              style = {{paddingLeft: 15, color: '#0000EE', fontWeight: 'bold'}}
+          >
+              { this.state.profile.email || "" }
+          </Text>
+          <Text style = {style.label}>Degree</Text>
+          <Text style = {{ paddingLeft: 15}}>{ this.state.profile.degree.map( ({ degree }) => degree).join(', ') || "" }</Text>
+          <Text style = {style.label}>Major</Text>
+          <Text style = {{ paddingLeft: 15}}>{ this.state.profile.major.map( ({ major }) => major).join(', ') || "" }</Text>
+          <Text style = {style.label}>Skills</Text>
+          <Text style = {{ paddingLeft: 15}}>{ this.state.profile.skills.map( ({ skill }) => skill).join(', ') || "" }</Text>
+          <Text style = {style.label}>Interests</Text>
+          <Text style = {{ paddingLeft: 15}}>{ this.state.profile.interests.map( ({ interest }) => interest).join(', ') || "" }</Text>
+          <Text style = {style.label}>Experiences</Text>
+          {this.state.profile.experiences.map((element, index) => {
+              return (<View key = {index}>
+                  <Text style={[style.label, { fontSize: 18, fontStyle: 'italic' }]}>Company</Text>
+                  <Text style={{  paddingLeft: 15, color: 'black' }}>{element.companyName || "not found"}</Text>
+                  <Text style={[style.label, { fontSize: 18, fontStyle: 'italic' }]}>Position</Text>
+                  <Text style={{  paddingLeft: 15, color: 'black' }}>{element.position || "not found"}</Text>
+                  <View style={{ textAlign: 'stretch', flexDirection: "row",alignItems: 'stretch',justifyContent: 'center' }}>
+                      <Text style={[style.label,
+                      { marginHorizontal: 20, width: '45%' }, 
+                      { fontSize: 18, fontStyle: 'italic' }]}>Start Date</Text>
+                      <Text style={[style.label,
+                      { marginHorizontal: 20, width: '45%' },
+                      { fontSize: 18, fontStyle: 'italic' }]}>End Date</Text>
+                  </View>
+                  <View style={{ textAlign: 'center', flexDirection: "row", alignItems: 'stretch', justifyContent: 'center' }}>
+                      {<Text style={{ paddingLeft: 15, marginHorizontal: 20, width: '45%' }}>{element.start_date.split('T')[0]}</Text>}
+                      {<Text style={{ paddingLeft: 15, marginHorizontal: 20, width: '45%' }}>{element.end_date.split('T')[0]}</Text> }
+                  </View>
+                  <Text style={[style.label, { fontSize: 18, fontStyle: 'italic' }]}>Description</Text>
+                  <Text style={{ paddingLeft: 15, color: 'black' }}>{element.expDescription}</Text>
+              </View>
+          )})}
+          <Text style = {style.label}>External Links</Text>
+          {this.state.profile.links.map((element, index) => {
+              return (<View key = {index}>
+                  <Text style={[style.label, {fontSize: 18, fontStyle: 'italic'}]}>Link Label</Text>
+                  <Text style={{paddingLeft: 15, color: 'black'}}>{element.label || "not found"}</Text>
+                  <Text style={[style.label, {fontSize: 18, fontStyle: 'italic'}]}>Link Address</Text>
+                  <Text style={{paddingLeft: 15, color: '#0000EE', fontWeight: 'bold'}}
+                    onPress={() => Linking.openURL('http://' + element.address)}>
+                      {element.address || "not found"}</Text>
+              </View>
+              )
+          })}
+          <Text style={{ height: 50 }}></Text>
         </ScrollView>
         <TouchableOpacity
           style={{ left: SCREEN_WIDTH * .005, top: SCREEN_HEIGHT * .4, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
           onPress={() => this.props.navigation.goBack()}>
           <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
         </TouchableOpacity>
-      </SafeAreaView>
+      </View>
     );
   }
 }
@@ -597,13 +626,49 @@ export const ProfileFilterPage = ({ navigation }) => {
   const [skills, onChangeSkills] = React.useState(userDetails.skills);
 
   const [hours, onChangeHours] = React.useState('');
-  const [minStart, onChangeMinStart] = React.useState('');
-  const [maxStart, onChangeMaxStart] = React.useState('');
-  const [minEnd, onChangeMinEnd] = React.useState('');
-  const [maxEnd, onChangeMaxEnd] = React.useState('');
+  const [startDate, onChangeStart] = React.useState(null);
+  const [endDate, onChangeEnd] = React.useState(null);
 
+  const submit = () => {
+    let query = {
+      'search': search,
+      'skills': JSON.stringify(skills),
+      'interests': JSON.stringify(interests),
+      'weekHours': hours,
+      'degree': degree,
+      'major': major
+    }
+
+    console.log(query);
+
+    getAllStudents(query)
+      .then((resp) => {
+        let body = resp.body;
+        console.log(body);
+        if (body.length != 0) {
+          userDetails = body;
+          // new Card();
+          navigation.navigate("Page1", {refresh: false});
+        } else {
+          alert("No Projects Found with the given parameters");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    }
   return (
-    <View style={style.container} >
+    <View style={{
+      backgroundColor: '#F5F5F5',
+      color: '#F5F5F5',
+      opacity: 100,
+      alignItems: 'stretch',
+      padding: 15,
+      marginTop: 30,
+      justifyContent: 'center',
+      flex: 1
+    }} >
+      <Text style={[style.label, { fontSize: 20 }]}>Search and Filters</Text>
       <ScrollView>
         <KeyboardAvoidingView>
           <View style={{ padding: 5 }}></View>
@@ -613,7 +678,7 @@ export const ProfileFilterPage = ({ navigation }) => {
             value={search}
             onChangeText={(text) => onChangeSearch(text)}
           />
-          <Text style={style.label}>Major</Text>
+          <Text style={style.label}>Majors</Text>
           <SectionedMultiSelect
             items={majorLibrary}
             uniqueKey="id"
@@ -623,19 +688,12 @@ export const ProfileFilterPage = ({ navigation }) => {
             showDropDowns={false}
             readOnlyHeadings={true}
             hideSearch={true}
-            showChips={false}
+            showChips={true}
             onSelectedItemsChange={onChangeMajor}
             selectedItems={major}
             styles={[styles, localStyle]}
           />
-          <Text style={style.label}>Hours/Week Requested</Text>
-          <TextInput
-            placeholder="Hours/Week"
-            style={style.inputs}
-            value={hours}
-            onChangeText={(text) => onChangeHours(text)}
-          />
-          <Text style={styles.label}>Degree</Text>
+          <Text style={style.label}>Degrees</Text>
           <SectionedMultiSelect
             items={degreeLibrary}
             uniqueKey="id"
@@ -645,77 +703,12 @@ export const ProfileFilterPage = ({ navigation }) => {
             showDropDowns={false}
             readOnlyHeadings={true}
             hideSearch={true}
-            showChips={false}
+            showChips={true}
             onSelectedItemsChange={onChangeDegree}
             selectedItems={degree}
             styles={[styles, localStyle]}
           />
-          <Text style={style.label}>Start Date MM/DD/YYYY</Text>
-          {/*<DatePicker
-              date={"2020-01-01"}
-              onDateChange={(date) => {userDetails.start_date.setState(date)}}
-              mode='date'
-              showIcon ={false}
-              style={{marginHorizontal: 20, width: '45%'}}
-              customStyles={{
-                dateInput: {
-                  borderWidth: 0,
-                  marginBottom: 15,
-                  borderRadius: 15,
-                  backgroundColor: '#B3A36975',
-                  padding: 10,
-                  paddingLeft: 20,
-                  height: 40
-                }
-                // ... You can check the source to find the other keys.
-              }}
-            />*/}
-          <TextInput
-            placeholder="Min Start Date"
-            style={style.inputs}
-            value={minStart}
-            onChangeText={(text) => onChangeMinStart(text)}
-          />
-          <TextInput
-            placeholder="Max Start Date"
-            style={style.inputs}
-            value={maxStart}
-            onChangeText={(text) => onChangeMaxStart(text)}
-          />
-          <Text style={style.label}>End Date MM/DD/YYYY</Text>
-          {/*<DatePicker
-              date={"2020-01-01"}
-              onDateChange={(date) => {userDetails.end_date.setState(date)}}
-              mode='date'
-              showIcon={false}
-              style={{marginHorizontal: 20, width: '45%'}}
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateInput: {
-                  borderWidth: 0,
-                  marginBottom: 15,
-                  borderRadius: 15,
-                  backgroundColor: '#B3A36975',
-                  padding: 10,
-                  paddingLeft: 20,
-                  height: 40
-                }
-              }}
-            />*/}
-          <TextInput
-            placeholder="Min End Date"
-            style={style.inputs}
-            value={minEnd}
-            onChangeText={(text) => onChangeMinEnd(text)}
-          />
-          <TextInput
-            placeholder="Max End Date"
-            style={style.inputs}
-            value={maxEnd}
-            onChangeText={(text) => onChangeMaxEnd(text)}
-          />
-          <Text style={style.label}>Skills Required</Text>
-          <Text style={styles.label}>Skills</Text>
+          <Text style={style.label}>Skills</Text>
           <SectionedMultiSelect
             items={skillLibrary}
             uniqueKey="id"
@@ -725,12 +718,12 @@ export const ProfileFilterPage = ({ navigation }) => {
             showDropDowns={false}
             readOnlyHeadings={true}
             hideSearch={true}
-            showChips={false}
+            showChips={true}
             onSelectedItemsChange={onChangeSkills}
             selectedItems={skills}
             styles={[styles, localStyle]}
           />
-          <Text style={style.label}>Project Interests</Text>
+          <Text style={style.label}>Areas of Interest</Text>
           <SectionedMultiSelect
             items={interestLibrary}
             uniqueKey="id"
@@ -740,10 +733,17 @@ export const ProfileFilterPage = ({ navigation }) => {
             showDropDowns={false}
             readOnlyHeadings={true}
             hideSearch={true}
-            showChips={false}
+            showChips={true}
             onSelectedItemsChange={onChangeInterests}
             selectedItems={interests}
             styles={[styles, localStyle]}
+          />
+          <Text style={style.label}>Minimum Hours/Week Requested</Text>
+          <TextInput
+            placeholder="Hours/Week"
+            style={style.inputs}
+            value={hours}
+            onChangeText={(text) => onChangeHours(text)}
           />
           <View style={{ padding: 40 }}></View>
         </KeyboardAvoidingView>
@@ -752,7 +752,7 @@ export const ProfileFilterPage = ({ navigation }) => {
         <TouchableOpacity style={{ right: 40, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 15, height: 40, width: 150 }} onPress={() => navigation.goBack()}>
           <Text style={{ color: 'white', textAlign: 'center', top: 10, fontSize: 15, fontWeight: 'bold' }}>Back</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ left: 40, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 15, height: 40, width: 150 }} onPress={() => console.log("The submit button has been pressed!")}>
+        <TouchableOpacity style={{ left: 40, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 15, height: 40, width: 150 }} onPress={() => submit()}>
           <Text style={{ color: 'white', textAlign: 'center', top: 10, fontSize: 15, fontWeight: 'bold' }}>Submit</Text>
         </TouchableOpacity>
       </View>
@@ -765,6 +765,7 @@ export const ProfileFilterPage = ({ navigation }) => {
 const Stack = createStackNavigator();
 
 export default function ViewProfile(props) {
+  username = props.route.params.username;
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, }} initialRouteName="Page1">
       <Stack.Screen name="Page1" component={Card} />
@@ -783,9 +784,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textAbstract: {
+    flex: 1,
     color: 'white',
-    padding: 20,
-    textAlign: 'center',
+    // padding: 20,
+    alignItems: 'center',
     height: CARD_HEIGHT * 0.3,
     top: CARD_HEIGHT * 0.55,
     backgroundColor: 'rgba(179, 163, 105, .7)',
@@ -793,8 +795,12 @@ const styles = StyleSheet.create({
     fontWeight: '300'
   },
   textTitle: {
+    paddingTop: 15,
     fontSize: 25,
-    fontWeight: '400'
+    fontWeight: '400',
+    color: 'white',
+    textAlign: 'center',
+    width: '85%'
   },
   textHours: {
     fontSize: 17,
@@ -804,7 +810,9 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '300',
     textAlign: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    color: 'white',
+    width: '85%'
   },
   textSpace: {
     fontSize: 2,
@@ -824,7 +832,8 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     fontWeight: 'bold',
     paddingTop: CARD_HEIGHT * .1,
-    paddingLeft: SCREEN_WIDTH * .28
+    paddingLeft: SCREEN_WIDTH * .28,
+    top: CARD_HEIGHT
   },
   buttonText: {
     color: 'white',
@@ -835,7 +844,7 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 100,
     backgroundColor: 'rgba(179, 163, 105, .7)',
-    top: -35,
+    top: -50,
     // right: 50
   },
   leftButton: {
@@ -843,7 +852,7 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 100,
     backgroundColor: 'rgba(179, 163, 105, .7)',
-    top: -35,
+    top: -50,
     right: 15
   },
   leftRightNav: {
@@ -855,7 +864,7 @@ const styles = StyleSheet.create({
     fontSize: 70
   },
   heart: {
-    top: -45,
+    top: -65,
     right: 15,
     color: 'rgba(179, 163, 105, .7)',
     fontSize: 80
@@ -878,10 +887,10 @@ const styles = StyleSheet.create({
     borderRadius: 15
   },
   detailsPage: {
-    flex: 1,
     flexDirection: 'column',
     // alignItems: 'center',
     // justifyContent: 'center',
+    // padding: 15,
     height: SCREEN_HEIGHT * .825,
     width: SCREEN_WIDTH * .95,
     position: 'absolute',
@@ -949,7 +958,7 @@ const style = StyleSheet.create({
     color: '#F5F5F5',
     opacity: 100,
     alignItems: 'stretch',
-    padding: 15,
+    // padding: 15,
     marginTop: 30,
     justifyContent: 'center',
     flex: 1
@@ -958,7 +967,8 @@ const style = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#B3A369',
-    paddingVertical: 10
+    paddingVertical: 10,
+    paddingHorizontal: 15
   },
   label2: {
     fontSize: 15,

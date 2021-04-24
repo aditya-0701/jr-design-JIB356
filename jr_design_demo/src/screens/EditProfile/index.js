@@ -238,6 +238,7 @@ export const BasicDetails = ({ navigation, route }) => {
     React.useState(userDetails.interests.map(({ id }) => id));
   const [skills, onChangeSkills] = 
     React.useState(userDetails.skills.map(({ id }) => id));
+  const [bio, onChangeBio] = React.useState(userDetails.bio);
 
   if (!userDetails.gtUsername || userDetails.gtUsername == "" || userDetails.gtUsername.length == 0) {
     getStudent({'gtUsername': gtUname})
@@ -253,6 +254,7 @@ export const BasicDetails = ({ navigation, route }) => {
         onChangeMajor([resp.body.major[0].id]);
         onChangeInterests(resp.body.interests.map(({ id }) => id));
         onChangeSkills(resp.body.skills.map(({ id }) => id));
+        onChangeBio(resp.body.bio)
         console.log(resp.body.skills.map(({ id }) => id))
     })
     .catch((err) => {
@@ -320,6 +322,15 @@ export const BasicDetails = ({ navigation, route }) => {
               style = {styles.inputs}
           />
 
+          <Text style={styles.label}>Bio</Text>
+          <TextInput
+              multiline={true}
+              placeholder="Describe yourself..." 
+              value={bio}
+              style={[styles.inputs, {height: 100, textAlignVertical: 'top'}]}
+              onChangeText = {(text) => {onChangeBio(text)}}
+          />
+
           <Text style={styles.label}>Degree</Text>
           <SectionedMultiSelect
             items={degreeLibrary}
@@ -364,7 +375,7 @@ export const BasicDetails = ({ navigation, route }) => {
             showDropDowns={false}
             readOnlyHeadings={true}
             hideSearch={true}
-            showChips={false}
+            showChips={true}
             onSelectedItemsChange={onChangeInterests}
             selectedItems={interests}
             styles={[styles, localStyle]}
@@ -380,7 +391,7 @@ export const BasicDetails = ({ navigation, route }) => {
             showDropDowns={false}
             readOnlyHeadings={true}
             hideSearch={true}
-            showChips={false}
+            showChips={true}
             onSelectedItemsChange={onChangeSkills}
             selectedItems={skills}
             styles={[styles, localStyle]}

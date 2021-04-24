@@ -3,7 +3,7 @@ import { View, ScrollView, Text, Dimensions, StyleSheet, TouchableOpacity, Butto
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import styles from '../../globalStyles';
-import { getAlumniSavedStudents, deleteProjectInterest, getStudent } from "../../store";
+import { getAlumniSavedStudents, deleteAlumniSavedStudents, getStudent } from "../../store";
 
 
 const loadingSaved = { type: "profile", entries: [] };
@@ -201,12 +201,13 @@ class DetailsScreen extends React.Component {
   }
 
   deleteSaved() {
-    deleteProjectInterest({
-      'gtUsername': gtUname,
-      'projectId': this.state.project.id
+    deleteAlumniSavedStudents({
+      'username': username,
+      'gtUsername': this.state.profile.gtUsername
     })
       .then((resp) => {
         console.log(resp.body)
+        this.props.navigation.goBack();
       })
       .catch((err) => { console.log(err) })
   }

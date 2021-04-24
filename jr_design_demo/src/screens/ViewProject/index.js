@@ -32,53 +32,6 @@ const CARD_HEIGHT = SCREEN_HEIGHT * 0.86
 var gtUname = '';
 
 var projectDetails = [
-  // {
-  //   id: "1",
-  //   name: "Example Project",
-  //   projectDescription: "hdsalkgdsgsdgadsfadfasdadggsd",
-  //   bio: "dfskj?",
-  //   skills: "Programming",
-  //   hoursPerWeek: "10",
-  //   externalLink: "https://www.google.com",
-  //   uri: require('../../../assets/1.jpg')
-  // },
-  // {
-  //   id: "2",
-  //   projectTitle: "Example Project 2",
-  //   projectDescription: "hdsalkgdsgsdg",
-  //   bio: "dka;ldksngadgsn;sadgks",
-  //   skills: "html, css",
-  //   hoursPerWeek: "5",
-  //   externalLink: "bing.com",
-  //   uri: require('../../../assets/2.jpg')
-  // },
-  // {
-  //   id: "3",
-  //   projectTitle: "Project 3",
-  //   projectDescription: "hdsalkgdsgsdg",
-  //   bio: ";lskdgn;klsgnl;ksagn;laskdg",
-  //   hoursPerWeek: "8",
-  //   externalLink: "yahoo.com",
-  //   uri: require('../../../assets/3.jpg')
-  // },
-  // {
-  //   id: "4",
-  //   projectTitle: "Project 4",
-  //   projectDescription: "hdsalkgdsgsdg",
-  //   bio: "kdsn;gkdsng;lskdgn;lsadg",
-  //   hoursPerWeek: "3",
-  //   externalLink: "images.google.com",
-  //   uri: require('../../../assets/4.jpg')
-  // },
-  // {
-  //   id: "5",
-  //   projectTitle: "Project 5",
-  //   projectDescription: "hdsalkgdsgsdg",
-  //   bio: "lkdgnsd;lkzgnsad;lgnasdg",
-  //   hoursPerWeek: "7",
-  //   externalLink: "maps.google.com",
-  //   uri: require('../../../assets/5.jpg')
-  // }
   {
     id: "-1",
     projectTitle: "No Projects Found",
@@ -94,20 +47,6 @@ var viewSwitch = false;
 var x = 0;
 var y = 0;
 var index = 0;
-
-const getProjs = (callback) => {
-  getAllProjects()
-    .then((resp) => {
-      let body = resp.body;
-      // console.log(body);
-      projectDetails = body;
-      // this.forceUpdate();
-      callback();
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-}
 
 export class Card extends React.Component {
 
@@ -180,20 +119,22 @@ export class Card extends React.Component {
             toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy }
             , useNativeDriver: true
           }).start(() => {
-            this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
-              this.position.setValue({ x: 0, y: 0 })
-            })
-            // let gtUname = getGTUsername();
-            console.log(gtUname)
+            
+            console.log(this.state.currentIndex)
+            console.log(projectDetails[this.state.currentIndex - 1]);
             addProjectInterests({
               'gtUsername': gtUname,
-              'projectIDs': [projectDetails[x - 1].id]
+              'projectIDs': [projectDetails[this.state.currentIndex - 1].id]
             })
               .then((resp) => {
                 console.log(resp.body)
               })
               .catch((err) => { console.log(err) })
           })
+          this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+            this.position.setValue({ x: 0, y: 0 })
+          })
+          // let gtUname = getGTUsername();
         }
         else if (gestureState.dx < -120) {
           Animated.spring(this.position, {
@@ -201,19 +142,19 @@ export class Card extends React.Component {
             useNativeDriver: true
           }).start(() => {
             // console.log("left");
-            this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
-              this.position.setValue({ x: 0, y: 0 })
-            })
             // let gtUname = getGTUsername();
             console.log(gtUname)
             deleteProjectInterest({
               'gtUsername': gtUname,
-              'projectId': projectDetails[x - 1].id
+              'projectId': projectDetails[this.state.currentIndex - 1].id
             })
               .then((resp) => {
                 console.log(resp.body)
               })
               .catch((err) => { console.log(err) })
+          })
+          this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+            this.position.setValue({ x: 0, y: 0 })
           })
         }
         else {
@@ -239,14 +180,20 @@ export class Card extends React.Component {
   //   .catch((err) => {
   //     console.log(err);
   //   })
+  // // }
+  // componentDidUpdate() {
+  //   var refresh = true;
+  //   try {
+  //    refresh= this.props.route.params.refresh;
+  //   } catch(e) {
+  //     console.log(e);
+  //     refresh = true;
+  //   }
+  //   if (refresh) {
+  //     // Empty state update for refresh
+  //     this.setState({});
+  //   }
   // }
-  componentDidUpdate() {
-    var refresh = this.props.route.params.refresh;
-    if (refresh) {
-      // Empty state update for refresh
-      this.setState({});
-    }
-  }
 
 
   renderUsers = () => {
@@ -399,30 +346,6 @@ class SavedProjects extends React.Component {
   }
 }
 
-// render() {
-//   return (
-//     <SafeAreaView style={styles.container}>
-//       <ScrollView style={styles.detailsPage}>
-//         <Text style={{ top: 20, textAlign: 'center', fontSize: 30, fontWeight: 'bold', color: 'rgba(179, 163, 105, 1)' }}>User Details</Text>
-//         <Text style={{ top: 27, textAlign: 'center', fontSize: 20, fontWeight: '600', color: 'rgba(179, 163, 105, 1)' }}> {userDetails[x].firstName} {userDetails[x].middleName} {userDetails[x].lastName}</Text>
-//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Email: {'\n'}{userDetails[x].email}{'\n'}</Text>
-//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>GT Username: {'\n'}{userDetails[x].gtUsername}{'\n'}</Text>
-//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Bio: {'\n'}{userDetails[x].bio}{'\n'}</Text>
-//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Major: {'\n'}{userDetails[x].major}{'\n'}</Text>
-//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Degree: {'\n'}{userDetails[x].degree}{'\n'}</Text>
-//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Skills: {'\n'}{userDetails[x].skills}{'\n'}</Text>
-//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>Start Date: {'\n'}{userDetails[x].start_date}{'\n'}</Text>
-//         <Text style={{ top: 50, textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>End Date: {'\n'}{userDetails[x].end_date}{'\n'}</Text>
-//         <TouchableOpacity
-//           style={{ left: SCREEN_WIDTH * .38, top: SCREEN_HEIGHT * .1, backgroundColor: 'rgba(179, 163, 105, 1)', borderRadius: 5, height: 30, width: 80 }}
-//           onPress={() => this.props.navigation.goBack()}>
-//           <Text style={{ top: 5, textAlign: 'center', color: 'white', 'fontWeight': 'bold', fontSize: 15 }}> Back </Text>
-//         </TouchableOpacity>
-//       </ScrollView>
-//     </SafeAreaView>
-//   );
-// }
-
 
 class DetailsScreen extends React.Component {
 
@@ -523,26 +446,29 @@ class DetailsScreen extends React.Component {
             color: '#B3A369',
             paddingLeft: 15,
           }}>Info Link:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.links.join(', ')}</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Project Alumni:</Text>
-          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.alumni[0].name}</Text>
-          <Text style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: '#B3A369',
-            paddingLeft: 15,
-          }}>Project Alumni Email:</Text>
-          <Text
-            onPress={() => Linking.openURL('mailto:' + this.state.project.alumni[0].email)}
-            style={[{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
-            { color: '#0000EE', fontWeight: 'bold' }]}>
-            {this.state.project.alumni[0].email}
-          </Text>
+          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}
+          onPress={()=> Linking.openURL('http://' + (this.state.project.links[0]) ? this.state.project.links[0].address : "")}>
+            {(this.state.project.links[0]) ? this.state.project.links[0].address : ""}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Project Alumni:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {(this.state.project.alumni[0]) ? this.state.project.alumni[0].name : ""}</Text>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>Project Alumni Email:</Text>
+            <Text
+              onPress={() => Linking.openURL('mailto:' + (this.state.project.alumni[0]) ? this.state.project.alumni[0].email: "")}
+              style={[{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
+              { color: '#0000EE', fontWeight: 'bold' }]}>
+              {(this.state.project.alumni[0]) ? this.state.project.alumni[0].email: ""}
+            </Text>
           <Text style={{ height: 50 }}></Text>
         </ScrollView>
         <TouchableOpacity
@@ -692,9 +618,9 @@ export const ProjectFilterPage = ({ navigation }) => {
   const submit = () => {
     let query = {
       'search': search,
-      // 'skills': JSON.stringify(skills),
-      // 'interests': JSON.stringify(interests),
-      // 'weekHours': hours,
+      'skills': skills,
+      'interests': interests,
+      'hours': hours,
       'startDate': startDate,
       'endDate': endDate
     }
@@ -707,8 +633,8 @@ export const ProjectFilterPage = ({ navigation }) => {
         console.log(body);
         if (body.length != 0) {
           projectDetails = body;
-          new Card();
-          navigation.navigate("Page1");
+          // new Card();
+          navigation.navigate("Page1", {refresh: false});
         } else {
           alert("No Projects Found with the given parameters");
         }
@@ -731,7 +657,7 @@ export const ProjectFilterPage = ({ navigation }) => {
             value={search}
             onChangeText={(text) => onChangeSearch(text)}
           />
-          <Text style={style.label}>Hours/Week Required</Text>
+          <Text style={style.label}>Maximum Hours/Week Required</Text>
           <TextInput
             placeholder="Hours/Week"
             style={style.inputs}
@@ -794,7 +720,7 @@ export const ProjectFilterPage = ({ navigation }) => {
             showDropDowns={false}
             readOnlyHeadings={true}
             hideSearch={true}
-            showChips={false}
+            showChips={true}
             onSelectedItemsChange={onChangeSkills}
             selectedItems={skills}
             styles={[global, localStyle]}
@@ -809,7 +735,7 @@ export const ProjectFilterPage = ({ navigation }) => {
             showDropDowns={false}
             readOnlyHeadings={true}
             hideSearch={true}
-            showChips={false}
+            showChips={true}
             onSelectedItemsChange={onChangeInterests}
             selectedItems={interests}
             styles={[global, localStyle]}

@@ -211,16 +211,6 @@ const Profile = (props) => {
                     </View>
                     )
                 })}
-                <Text style={styles.label}>External Links</Text>
-                {links.map((element, index) => {
-                    return (<View key={index}>
-                        <Text style={[styles.label, { fontSize: 18, fontStyle: 'italic' }]}>Link Label</Text>
-                        <Text style={{ color: 'black' }}>{element.label || "not found"}</Text>
-                        <Text style={[styles.label, { fontSize: 18, fontStyle: 'italic' }]}>Link Address</Text>
-                        <Text style={{ color: 'black' }}>{element.address || "not found"}</Text>
-                    </View>
-                    )
-                    })}
                 </View>
             </ScrollView>
 
@@ -389,7 +379,9 @@ const ProjectView = ( props ) => {
 const StudentProfiles = ( props ) => {
     return (
         <Stack.Navigator screenOptions = {{headerShown: false}}>
-            <Stack.Screen name = "ViewProfile" component = { ViewProfile }/>
+            <Stack.Screen name = "ViewProfile" component = { ViewProfile }
+            initialParams =
+            {{username: username}}/>
         </Stack.Navigator>
     )
 }

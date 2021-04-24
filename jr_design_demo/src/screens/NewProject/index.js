@@ -255,7 +255,8 @@ export const BasicDetails = ({ navigation }) => {
     .then((resp) => {
       console.log(resp.body);
       // setGTUsername(userDetails.gtUsername);
-      navigation.navigate('ViewSaved', {myProjects: 1, username: username});
+      navigation.navigate('My Projects', { screen: "View",
+        params:{myProjects: 1, username: username}});
     })
     .catch((err) => {
       console.log(err);

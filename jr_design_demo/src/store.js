@@ -316,8 +316,9 @@ export function addProject ( params ) {
 }
 
 export function deleteProject ( params ) {
-    return superagent.post(URI + '/projects')
-    .send( params )
+    return superagent.delete(URI + '/projects')
+    .query ( params )
+    .send( )
 }
 
 
@@ -336,6 +337,8 @@ export function deleteAllAlumniSavedStudents ( params ) {
 
 export function deleteAlumniSavedStudents ( params ) {
     var { username, gtUsername } = params; 
+    console.log('/alumniSavedStudents/'
+    + `${username}/${gtUsername}`);
     return superagent.delete(URI + '/alumniSavedStudents/'
     + `${username}/${gtUsername}`)
     .send()
@@ -343,7 +346,7 @@ export function deleteAlumniSavedStudents ( params ) {
 
 
 export function addAlumniSavedStudents ( params ) {
-    return superagent.put(URI + '/alumniSavedStudents')
+    return superagent.post(URI + '/alumniSavedStudents')
     .send( params )
 }
 

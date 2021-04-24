@@ -225,6 +225,7 @@ export const BasicDetails = ({ navigation }) => {
 
   const [gtUsername, onChangeGTUsername] = React.useState(userDetails.gtUsername);
   const [emailValue, onChangeEmail] = React.useState(userDetails.email);
+  const [bio, onChangeBio] = React.useState(userDetails.bio);
   const [passwordValue, onChangePassword] = React.useState(userDetails.pwd);
   const [firstName, onChangeFirstName] = React.useState(userDetails.firstName);
   const [lastName, onChangeLastName] = React.useState(userDetails.lastName);
@@ -243,10 +244,13 @@ export const BasicDetails = ({ navigation }) => {
     userDetails.skills= skills;
     userDetails.pwd= passwordValue;
     userDetails.gtUsername= gtUsername;
+    userDetails.bio = bio;
+
     if (emailValue != '' && passwordValue  != ''  
         && firstName  != '' && lastName  != '' 
         && degree.length != 0 && major.length != 0
-        && interests.length != 0 && skills.length != 0) {
+        && interests.length != 0 && skills.length != 0
+        && bio != '') {
         navigation.navigate("Page3");
     } else {
       alert("All fields must be filled out in order to proceed")
@@ -287,14 +291,14 @@ export const BasicDetails = ({ navigation }) => {
 
           <Text style={styles.label}>Email</Text>
           <TextInput
-                      autoCapitalize = "none"
-                      autoCompleteType = 'email'
-                      keyboardType = 'email-address'
-                      onChangeText = { (text) => onChangeEmail(text)}
-                      value = { emailValue }
-                      placeholder = 'Email'
-                      style = {styles.inputs}
-                  />
+              autoCapitalize = "none"
+              autoCompleteType = 'email'
+              keyboardType = 'email-address'
+              onChangeText = { (text) => onChangeEmail(text)}
+              value = { emailValue }
+              placeholder = 'Email'
+              style = {styles.inputs}
+          />
 
           <Text style={styles.label}>Password</Text>
           <TextInput
@@ -305,6 +309,15 @@ export const BasicDetails = ({ navigation }) => {
             value = { passwordValue }
             placeholder = 'Password'
             style = {styles.inputs}
+          />
+
+          <Text style={styles.label}>Bio</Text>
+          <TextInput
+              multiline={true}
+              placeholder="Describe yourself..." 
+              value={bio}
+              style={[styles.inputs, {height: 100, textAlignVertical: 'top'}]}
+              onChangeText = {(text) => {onChangeBio(text)}}
           />
 
           <Text style={styles.label}>Degree</Text>
@@ -351,7 +364,7 @@ export const BasicDetails = ({ navigation }) => {
             showDropDowns={false}
             readOnlyHeadings={true}
             hideSearch={true}
-            showChips={false}
+            showChips={true}
             onSelectedItemsChange={onChangeInterests}
             selectedItems={interests}
             styles={[styles, localStyle]}
@@ -367,7 +380,7 @@ export const BasicDetails = ({ navigation }) => {
             showDropDowns={false}
             readOnlyHeadings={true}
             hideSearch={true}
-            showChips={false}
+            showChips={true}
             onSelectedItemsChange={onChangeSkills}
             selectedItems={skills}
             styles={[styles, localStyle]}
