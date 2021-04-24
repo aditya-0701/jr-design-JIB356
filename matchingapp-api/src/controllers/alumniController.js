@@ -95,6 +95,25 @@ exports.delete = (req) => {
 
 exports.getAllProjects = (req) => {
   try {
+    // return req;
+    var result = Alumni.getAllProjects( (req || {}) );
+    if (result === null) {
+      rtr.body = JSON.stringify({
+        message: 'Record not found with the given input parameters.',
+        status: 404
+      });
+      rtr.statusCode = 404;
+      return rtr;
+    }
+
+    return result;
+  } catch (e) {
+    return four00(e);
+  }
+};
+
+exports.getAlumniProjects = (req) => {
+  try {
     var result = Alumni.getAlumniProjects( (req || {}) );
     if (result === null) {
       rtr.body = JSON.stringify({
@@ -179,12 +198,14 @@ exports.updateProject = async ( req ) => {
 
     return result;
   } catch (e) {
+    console.log(e);
     return four00(e);
   }
 };
 
 exports.getSavedStudents = async ( req ) => {
   try {
+    console.log(req);
     var result = await Alumni.getSavedStudents( req );
     if (result === null) {
       rtr.body = JSON.stringify({
@@ -197,12 +218,13 @@ exports.getSavedStudents = async ( req ) => {
 
     return result;
   } catch (e) {
+    console.log(e);
     return four00(e);
   }
 };
 exports.addSavedStudents = async ( req ) => {
   try {
-    var result = await Alumni.addSavedStudents( req );
+    var result = await Alumni.addSavedStudent( req );
     if (result === null) {
       rtr.body = JSON.stringify({
         message: 'Record not found with the given input parameters.',

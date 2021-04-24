@@ -28,7 +28,7 @@ Student.findStudent = async ( params ) => {
                      lastName,
                      middleName,
                      email,
-                     bio 
+                     bio
                      FROM Students 
                      WHERE gtUsername = "${gtUsername}"`;
 
@@ -75,7 +75,7 @@ Student.queryStudent = async ( params ) => {
 
 // Gets basic sutdent info based on given filters
 Student.getAll = async ( params ) => {
-  let query = 'SELECT gtUsername, firstName, lastName, email FROM Students';
+  let query = 'SELECT gtUsername, firstName, lastName, email, bio, weekHours FROM Students';
   let gtUnames = [];
   let onlySearch = true;
 

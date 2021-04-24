@@ -60,10 +60,11 @@ exports.handler = async (event) => {
             return alumni.getAll();
           }
         case 'PUT':
-          return alumni.update( body );
+          return alumni.update( parsedBody );
 
         case 'POST':
-          return alumni.create( body );
+          // return event
+          return alumni.create( parsedBody );
 
         case 'DELETE':
           return alumni.delete( query );
@@ -191,13 +192,26 @@ exports.handler = async (event) => {
     case 'alumniSavedStudents':
       switch (method) {
         case 'GET':
+          // console.log('alumni saved students');
           return alumni.getSavedStudents(query);
         case 'PUT':
           return alumni.updateSavedStudents(parsedBody);
         case 'POST':
           return alumni.addSavedStudents(parsedBody);
         case 'DELETE':
-          return alumni.deleteAllSavedStudents(query);
+          if (pathParams) {
+            // return event;
+            return await alumni.deleteSavedStudent(pathParams);
+          } else {
+            return alumni.deleteAllSavedStudents(query);
+          }
+        default:
+          return four03();
+      }
+    case 'alumniProjects':
+      switch (method) {
+        case 'GET':
+          return alumni.getAlumniProjects(query);
         default:
           return four03();
       }

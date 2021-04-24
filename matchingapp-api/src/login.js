@@ -19,10 +19,19 @@ const Login = {};
 
 // Process to login a user
 Login.loginUser = async ( params ) => {
-  const { gtUsername, password } = params;
-  const query = `SELECT gtUsername, pwd
+  const role = (params.role == null) ? 'S' : params.role;
+  const { gtUsername, password, username } = params;
+  
+  
+  var query = `SELECT gtUsername, pwd
         FROM Students
         WHERE gtUsername = "${gtUsername}"`;
+  if (role === 'A') {
+    query = `SELECT username, pwd
+        FROM Alumni
+        WHERE username = "${username}"`
+  }
+  
   try {
     const user = (await connection.query(query))[0];
     if (!user) return failure('User not found');
@@ -30,20 +39,31 @@ Login.loginUser = async ( params ) => {
     if (match) {
       // Randomly generated session ID
       const uid = uuid();
-      // Expiry set to 1 hour from current time
-      const expiry = ((new Date()).getTime() + 3 * 3600000) / 1000;
-      const insert = 'REPLACE INTO StudentSessions SET ?';
-      const session = await connection.query(insert, {
+      // Expiry set to 3 hours from current time
+      const hours = 3;
+      const expiry = ((new Date()).getTime() + hours * 3600000) / 1000;
+      
+      var insert = 'REPLACE INTO StudentSessions SET ?';
+      var insertVals = {
         sessionId: uid,
         gtUsername: user.gtUsername,
-        expiry: expiry
-      });
+        expiry: ~~expiry
+      }
+      if (role === 'A') {
+        insert = `REPLACE INTO AlumniSessions SET ?`
+        insertVals = {
+        sessionId: uid,
+        username: user.username,
+        expiry: ~~expiry
+      }
+      }
+      
+      const session = await connection.query(insert, insertVals);
       return {
         body: JSON.stringify({
           message: 'Successful login. Session active for 1 hour.',
           sessionId: uid,
-          expiry: expiry,
-          query: session
+          expiry: ~~expiry
         }),
         statusCode: 200,
         headers: {
