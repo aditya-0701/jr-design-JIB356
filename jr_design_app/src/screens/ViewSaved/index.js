@@ -393,6 +393,21 @@ class DetailsScreen extends React.Component {
               fontWeight: 'bold',
               color: '#B3A369',
               paddingLeft: 15,
+            }}>{'\n\n'}Start Date:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.startDate}</Text>
+            <Text style={{  
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>{'\n\n'}End Date:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.endDate}</Text>
+            
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
             }}>Skills:</Text>
             <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
               {this.state.project.skills.map(({ skill }) => skill).join(', ')}</Text>
@@ -499,39 +514,56 @@ class DetailsScreen extends React.Component {
               fontWeight: 'bold',
               color: '#B3A369',
               paddingLeft: 15,
+            }}>{'\n\n'}Start Date:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.startDate}</Text>
+            <Text style={{  
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
+            }}>{'\n\n'}End Date:</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.endDate}</Text>
+            
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#B3A369',
+              paddingLeft: 15,
             }}>Skills:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.skills.join(', ')}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.project.skills.map(({ skill }) => skill).join(', ')}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
               color: '#B3A369',
               paddingLeft: 15,
             }}>Interests:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.interests.join(', ')}</Text>
-
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.project.interests.map(({ interest }) => interest).join(', ')}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
               color: '#B3A369',
               paddingLeft: 15,
             }}>Majors:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.major.join(', ')}</Text>
-
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.project.major.map(({ major }) => major).join(', ')}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
               color: '#B3A369',
               paddingLeft: 15,
             }}>Degrees:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.degree.join(', ')}</Text>
-
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.project.degree.map(({ degree }) => degree).join(', ')}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
               color: '#B3A369',
               paddingLeft: 15,
             }}>Hours per Week:</Text>
-            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.weekHours}</Text>
+            <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>
+              {this.state.project.weekHours}</Text>
             <Text style={{
               fontSize: 20,
               fontWeight: 'bold',
@@ -539,7 +571,9 @@ class DetailsScreen extends React.Component {
               paddingLeft: 15,
             }}>Info Link:</Text>
             <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}
-            onPress={()=> Linking.openURL('http://' + (this.state.project.links[0]) ? this.state.project.links[0].address : "")}>
+            onPress={() => Linking.openURL('http://' + (this.state.project.links[0]) ? this.state.project.links[0].address : "")}
+            style={[{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' },
+            { color: '#0000EE', fontWeight: 'bold' }]}>
               {(this.state.project.links[0]) ? this.state.project.links[0].address : ""}</Text>
             <Text style={{
               fontSize: 20,

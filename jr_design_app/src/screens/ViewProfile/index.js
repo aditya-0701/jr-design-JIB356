@@ -203,7 +203,7 @@ export class Card extends React.Component {
             <ImageBackground
               style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
               imageStyle={{ borderRadius: 17 }}
-              source={require('../../../assets/1.jpg')} >
+              source={require('../../../assets/defaultskin.png')} >
               <View style={styles.textAbstract}>
               <Text numberOfLines={1} style={styles.textTitle}>{item.firstName} {item.middleName} {item.lastName}</Text>
               <Text numberOfLines={3} style={[styles.textMain]}>{item.bio}</Text>
@@ -237,7 +237,7 @@ export class Card extends React.Component {
             <ImageBackground
               style={{ flex: 1, height: null, width: null, resizeMode: 'cover', borderWidth: 3, borderColor: 'rgba(179, 163, 105, 1)', borderRadius: 20, overflow: 'hidden' }}
               imageStyle={{ borderRadius: 17 }}
-              source={require('../../../assets/1.jpg')} >
+              source={require('../../../assets/defaultskin.png')} >
               <View style={styles.textAbstract}>
               <Text numberOfLines={1} style={styles.textTitle}>{item.firstName} {item.middleName} {item.lastName}</Text>
               <Text numberOfLines={3} style={[styles.textMain]}>{item.bio}</Text>
@@ -343,6 +343,8 @@ class DetailsScreen extends React.Component {
         "middleName": "",
         "lastName": "",
         "weekHours": "",
+        "startDate": new Date(),
+        "endDate": new Date(),
         "skills": [],
         "interests": [],
         "major": [],

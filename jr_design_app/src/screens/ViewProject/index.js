@@ -407,6 +407,20 @@ class DetailsScreen extends React.Component {
             fontWeight: 'bold',
             color: '#B3A369',
             paddingLeft: 15,
+          }}>{'\n\n'}Start Date:</Text>
+          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.startDate}</Text>
+          <Text style={{  
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#B3A369',
+            paddingLeft: 15,
+          }}>{'\n\n'}End Date:</Text>
+          <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.endDate}</Text>
+          <Text style={{
+            fontSize: 20,
+            fontWeight: 'bold',
+            color: '#B3A369',
+            paddingLeft: 15,
           }}>Skills:</Text>
           <Text style={{ textAlign: 'left', paddingLeft: 15, fontSize: 18, fontWeight: '500' }}>{this.state.project.skills.map(({ skill }) => skill).join(', ')}</Text>
           <Text style={{
